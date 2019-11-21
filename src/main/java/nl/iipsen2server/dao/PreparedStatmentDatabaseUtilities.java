@@ -16,6 +16,8 @@ import main.java.nl.iipsen2server.models.DatabaseModel;
 
 public class PreparedStatmentDatabaseUtilities {
 
+	
+	
     /**
      *
      * @author Anthony Scheeres
@@ -27,9 +29,9 @@ public class PreparedStatmentDatabaseUtilities {
     		DatabaseModel databaseModel, 
     		String query, 
     		List < String > values,
-            boolean isUpdate
+            boolean isUpdate 
     		) throws Exception {
-
+    	
         return connectToDatabaseJson(
         		databaseModel.getUsername(),
         		databaseModel.getPassword(),
@@ -87,7 +89,7 @@ public class PreparedStatmentDatabaseUtilities {
             List<String> values,
             boolean isUpdate
     ) throws Exception {
-    	
+    	  String result = null;
         DatabaseUtilities dataUtilities = new DatabaseUtilities();
         String url = dataUtilities.createUrl(portNumber, databaseName, hostName);
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
@@ -102,8 +104,6 @@ public class PreparedStatmentDatabaseUtilities {
             int counter = 0;
             for (int index = 0; index < values.size(); index++) {
                 counter = index + 1;
-                System.out.println(values.get(index));
-
                 if (isNumeric(values.get(index))) {
                     pstmt.setInt(counter, Integer.parseInt(values.get(index)));
                 } else {
@@ -111,17 +111,18 @@ public class PreparedStatmentDatabaseUtilities {
                     pstmt.setString(counter, values.get(index));
                 }
             }
-            //System.out.println(pstmt);
 
             if(isUpdate){
                 pstmt.executeUpdate();
-                return "Update was succecfull";
+                
+                result = "Update was succecfull";
             }else{
                 ResultSet r = pstmt.executeQuery();
                 JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
-                String f = jsonConverter.convertToJSON(r).toString();
+                result= jsonConverter.convertToJSON(r).toString();
                 connection.close();
-                return f;
+                pstmt.close();
+                ;
             }
 
         } catch (SQLException err) {
@@ -129,7 +130,7 @@ public class PreparedStatmentDatabaseUtilities {
             err.printStackTrace();
         }
 
-        return null;
+        return result;
 
 
 
@@ -154,7 +155,7 @@ public class PreparedStatmentDatabaseUtilities {
             String query,
             List<String> values
     ) throws Exception {
-    	
+    	  HashMap<String, List<String>> result = null;
         DatabaseUtilities dUtilities = new DatabaseUtilities();
         String url = dUtilities.createUrl(portNumber, databaseName, hostName);
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
@@ -178,13 +179,13 @@ public class PreparedStatmentDatabaseUtilities {
             DatabaseUtilities g = new DatabaseUtilities();
             HashMap < String, List < String >> hashmap = g.getTableContents2(r);
             connection.close();
-            return hashmap;
+            result = hashmap;
         } catch (SQLException err) {
             System.out.println("Connection failure.");
             err.printStackTrace();
         }
 
-        return null;
+        return result;
 
 
 

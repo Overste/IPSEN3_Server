@@ -24,13 +24,12 @@ import main.java.nl.iipsen2server.models.AccountModel;
 /**
 *
 * @author Anthony Scheeres
-* 
 *
 */
 @Path("/user")
 public class UserResource {
 	private AccountController accountController = new AccountController();
-
+	private AuthenticationController authenticationController = new AuthenticationController();
 	
 	/**
 	*
@@ -43,8 +42,7 @@ public class UserResource {
 	@Path("/{token}/read")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveRead(@PathParam("token") String token, AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		return authenticationController.handleGiveRead(u, token);
+		return authenticationController.handleGiveRead(u.getUsername(), token);
 	}
 	
 	
@@ -59,8 +57,7 @@ public class UserResource {
 	@Path("/{token}/write")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveWrite(@PathParam("token") String token,AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		return authenticationController.handleGiveWrite(u, token);
+		return authenticationController.handleGiveWrite(u.getUsername(), token);
 	}
 	
 	
@@ -74,10 +71,9 @@ public class UserResource {
 	@Path("/{token}/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveDelete(@PathParam("token") String token,AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		TokenController t = new TokenController();
-		long employeeId = Long.parseLong(t.tokenToUserId(token));
-		return authenticationController.handleGiveDelete(u, employeeId);
+		TokenController tokenController = new TokenController();
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		return authenticationController.handleGiveDelete(u.getUsername(), employeeId);
 		}
 	
 	
@@ -94,8 +90,6 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasRead")
 	public Object hasRead(@PathParam("token") String token)  {
-	AuthenticationController authenticationController = new AuthenticationController();
-		
 		return authenticationController.validate(token, "READ");
 		
 	}
@@ -112,8 +106,6 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasWrite")
 	public Object hasWrite(@PathParam("token") String token)  {
-	AuthenticationController authenticationController = new AuthenticationController();
-		
 		return authenticationController.validate(token, "WRITE");
 		
 	}
@@ -130,8 +122,6 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasDelete")
 	public boolean hasDelete(@PathParam("token") String token)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		
 		return authenticationController.validate(token, "DELETE");
 		
 	}
