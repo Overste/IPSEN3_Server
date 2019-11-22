@@ -32,7 +32,6 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 	 * @author Anthony Scheeres
 	 */ 
 	    public static void main(String[] args) throws Exception {
-
 	        new Iipsen2groep2serverApplication().run(new String[] { "server" });
 	        DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0).getPassword();
 	    }
