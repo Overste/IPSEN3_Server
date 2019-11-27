@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import main.java.nl.iipsen2server.dao.DatabaseUtilities;
-import main.java.nl.iipsen2server.dao.UserDatabase;
+import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.DataModel;
 import main.java.nl.iipsen2server.models.DatabaseModel;
+import main.java.nl.iipsen2server.models.Response;
 
 public class TokenController {
 	 
@@ -18,12 +19,17 @@ public class TokenController {
 		*
 		*/
 		private HashMap<String, List<String>> getTokens() throws Exception {
-		 UserDatabase userDatabase = new UserDatabase();
+		 UserDAO userDatabase = new UserDAO();
 		 return userDatabase.getTokens();
 	 }
 	 
 	 
-	 
+	 private boolean isStringEmty(String token){
+		  if (token.length()!=0) {
+			  return true;
+		  }
+		  return false;
+	 }
 	 
 	 
 	 
@@ -32,17 +38,22 @@ public class TokenController {
 		* @author Anthony Scheeres
 		 *  
 		* 
-		*looks if token exist in list
+		*looks if token exist in hashmap
 		*/
-		private String findValideToken(HashMap<String, List<String>> hashmap, String token) {
-		 System.out.println(hashmap.get("token").get(0));
+		private String findValideTokenInHashmap(HashMap<String, List<String>> hashmap, String token) {
+		 //System.out.println(hashmap.get("token").get(0));
+		 String result = null ;
+		 
+		 
 		   for (int index = 0; index <hashmap.get("token").size(); index++) {
-			   if (hashmap.get("token").get(index).length()!=0) {
-		    if (hashmap.get("token").get(index).equals(token)) {
-		     return hashmap.get("user_id").get(index);
-		    }
+			  String myToken =  hashmap.get("token").get(index);
+			   if (isStringEmty(myToken)) {
+				   if (myToken.equals(token)) {
+					   result = hashmap.get("user_id").get(index);; 
+				   }
 			   }
-		   }return null;
+			   }
+		   return result;
 	 }
 	
 	 
@@ -58,12 +69,12 @@ public class TokenController {
 		  HashMap < String, List < String >> hashmap = null;
 		  try {
 			  hashmap = getTokens();
-		   return findValideToken( hashmap, token);
+		   return findValideTokenInHashmap( hashmap, token);
 		   }
 		   catch (Exception e) {
 		   e.printStackTrace();
 		  }
-		  return "fail";
+		  return Response.fail.toString();
 	 }
 	 
 	 

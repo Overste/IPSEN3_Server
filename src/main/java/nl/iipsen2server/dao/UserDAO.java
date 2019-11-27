@@ -10,7 +10,7 @@ import main.java.nl.iipsen2server.controlllers.UserController;
 import main.java.nl.iipsen2server.models.*;
 
 
-public class UserDatabase {
+public class UserDAO {
 
 	private String tableName = "app_user";
 	private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
@@ -31,7 +31,7 @@ public class UserDatabase {
 	 */
 	public boolean hasEnumHandeler(long employeeId, String permission) {
 		String query2 = "select permission from app_user where user_id=?;";
-		UserDatabase userDatabase = new UserDatabase();
+		UserDAO userDatabase = new UserDAO();
 		return userDatabase.hasPermission(permission, Long.toString(employeeId), query2);
 	}
     /**
@@ -75,8 +75,6 @@ public class UserDatabase {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
     }
 
 
@@ -96,17 +94,18 @@ public class UserDatabase {
      */
     public String showOneUserPermission(AccountModel u) {
         PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
+        String result = null;
         String query =
                 "select username, permission FROM app_user\r\n" +
                         "WHERE username = ? ;";
         List<String> array = new ArrayList<String>();
         array.add(u.getUsername());
         try {
-            return f.connectDatabaseJson(databaseModel, query, array, false);
+            result = f.connectDatabaseJson(databaseModel, query, array, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
 
@@ -115,7 +114,7 @@ public class UserDatabase {
      */
     public HashMap<String, List<String>> getUserInfo() throws Exception {
         DatabaseUtilities d = new DatabaseUtilities();
-        String query = String.format("select username, password, user_id, token, permission from %s;", tableName);
+        String query = String.format("select username, password, user_id, token, permission from %s order by user_id;", tableName);
         return d.connectThisDatabase(databaseModel, query);
 
     }

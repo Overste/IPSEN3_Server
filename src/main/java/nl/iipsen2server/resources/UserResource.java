@@ -14,9 +14,10 @@ import javax.ws.rs.core.MediaType;
 import main.java.nl.iipsen2server.controlllers.AccountController;
 import main.java.nl.iipsen2server.controlllers.AuthenticationController;
 import main.java.nl.iipsen2server.controlllers.TokenController;
-import main.java.nl.iipsen2server.dao.UserDatabase;
+import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.UserModel;
 import main.java.nl.iipsen2server.models.AccountModel;
+import main.java.nl.iipsen2server.models.Permission;
 
 
 
@@ -24,13 +25,12 @@ import main.java.nl.iipsen2server.models.AccountModel;
 /**
 *
 * @author Anthony Scheeres
-* 
 *
 */
 @Path("/user")
 public class UserResource {
 	private AccountController accountController = new AccountController();
-
+	private AuthenticationController authenticationController = new AuthenticationController();
 	
 	/**
 	*
@@ -43,8 +43,7 @@ public class UserResource {
 	@Path("/{token}/read")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveRead(@PathParam("token") String token, AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		return authenticationController.handleGiveRead(u, token);
+		return authenticationController.handleGiveRead(u.getUsername(), token);
 	}
 	
 	
@@ -59,8 +58,7 @@ public class UserResource {
 	@Path("/{token}/write")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveWrite(@PathParam("token") String token,AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		return authenticationController.handleGiveWrite(u, token);
+		return authenticationController.handleGiveWrite(u.getUsername(), token);
 	}
 	
 	
@@ -74,10 +72,9 @@ public class UserResource {
 	@Path("/{token}/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveDelete(@PathParam("token") String token,AccountModel u)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		TokenController t = new TokenController();
-		long employeeId = Long.parseLong(t.tokenToUserId(token));
-		return authenticationController.handleGiveDelete(u, employeeId);
+		TokenController tokenController = new TokenController();
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		return authenticationController.handleGiveDelete(u.getUsername(), employeeId);
 		}
 	
 	
@@ -94,9 +91,7 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasRead")
 	public Object hasRead(@PathParam("token") String token)  {
-	AuthenticationController authenticationController = new AuthenticationController();
-		
-		return authenticationController.validate(token, "READ");
+		return authenticationController.validate(token,Permission.READ.toString());
 		
 	}
 	
@@ -112,9 +107,7 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasWrite")
 	public Object hasWrite(@PathParam("token") String token)  {
-	AuthenticationController authenticationController = new AuthenticationController();
-		
-		return authenticationController.validate(token, "WRITE");
+		return authenticationController.validate(token, Permission.WRITE.toString());
 		
 	}
 	
@@ -130,9 +123,7 @@ public class UserResource {
 	@POST
 	@Path("/{token}/hasDelete")
 	public boolean hasDelete(@PathParam("token") String token)  {
-		AuthenticationController authenticationController = new AuthenticationController();
-		
-		return authenticationController.validate(token, "DELETE");
+		return authenticationController.validate(token, Permission.DELETE.toString());
 		
 	}
 	
@@ -199,7 +190,7 @@ public class UserResource {
 	@Path("/show")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String showUsers() throws Exception {
-		UserDatabase userDatabase = new UserDatabase ();
+		UserDAO userDatabase = new UserDAO ();
 		return userDatabase.showUser();
 	}
 	
@@ -212,7 +203,7 @@ public class UserResource {
 	@Path("/showU")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String showUser(AccountModel u){
-		UserDatabase userDatabase = new UserDatabase();
+		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(u);
 	}
 }	

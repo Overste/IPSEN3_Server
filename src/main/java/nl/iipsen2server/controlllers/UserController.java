@@ -72,6 +72,8 @@ public class UserController {
             return 1;
         }
         long id = 1;
+        
+        
         for (String databaseModel : list) {
             if (id <= Integer.valueOf(databaseModel)) {
                 id = Integer.valueOf(databaseModel) + 1;
@@ -83,16 +85,17 @@ public class UserController {
 
     /**
      * @author Anthony Scheeres
+     * 
      */
     public boolean checkIfUsernameExist(List<String> list, String username) {
-
+    	
         for (String name : list) {
             if (name.equals(username)) {
 
                 return true;
             }
 
-            System.out.println(name);
+        //    System.out.println(name);
 
         }
         return false;

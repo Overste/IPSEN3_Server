@@ -10,11 +10,12 @@ import main.java.nl.iipsen2server.models.DataModel;
 import main.java.nl.iipsen2server.models.DatabaseModel;
 import main.java.nl.iipsen2server.models.LogModel;
 import main.java.nl.iipsen2server.models.Permission;
+import main.java.nl.iipsen2server.models.Response;
 import main.java.nl.iipsen2server.models.UserModel;
 import main.java.nl.iipsen2server.dao.DatabaseUtilities;
-import main.java.nl.iipsen2server.dao.PermissionDatabase;
+import main.java.nl.iipsen2server.dao.PermissionDAO;
 import main.java.nl.iipsen2server.dao.PreparedStatmentDatabaseUtilities;
-import main.java.nl.iipsen2server.dao.UserDatabase;
+import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.AccountModel;
 
 
@@ -24,8 +25,8 @@ import main.java.nl.iipsen2server.models.AccountModel;
 
 
 public class AccountController {
-private UserDatabase userDatabase = new UserDatabase();
-private PermissionDatabase permissionDatabase = new PermissionDatabase();
+private UserDAO userDatabase = new UserDAO();
+private PermissionDAO permissionDatabase = new PermissionDAO();
 
 
 /**
@@ -40,23 +41,23 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
  * @return
  * @author Anthony Scheeres
  */
-    public boolean giveRead2(AccountModel u) {
-        return permissionDatabase.giveRead2(u);
+    public boolean giveRead2(String username) {
+        return permissionDatabase.giveRead2(username);
     }
 
 
     /**
      * @author Anthony Scheeres
      */
-    public boolean giveWrite2(AccountModel user) {
+    public boolean giveWrite2(String user) {
         return permissionDatabase.giveWrite2(user);
     }
 
     /**
      * @author Anthony Scheeres
      */
-    public boolean giveDelete2(AccountModel accountModel) {
-        return permissionDatabase.giveDelete2(accountModel);
+    public boolean giveDelete2(String user) {
+        return permissionDatabase.giveDelete2(user);
     }
 
     /**
@@ -65,11 +66,12 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
     private String createUserModel(UserModel userModel) throws Exception {
         UserController r = new UserController();
         HashMap<String, List<String>> hashmap;
+        String result = null;
         hashmap = userDatabase.getUsers();
         if (r.checkIfUsernameExist(hashmap.get("username"), userModel.getUsername()) != true) {
-            return userDatabase.insertHandlerUser(hashmap, userModel);
+        	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
         }
-        return null;
+        return result;
     }
 
 
@@ -93,8 +95,9 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
      * @author Anthony Scheeres
      */
     public String handleCreateUserModel2(UserModel u) {
+    	String fail = Response.fail.toString();
         if (!checkInputValide(u.getEmail(), u.getPassword())) {
-            return "fail";
+            return fail;
         }
         try {
             String token = createUserModel(u);
@@ -102,11 +105,11 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
                 validateEmail(token, u.getEmail());
                 return token;
             }
-            return "fail";
+            return fail;
         } catch (Exception e2) {
 
         }
-        return "fail";
+        return fail;
     }
 
 
@@ -138,27 +141,26 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
    for (int index = 0; index < hashmap.get("username").size(); index++) {
     if (checkCredentials(hashmap.get("username").get(index), hashmap.get("password").get(index), u)) {
     	
-    	boolean hasPermission = hashmap.get("permission").get(index).length() ==0;
+    	boolean hasPermission = hashmap.get("permission").get(index).length() ==0     ;
     	if(hasPermission) {
-    		   System.out.println("fail");
+    
     		return hashmap.get("token").get(index);
     	}
-    	if (hashmap.get("permission").get(index).contains("READ")) {
+    	if (hashmap.get("permission").get(index).contains(Permission.READ.toString())) {
     		  MailController mailController = new MailController();
-    		  UserDatabase userDatabase = new UserDatabase();
+    		  UserDAO userDatabase = new UserDAO();
    		   String newToken = mailController.generateToken();
    		   System.out.println(newToken);
     		userDatabase.changeToken(newToken,  Integer.parseInt(hashmap.get("user_id").get(index)));
     		return newToken;
     	}
- 	   System.out.println("fail2");
      return hashmap.get("token").get(index);
     }
    }
   } catch (Exception e) {
    e.printStackTrace();
   }
-  return "fail";
+  return Response.fail.toString();
  }
 
  
@@ -190,17 +192,25 @@ private PermissionDatabase permissionDatabase = new PermissionDatabase();
         for (int i = 0; i < data.get("token").size(); i++) {
             if (data.get("email").get(i) != null && data.get("token").get(i) != null) {
                 if (token.equals(data.get("token").get(i))) {
-
-                    if (data.get("email").get(i).toUpperCase().split("@")[1].equals(domain)) {
-                        giveRead2(new AccountModel(data.get("username").get(i), null, null, null, null));
-                        return "success";
+                	String yourDomain = getDomeinNameFromMail(data.get("email").get(i).toUpperCase());
+                    if ( yourDomain.equals(domain)) {
+                    	String accountModel = data.get("username").get(i); //use username to uniquely identify a user 
+                    	
+              
+                        giveRead2(accountModel);
+                        return Response.success.toString();
                     } else return "domein invalid, should be: " + domain;
                 }
             }
         }
-        return "fail";
+        return Response.fail.toString();
     }
 
+    
+    private String getDomeinNameFromMail(String email){
+    	return email.split("@")[1];
+    }
+    
 
     /**
      * @author Jesse Poleij, Anthony Scheeres

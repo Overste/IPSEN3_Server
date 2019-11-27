@@ -6,8 +6,10 @@ import main.java.nl.iipsen2server.dao.AuthenticationDAO;
 import main.java.nl.iipsen2server.models.DataModel;
 import main.java.nl.iipsen2server.models.DatabaseModel;
 import main.java.nl.iipsen2server.models.LogModel;
+import main.java.nl.iipsen2server.models.Permission;
+import main.java.nl.iipsen2server.models.Response;
 import main.java.nl.iipsen2server.models.UserModel;
-import main.java.nl.iipsen2server.dao.PermissionDatabase;
+import main.java.nl.iipsen2server.dao.PermissionDAO;
 import main.java.nl.iipsen2server.dao.PreparedStatmentDatabaseUtilities;
 import main.java.nl.iipsen2server.models.AccountModel;
 
@@ -28,26 +30,26 @@ public class AuthenticationController {
 	  * 
 	  *
 	  */
-	public String handleGiveRead(AccountModel u, String token) {
+	public String handleGiveRead(String u, String token) {
 		AccountController accountController = new AccountController();
 		LoggingController loggingController = new LoggingController();
 		TokenController tokenController = new TokenController();
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
-			return "fail";
+			return Response.fail.toString();
 		}
 		if (accountController.giveRead2(u)) {
 			loggingController.createLog(
 					new LogModel(
 							null, 
-							"Gebruiker heeft lees rechten gekregen:"+ u.getUsername(), 
-							"Gebruiker:"+ u.getUsername() + ", deze gebruiker heeft lees rechten gekregen van super gebruiker", 
+							"Gebruiker heeft lees rechten gekregen:"+ u, 
+							"Gebruiker:"+ u + ", deze gebruiker heeft lees rechten gekregen van super gebruiker", 
 							new UserModel(null, null, employeeId, null, null), 
 							0 
 							), 0);
-			return "success";
+			return Response.success.toString();
 		}
-		return "fail";
+		return Response.fail.toString();
 		}
 
 
@@ -58,13 +60,13 @@ public class AuthenticationController {
 	  * 
 	  *
 	  */
-	public String handleGiveWrite(AccountModel u,String token) {
+	public String handleGiveWrite(String u,String token) {
 		LoggingController loggingController = new LoggingController();
 		AccountController accountController = new AccountController();
 		TokenController tokkenController = new TokenController();
 		long employeeId = Long.parseLong(tokkenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
-			return "fail";
+			return Response.fail.toString();
 		}
 		
 		
@@ -72,8 +74,8 @@ public class AuthenticationController {
 		loggingController.createLog(
 				new LogModel(
 				null, 
-				"Gebruiker heeft verwijder rechten gekregen:"+ u.getUsername(), 
-				"Gebruiker:"+ u.getUsername() + ", deze gebruiker heeft verwijder rechten gekregen van super gebruiker", 
+				"Gebruiker heeft verwijder rechten gekregen:"+ u, 
+				"Gebruiker:"+ u+ ", deze gebruiker heeft verwijder rechten gekregen van super gebruiker", 
 				new UserModel(
 						null, 
 						null, 
@@ -82,9 +84,9 @@ public class AuthenticationController {
 						null
 						), 
 				0 ), 0);
-		return "success";
+		return Response.success.toString();
 	}
-	return "fail";
+	return Response.fail.toString();
 	}
 
 
@@ -92,14 +94,12 @@ public class AuthenticationController {
 
 	 /**
 	  *
-	  * @author Anthony Scheeres
-	  *  
-	  * 
+	  * @author Anthony Scheeres 
 	  *
 	  */
 	public boolean hasSuperPermission(long employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		if (authenticationDAO.hasEnumHandeler(employeeId, "WRITE") && authenticationDAO.hasEnumHandeler(employeeId, "READ") && authenticationDAO.hasEnumHandeler(employeeId, "DELETE")){
+		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.WRITE.toString()) && authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString()) && authenticationDAO.hasEnumHandeler(employeeId, Permission.DELETE.toString())){
 			return true;
 		}
 		return false;
@@ -111,23 +111,21 @@ public class AuthenticationController {
 	 /**
 	  *
 	  * @author Anthony Scheeres
-	  *  
-	  * 
 	  *
 	  */
-	public String handleGiveDelete(AccountModel u, long employeeId) {
+	public String handleGiveDelete(String u, long employeeId) {
 		LoggingController loggingController = new LoggingController();
 		AccountController accountController = new AccountController();
 		if (!hasSuperPermission(employeeId)) {
-			return "fail";
+			return Response.fail.toString();
 		}
 	if (accountController.giveDelete2(u)) {
 			
 			loggingController.createLog(
 					new LogModel(
 							null,
-							"Gebruiker heeft schrijf rechten gekregen:"+ u.getUsername(),
-							"Gebruiker:"+ u.getUsername() + ", deze gebruiker heeft schrijf rechten gekregen van super gebruiker",
+							"Gebruiker heeft schrijf rechten gekregen:"+ u,
+							"Gebruiker:"+ u+ ", deze gebruiker heeft schrijf rechten gekregen van super gebruiker",
 							new UserModel(
 									null,
 									null,
@@ -136,9 +134,9 @@ public class AuthenticationController {
 									null),
 							0 
 							), 0);
-			return "success";
+			return Response.success.toString();
 	}
-	return "fail";
+	return Response.fail.toString();
 	}
 
 
