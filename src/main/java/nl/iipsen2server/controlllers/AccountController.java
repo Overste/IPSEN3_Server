@@ -11,6 +11,7 @@ import main.java.nl.iipsen2server.models.DatabaseModel;
 import main.java.nl.iipsen2server.models.LogModel;
 import main.java.nl.iipsen2server.models.Permission;
 import main.java.nl.iipsen2server.models.Response;
+import main.java.nl.iipsen2server.models.RestApiModel;
 import main.java.nl.iipsen2server.models.User;
 import main.java.nl.iipsen2server.models.UserModel;
 import main.java.nl.iipsen2server.dao.DatabaseUtilities;
@@ -120,15 +121,20 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
      * @author Anthony Scheeres
      */
     private void validateEmail(String token, String email) throws Exception {
+    	String linkToServer = "http://%s:%s/user/%s/token";
+    	String message = "Open de volgende link om uw email te valideren: ";
+    	String link = linkToServer+message;
+    	RestApiModel database =   DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0);
+    	String title = "Valideer u email!";
         MailController.sendMail(String.format(
-                "Open de volgende link om uw email te valideren: http://%s:%s/user/%s/token",
-                DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0).getHostName(),
-                DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0).getPortNumber(),
+               link,
+                database.getHostName(),
+                database.getPortNumber(),
                 token
                 ),
                 "testlab",
                 email,
-                "Valideer u email!");
+                title);
     }
 
  /**
