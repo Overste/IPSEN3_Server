@@ -28,10 +28,5 @@ public class ExperimentDAO {
         }
 
     }
-    public void showOverview(ExperimentModel project) {
-        String query = "";
 
-
-
-    }
 }

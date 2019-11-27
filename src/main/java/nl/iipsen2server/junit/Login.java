@@ -17,9 +17,10 @@ class Login {
 	void testCompareLoginCredentials() {
 		AccountController accountController  = new AccountController ();
 		String username = "Anthony";
+		String username2 = "Anthony";
 		String password = "passw0rd"; 
 		String password2 = "passw0rd";
-		assertEquals(true, accountController.checkCredentials(username, password, password2));
+		assertEquals(true, accountController.checkCredentials(username, username2, password, password2));
 	}
 
 }
