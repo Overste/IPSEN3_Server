@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Register {
 
 	@Test
-	void test() {
+	void testInOutputValidator() {
 		AccountController accountController  = new 	AccountController ();
 		String email = "info@anthonyscheeres.nl";
 		String password = "";

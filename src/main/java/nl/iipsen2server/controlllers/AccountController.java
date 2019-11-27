@@ -69,7 +69,9 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
         HashMap<String, List<String>> hashmap;
         String result = null;
         hashmap = userDatabase.getUsers();
-        if (r.checkIfUsernameExist(hashmap.get("username"), userModel.getUsername()) != true) {
+        List<String> usernames = hashmap.get("username");
+        
+        if (r.checkIfUsernameExist(usernames, userModel.getUsername()) != true) {
         	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
         }
         return result;
