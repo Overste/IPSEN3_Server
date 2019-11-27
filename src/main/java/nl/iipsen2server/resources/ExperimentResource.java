@@ -2,7 +2,7 @@ package main.java.nl.iipsen2server.resources;
 
 
 import main.java.nl.iipsen2server.controlllers.ExperimentController;
-import main.java.nl.iipsen2server.dao.ExperimentDatabase;
+import main.java.nl.iipsen2server.dao.ExperimentDAO;
 import main.java.nl.iipsen2server.models.ExperimentModel;
 
 import javax.ws.rs.*;
@@ -16,26 +16,28 @@ public class ExperimentResource {
 
     private ExperimentController experimentcontroller = new ExperimentController();
 
+
     /**
      * @author Jesse Poleij
-     *
      */
     @POST
     @Path("/{token}/remove")
     public void deleteExperiment(@PathParam("token") String token, ExperimentModel experimentModel) {
         experimentcontroller.deleteExperiment(experimentModel, token);
     }
+
+
     /**
      * @author Jesse Poleij
-     *
      */
-
     @GET
     @Path("/{token}/overview")
     @Produces(MediaType.TEXT_PLAIN)
     public void showOverview(@PathParam("token") String token){
         experimentcontroller.showOverview(token);
     }
+
+
 	/**
 	 * @author AnthonySchuijlenburg
 	 */
@@ -43,9 +45,10 @@ public class ExperimentResource {
     @Path("/show")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(){
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showExperiments();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showExperiments();
     }
+
 
     /**
      * @author AnthonySchuijlenburg
@@ -58,10 +61,7 @@ public class ExperimentResource {
         return experimentController.showSingleExperiment(id);
     }
 
-    
-    
-    
-    
+
     /**
      * @author Anthony Scheeres
      */
@@ -69,8 +69,8 @@ public class ExperimentResource {
     @Path("/showAllHashmap")
     @Produces(MediaType.TEXT_PLAIN)
     public String showAllExperiments() throws Exception {
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showAllExperimentHashmap();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showAllExperimentHashmap();
     }
     
     
@@ -82,7 +82,7 @@ public class ExperimentResource {
     @Path("/showAllJson")
     @Produces(MediaType.TEXT_PLAIN)
     public String showAllExperimentsJson() throws Exception {
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showAllExperimentJson();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showAllExperimentJson();
     }
 }
