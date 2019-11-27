@@ -79,7 +79,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     /**
      * @author Anthony Scheeres
      */
-    private boolean checkInputValide(String email, String password) {
+    public boolean checkInputValide(String email, String password) {
         MailController m = new MailController();
         if (!m.isValidEmailAddress(email)) {
             return false;
