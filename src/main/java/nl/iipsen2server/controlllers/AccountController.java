@@ -123,7 +123,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     private void validateEmail(String token, String email) throws Exception {
     	String linkToServer = "http://%s:%s/user/%s/token";
     	String message = "Open de volgende link om uw email te valideren: ";
-    	String link = linkToServer+message;
+    	String link = message + linkToServer;
     	RestApiModel database =   DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0);
     	String title = "Valideer u email!";
         MailController.sendMail(String.format(
