@@ -147,7 +147,6 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
  public String checkLogin(UserModel u) throws Exception {
   HashMap < String, List < String >> hashmap;
   String response = Response.fail.toString();
-  //try {
    hashmap = userDatabase.getUserInfo();
    List<String> users = hashmap.get(User.username.toString());
    for (int index = 0; index < users.size(); index++) {
@@ -166,7 +165,12 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
   return response;
  }
  
+ 
+ /**
+  * @author Anthony Scheeres
+  */
  private String GetLoginInformation(String username, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
+	 String failtResponse = Response.fail.toString();
 	  if (checkCredentials(username, passwordFromDatabase,  passwordFromClient)) {
 		    
 	    	boolean hasPermission = permission.length() ==0;
@@ -179,7 +183,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 	    	}
 	     return token;
 	    }
-	  return Response.fail.toString();
+	  return failtResponse;
  }
  
  /**
