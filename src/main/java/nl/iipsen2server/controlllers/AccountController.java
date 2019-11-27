@@ -149,17 +149,23 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
   String response = Response.fail.toString();
    hashmap = userDatabase.getUserInfo();
    List<String> users = hashmap.get(User.username.toString());
+   String usernameFromClient = u.getUsername();
+   String passwordFromClient = u.getPassword();
    for (int index = 0; index < users.size(); index++) {
 	   
-	   
 	   String username = hashmap.get(User.username.toString()).get(index);
+	   
 	   String passwordFromDatabase = hashmap.get(User.password.toString()).get(index); 
-	   String passwordFromClient = u.getPassword();
+	   
 	   String token = hashmap.get(User.token.toString()).get(index);
 	   String permission = hashmap.get(User.permission.toString()).get(index);
 	   String UserId = hashmap.get(User.user_id.toString()).get(index);
+	   String responseToUser = GetLoginInformation(username, usernameFromClient, passwordFromDatabase,  passwordFromClient, permission, UserId, token);
 	   
-	   response = GetLoginInformation(username, passwordFromDatabase,  passwordFromClient, permission, UserId, token);
+	   if (!responseToUser.equals(response)) {
+		   return responseToUser;
+	   }
+	  
    }
 
   return response;
@@ -169,12 +175,13 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
  /**
   * @author Anthony Scheeres
   */
- private String GetLoginInformation(String username, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
+ private String GetLoginInformation(String username, String username2, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
 	 String failtResponse = Response.fail.toString();
-	  if (checkCredentials(username, passwordFromDatabase,  passwordFromClient)) {
-		    
+	
+	  if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
 	    	boolean hasPermission = permission.length() ==0;
 	    	if(hasPermission) {
+	    
 	    		return token;
 	    	}
 	    	if (permission.contains(Permission.READ.toString())) {
@@ -207,8 +214,8 @@ private String askNewTokenForAccount(int id) {
   * 
   *
   */
- public boolean checkCredentials(String username, String password, String password2){
-  if (username.equals(password2) && password.equals(password2)) {
+ public boolean checkCredentials(String username,String username2, String password, String password2){
+  if (username.equals(username2) && password.equals(password2)) {
    return true;
   }
   return false;
