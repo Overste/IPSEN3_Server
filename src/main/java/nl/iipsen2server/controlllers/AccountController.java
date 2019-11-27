@@ -140,12 +140,14 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
  /**
   *
   * @author Anthony Scheeres
+ * @throws Exception 
   *  
   *
   */
- public String checkLogin(UserModel u) {
+ public String checkLogin(UserModel u) throws Exception {
   HashMap < String, List < String >> hashmap;
-  try {
+  String response = Response.fail.toString();
+  //try {
    hashmap = userDatabase.getUserInfo();
    List<String> users = hashmap.get(User.username.toString());
    for (int index = 0; index < users.size(); index++) {
@@ -158,25 +160,27 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 	   String permission = hashmap.get(User.permission.toString()).get(index);
 	   String UserId = hashmap.get(User.user_id.toString()).get(index);
 	   
-    if (checkCredentials(username, passwordFromDatabase,  passwordFromClient)) {
-    
-    	boolean hasPermission = permission.length() ==0;
-    	if(hasPermission) {
-    		return token;
-    	}
-    	if (permission.contains(Permission.READ.toString())) {
-    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));
-    		  return newToken;
-    	}
-     return token;
-    }
+	   response = GetLoginInformation(username, passwordFromDatabase,  passwordFromClient, permission, UserId, token);
    }
-  } catch (Exception e) {
-   e.printStackTrace();
-  }
-  return Response.fail.toString();
+
+  return response;
  }
  
+ private String GetLoginInformation(String username, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
+	  if (checkCredentials(username, passwordFromDatabase,  passwordFromClient)) {
+		    
+	    	boolean hasPermission = permission.length() ==0;
+	    	if(hasPermission) {
+	    		return token;
+	    	}
+	    	if (permission.contains(Permission.READ.toString())) {
+	    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));
+	    		  return newToken;
+	    	}
+	     return token;
+	    }
+	  return Response.fail.toString();
+ }
  
  /**
   * @author Anthony Scheeres
