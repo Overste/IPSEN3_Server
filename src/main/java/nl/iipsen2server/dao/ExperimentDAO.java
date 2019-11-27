@@ -28,7 +28,7 @@ public class ExperimentDAO {
         arrayList.add(Long.toString(project.getId()));
         try {
             preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, query, arrayList, false);
-        } catch (Exception e) { }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
 
@@ -36,7 +36,7 @@ public class ExperimentDAO {
      * @author AnthonySchuijleburg
      */
     public String showExperiments(){
-        String query = String.format("select id, project_name, experiment_leader, status from %s;", tableName);
+        String query = String.format("SELECT * FROM %s;", tableName);
         return ConnectToDatabase(query);
     }
 
@@ -45,7 +45,7 @@ public class ExperimentDAO {
      * @author AnthonySchuijleburg
      */
     public String showExperiment(int id){
-        String query = String.format("SELECT * FROM %s WHERE id = %d;", tableName, id);
+        String query = String.format("SELECT * FROM %s WHERE experiment_id = %d;", tableName, id);
         return ConnectToDatabase(query);
     }
 

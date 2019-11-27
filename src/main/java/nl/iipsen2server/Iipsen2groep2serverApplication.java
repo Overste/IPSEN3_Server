@@ -97,25 +97,17 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 	            i.add(server, p);
 	            System.out.print(server);
 	        } catch (Exception e1) {
-	        	 MailController m = new MailController();
-	        	ServerModel g = e.createNewServer();
-	        	r.createNewRest(8080, "localhost", g);
+	        	 MailController mailController = new MailController();
+	        	ServerModel serverModel = e.createNewServer();
+	        	r.createNewRest(8080, "localhost", serverModel);
 	    		f.createNewDatabase("postgres","",5432,"postgres", "localhost", e.createNewServer()); 
 	    		
-	    		m.createNewMailModel("****@gmail.com", "******", g);
+	    		mailController.createNewMailModel("****@gmail.com", "******", serverModel);
 	    		// Write object as YAML file
-	    		String yaml = mapper.writeValueAsString(g);
+	    		String yaml = mapper.writeValueAsString(serverModel);
 	    		System.out.println(yaml);
 	    		y.writeFileToDocuments(folder, file, yaml);
 	        }
-	    	
-	    		
-	    	  
 	    }
-	    
-	    
-	  
-	    
-	 
 	}
 

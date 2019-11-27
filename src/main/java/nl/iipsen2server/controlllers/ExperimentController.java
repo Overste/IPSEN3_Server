@@ -47,7 +47,7 @@ public class ExperimentController {
       */
     public void showOverview(String token) {
         String userID = tokenController.tokenToUserId(token);
-         authenticationController.hasPermission(Long.parseLong(userID), Permission.READ.toString());
+        authenticationController.hasPermission(Long.parseLong(userID), Permission.READ.toString());
     }
 
 }
