@@ -1,8 +1,7 @@
 package main.java.nl.iipsen2server.resources;
 
-
 import main.java.nl.iipsen2server.controlllers.ExperimentController;
-import main.java.nl.iipsen2server.dao.ExperimentDatabase;
+import main.java.nl.iipsen2server.dao.ExperimentDAO;
 import main.java.nl.iipsen2server.models.ExperimentModel;
 
 import javax.ws.rs.*;
@@ -16,52 +15,41 @@ public class ExperimentResource {
 
     private ExperimentController experimentcontroller = new ExperimentController();
 
+
     /**
      * @author Jesse Poleij
-     *
      */
     @POST
     @Path("/{token}/remove")
     public void deleteExperiment(@PathParam("token") String token, ExperimentModel experimentModel) {
         experimentcontroller.deleteExperiment(experimentModel, token);
     }
-    /**
-     * @author Jesse Poleij
-     *
-     */
 
-    @GET
-    @Path("/{token}/overview")
-    @Produces(MediaType.TEXT_PLAIN)
-    public void showOverview(@PathParam("token") String token){
-        experimentcontroller.showOverview(token);
-    }
+
 	/**
 	 * @author AnthonySchuijlenburg
 	 */
     @GET
-    @Path("/show")
+    @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(){
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showExperiments();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showExperiments();
     }
+
 
     /**
      * @author AnthonySchuijlenburg
      */
     @GET
-    @Path("/showSingle/{id}")
+    @Path("/showSingleExperiment/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public String showSingleExperiment(@PathParam("id") int id){
         ExperimentController experimentController = new ExperimentController();
         return experimentController.showSingleExperiment(id);
     }
 
-    
-    
-    
-    
+
     /**
      * @author Anthony Scheeres
      */
@@ -69,12 +57,11 @@ public class ExperimentResource {
     @Path("/showAllHashmap")
     @Produces(MediaType.TEXT_PLAIN)
     public String showAllExperiments() throws Exception {
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showAllExperimentHashmap();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showAllExperimentHashmap();
     }
     
-    
-    
+
     /**
      * @author Anthony Scheeres
      */
@@ -82,7 +69,32 @@ public class ExperimentResource {
     @Path("/showAllJson")
     @Produces(MediaType.TEXT_PLAIN)
     public String showAllExperimentsJson() throws Exception {
-        ExperimentDatabase experimentDatabase = new ExperimentDatabase();
-        return experimentDatabase.showAllExperimentJson();
+        ExperimentDAO experimentDAO = new ExperimentDAO();
+        return experimentDAO.showAllExperimentJson();
     }
+
+
+//TODO CYRIEL NEEDS TO CLEAN THIS UP
+//
+//    /**
+//     *@author Cyriel van der Raaf
+//     */
+//    @POST
+//    @Path("/{token}/createProject")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String openProject(ExperimentModel2 project, @PathParam("token") String token){
+//        ExperimentController experimentController = new ExperimentController();
+//        return projectsController.handleCreateProject(project, token);
+//    }
+//
+//    /**
+//     *@author Cyriel van der Raaf
+//     */
+//    @POST
+//    @Path("/{token}/createProject")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String deleteProject(ExperimentModel2 project, @PathParam("token") String token){
+//        ExperimentController experimentController = new ExperimentController();
+//        return projectsController.deleteCreateProject(project, token);
+//    }
 }

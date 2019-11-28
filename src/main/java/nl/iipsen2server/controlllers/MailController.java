@@ -15,7 +15,7 @@ import main.java.nl.iipsen2server.models.ServerModel;
  * @author Anthony Scheeres
  */
 public class MailController {
-	 private String tableName = "app_user";
+	 private String tableName = "application_users";
 	 private int tokenLength = 20;
 	 
 	 
@@ -70,7 +70,15 @@ public class MailController {
 	  * @author Anthony Scheeres
 	  */
 	 private boolean tokenExist(HashMap<String, List<String>> e1, String token) {
-		for(String token2: e1.get("token")) {
+		 
+		 
+		 List<String> oldToken = e1.get("token");
+		
+		for(String token2: oldToken) {
+			
+			
+		
+			
 			if (token.equals(token2)) {
 				return true;
 			}
