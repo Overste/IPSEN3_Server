@@ -178,7 +178,6 @@ public boolean validate(String token, String permission) {
 	 */
 	public boolean hasPermission(Long userID, String permission) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-
 		return authenticationDAO.hasEnumHandeler(userID, permission);
 	}
 

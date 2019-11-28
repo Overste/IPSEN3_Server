@@ -71,7 +71,6 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 			environment.jersey().register(new UserResource());
 			environment.jersey().register(new LogResource());
 			environment.jersey().register(new ExperimentResource());
-	    
 	    }
 	    
 	    
@@ -97,25 +96,18 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 	            i.add(server, p);
 	            System.out.print(server);
 	        } catch (Exception e1) {
-	        	 MailController m = new MailController();
-	        	ServerModel g = e.createNewServer();
-	        	r.createNewRest(8080, "localhost", g);
-	    		f.createNewDatabase("postgres","",5432,"postgres", "localhost", e.createNewServer()); 
+	        	 MailController mailController = new MailController();
+	        	ServerModel serverModel = e.createNewServer();
+	        	r.createNewRest(8080, "localhost", serverModel);
+	        	//TODO Change database name to postgres2.0
+	    		f.createNewDatabase("postgres","",5432,"postgres", "localhost", e.createNewServer());
 	    		
-	    		m.createNewMailModel("****@gmail.com", "******", g);
+	    		mailController.createNewMailModel("****@gmail.com", "******", serverModel);
 	    		// Write object as YAML file
-	    		String yaml = mapper.writeValueAsString(g);
+	    		String yaml = mapper.writeValueAsString(serverModel);
 	    		System.out.println(yaml);
 	    		y.writeFileToDocuments(folder, file, yaml);
 	        }
-	    	
-	    		
-	    	  
 	    }
-	    
-	    
-	  
-	    
-	 
 	}
 

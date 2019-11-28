@@ -12,15 +12,10 @@ import java.util.List;
 
 import main.java.nl.iipsen2server.models.DatabaseModel;
 
-
-
-
 public class DatabaseUtilities {
 
     /**
-     *
      * @author Anthony Scheeres
-     *
      */
     // potenially returns all data from an table added an methode that returns all column values in an 2d array!!
     public HashMap < String, List < String >> getTableContents2(ResultSet resultSet) {
@@ -48,14 +43,10 @@ public class DatabaseUtilities {
     }
 
 
-
-
     /**
-     *
      * @author Anthony Scheeres
      * @return 
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     //use a database object to connect to database and perform a query
     public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) throws Exception {
@@ -72,13 +63,10 @@ public class DatabaseUtilities {
     }
 
 
-
     /**
-     *
      * @author Anthony Scheeres
      * @return 
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     //use a database object to connect to database and perform a query
     public String connectThisDatabase2(DatabaseModel databaseModel, String query) throws Exception {
@@ -93,17 +81,15 @@ public class DatabaseUtilities {
         		);
     }
 
+
     public String createUrl(int portNumber, String databaseName, String hostName) {
         return String.format("jdbc:postgresql://%s:%s/%s", hostName, portNumber, databaseName);
     }
 
 
-
     /**
-     *
      * @author Anthony Scheeres
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     private String connectToDatabase(
             String username,
@@ -112,7 +98,7 @@ public class DatabaseUtilities {
             String databaseName,
             String hostName,
             String query
-    ) throws Exception {
+        ) throws Exception {
     	  String result = null;
         String url = createUrl(portNumber, databaseName, hostName);
         HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
@@ -135,13 +121,9 @@ public class DatabaseUtilities {
     }
 
 
-
-
     /**
-     *
      * @author Anthony Scheeres
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     private HashMap < String, List < String >> connectToDatabase2(
             String username,
@@ -171,12 +153,8 @@ public class DatabaseUtilities {
     }
 
 
-
-
     /**
-     *
      * @author Anthony Scheeres
-     *
      */
     //connect to postgres database 
     private List < String > getColumnNames(ResultSet resultSet) {
@@ -196,6 +174,7 @@ public class DatabaseUtilities {
         return columnNames;
     }
 
+
     /**
      * @author Anthony Scheeres
      */
@@ -204,7 +183,6 @@ public class DatabaseUtilities {
         Statement statement;
         ResultSet result = null;
         System.out.println(query);
-
         try {
             statement = connection.createStatement();
             result = statement.executeQuery(query);
@@ -213,16 +191,11 @@ public class DatabaseUtilities {
             e.printStackTrace();
         }
             return result;
-        
-
-
-
     }
 
+
     /**
-     *
      * @author Anthony Scheeres
-     *
      */
     // this methode can be used to insert an query
     public int enterUpdate(Connection connection, String query) {
@@ -235,5 +208,4 @@ public class DatabaseUtilities {
             return 0;
         }
     }
-
 }

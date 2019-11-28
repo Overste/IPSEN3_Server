@@ -20,27 +20,20 @@ import main.java.nl.iipsen2server.models.AccountModel;
 import main.java.nl.iipsen2server.models.Permission;
 
 
-
-
 /**
-*
 * @author Anthony Scheeres
-*
 */
 @Path("/user")
 public class UserResource {
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
-	
+
+
 	/**
-	*
 	* @author Anthony Scheeres
-	 * @return 
-	* 
-	*
 	*/	
 	@POST
-	@Path("/{token}/read")
+	@Path("/{token}/giveRead")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveRead(@PathParam("token") String token, AccountModel u)  {
 		return authenticationController.handleGiveRead(u.getUsername(), token);
@@ -48,14 +41,10 @@ public class UserResource {
 	
 	
 	/**
-	*
 	* @author Anthony Scheeres
-	* @return 
-	* 
-	*
 	*/
 	@POST
-	@Path("/{token}/write")
+	@Path("/{token}/giveWrite")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveWrite(@PathParam("token") String token,AccountModel u)  {
 		return authenticationController.handleGiveWrite(u.getUsername(), token);
@@ -63,46 +52,30 @@ public class UserResource {
 	
 	
 	/**
-	*
 	* @author Anthony Scheeres
-	 * @return 
-	*
 	*/
 	@POST
-	@Path("/{token}/delete")
+	@Path("/{token}/giveDelete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String giveDelete(@PathParam("token") String token,AccountModel u)  {
 		TokenController tokenController = new TokenController();
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
 		return authenticationController.handleGiveDelete(u.getUsername(), employeeId);
-		}
+	}
 	
-	
-	
-	
-	
+
 	/**
-	*
 	* @author Anthony Scheeres
-	 * @return 
-	* 
-	*
 	*/	
 	@POST
 	@Path("/{token}/hasRead")
 	public Object hasRead(@PathParam("token") String token)  {
 		return authenticationController.validate(token,Permission.READ.toString());
-		
 	}
-	
-	
+
 
 	/**
-	*
 	* @author Anthony Scheeres
-	 * @return 
-	* 
-	*
 	*/	
 	@POST
 	@Path("/{token}/hasWrite")
@@ -110,15 +83,10 @@ public class UserResource {
 		return authenticationController.validate(token, Permission.WRITE.toString());
 		
 	}
-	
-	
+
 
 	/**
-	*
 	* @author Anthony Scheeres
-	 * @return 
-	* 
-	*
 	*/	
 	@POST
 	@Path("/{token}/hasDelete")
@@ -126,18 +94,13 @@ public class UserResource {
 		return authenticationController.validate(token, Permission.DELETE.toString());
 		
 	}
-	
-	
-	
+
 	
 	/**
-	*
 	* @author Jesse Poleij
-	* 
-	*
 	*/
 	@POST
-	@Path("/{token}/remove")
+	@Path("/{token}/removeUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void removeUserModel(@PathParam("token") String employeeId, AccountModel u)  {
 		accountController.handleRemoveUser(u, employeeId);
@@ -146,29 +109,27 @@ public class UserResource {
 	
 	
 	/**
-	*
 	* @author Anthony Scheeres
-	* 
 	*/
 	@POST
-	@Path("/create")
+	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUserModel(UserModel u )  {
 		return accountController.handleCreateUserModel2(u);
 	}
-	
+
+
 	/**
-	*
-	* @author Anthony Scheeres
-	 * @return 
-	* 
+ 	* @author Anthony Scheeres
+ 	* @return
 	*/
 	@GET
 	@Path("/{token}/token")
 	public String validateToken(@PathParam("token") String token){
 		return accountController.validateToken(token);
 	}
-	
+
+
 	/**
 	*
 	* @author Anthony Scheeres
@@ -188,11 +149,11 @@ public class UserResource {
 	*
 	*/
 	@GET
-	@Path("/show")
+	@Path("/{token}/showAllUsers")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUsers() throws Exception {
+	public String showUsers(@PathParam("token") String token) throws Exception {
 		UserDAO userDatabase = new UserDAO ();
-		return userDatabase.showUser();
+		return userDatabase.showUsers();
 	}
 	
 	/**
@@ -201,10 +162,10 @@ public class UserResource {
 	*
 	*/
 	@GET
-	@Path("/showU")
+	@Path("/{token}/{id}/showSingleUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUser(AccountModel u){
+	public String showUser(@PathParam("token") String token, @PathParam("id") int id){
 		UserDAO userDatabase = new UserDAO();
-		return userDatabase.showOneUserPermission(u);
+		return userDatabase.showOneUserPermission(id);
 	}
 }	
