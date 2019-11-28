@@ -110,11 +110,12 @@ public class UserResource {
 	
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/
 	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUserModel(UserModel u )  {
+	public String createUserModel(UserModel u ) throws Exception  {
 		return accountController.handleCreateUserModel2(u);
 	}
 

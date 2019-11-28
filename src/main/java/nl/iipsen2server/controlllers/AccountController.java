@@ -101,8 +101,9 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public String handleCreateUserModel2(UserModel u) {
+    public String handleCreateUserModel2(UserModel u) throws Exception {
     	String fail = Response.fail.toString();
         if (!checkInputValide(u.getEmail(), u.getPassword())) {
             return fail;
@@ -110,16 +111,9 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
    
             String token = createUserModel(u);
             
-            
-        	new Thread(() -> {
-        		try {
+         
 					validateEmail(token, u.getEmail());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	}).start();
-            
+		
             
             if (!token.equals(null)) {   
                 return token;
@@ -138,7 +132,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     	String link = message + linkToServer;
     	RestApiModel database =   DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0);
     	String title = "Valideer u email!";
-        MailController.sendMail(String.format(
+        MailController.sendMailOnDifferentThread(String.format(
                link,
                 database.getHostName(),
                 database.getPortNumber(),
