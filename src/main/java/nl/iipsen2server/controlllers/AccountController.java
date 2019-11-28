@@ -147,20 +147,15 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
    String usernameFromClient = u.getUsername();
    String passwordFromClient = u.getPassword();
    for (int index = 0; index < users.size(); index++) {
-	   
 	   String username = hashmap.get(User.username.toString()).get(index);
-	   
 	   String passwordFromDatabase = hashmap.get(User.password.toString()).get(index); 
-	   
 	   String token = hashmap.get(User.token.toString()).get(index);
-	   String permission = hashmap.get(User.permission.toString()).get(index);
+	   String permission = hashmap.get("has_read").get(index);
 	   String UserId = hashmap.get(User.user_id.toString()).get(index);
 	   String responseToUser = GetLoginInformation(username, usernameFromClient, passwordFromDatabase,  passwordFromClient, permission, UserId, token);
-	   
 	   if (!responseToUser.equals(response)) {
 		   return responseToUser;
 	   }
-	  
    }
 
   return response;

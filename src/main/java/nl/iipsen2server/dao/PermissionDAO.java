@@ -38,7 +38,7 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     public boolean giveWrite(String username) {
-        String query2 = String.format("select permission from %s where username=?;", tableName);
+        String query2 = String.format("select has_write from %s where username=?;", tableName);
         Enum permission = Permission.WRITE;
         if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
             try {
@@ -57,7 +57,7 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     public boolean giveDelete(String username) {
-        String query2 = "select permission from app_user where username=?;";
+        String query2 = String.format("select has_delete from app_user where username=?;", tableName);
         Enum permission = Permission.DELETE;
         if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
             try {
