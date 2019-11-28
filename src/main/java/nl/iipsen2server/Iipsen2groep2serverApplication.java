@@ -71,7 +71,6 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 			environment.jersey().register(new UserResource());
 			environment.jersey().register(new LogResource());
 			environment.jersey().register(new ExperimentResource());
-	    
 	    }
 	    
 	    

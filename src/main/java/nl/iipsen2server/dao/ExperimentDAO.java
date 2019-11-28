@@ -3,6 +3,7 @@ package main.java.nl.iipsen2server.dao;
 import main.java.nl.iipsen2server.models.DataModel;
 import main.java.nl.iipsen2server.models.DatabaseModel;
 import main.java.nl.iipsen2server.models.ExperimentModel;
+import main.java.nl.iipsen2server.models.ExperimentModel2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ExperimentDAO {
  * @author Jesse Poleij
  */
     public void deleteExperiment(ExperimentModel project) {
-        String query = "DELETE FROM experiments WHERE id = ?;";
+        String query = String.format("DELETE FROM %s WHERE id = ?;", tableName);
 
         List< String > arrayList = new ArrayList<>();
         arrayList.add(Long.toString(project.getId()));
@@ -82,5 +83,67 @@ public class ExperimentDAO {
         String query = String.format("select * from %s;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         return d.connectThisDatabase2(databaseModel, query);
+    }
+
+
+    /**
+     *@author Cyriel van der Raaf
+     *Gebruikt een prepared statement om waardes in het tabel projects te plaatsen.
+     */
+    public void uploadProject(ExperimentModel2 model){
+        PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
+
+        long id = model.getId();
+        Enum status = model.getStatus();
+
+        String query = String.format("INSERT INTO %s (" +
+                "" + "?,"               // experiment_id
+                + "?,"                  // experiment_name
+                + "?,"                  // experiment_leader
+                + "?,"                  // experiment_description
+                + "?,"                  // organisation
+                + "?,"                  // business_owner
+                + "?,"                  // experiment_status
+                + "?,"                  // experiment_phase
+                + "?"                   // inovation_cost
+                + "?"                   // money_source
+                + ");", tableName);
+
+        //TODO Make the values above align with model
+
+        List <String> project2 = new ArrayList<>();
+        project2.add(String.format("%d", id));
+        project2.add(model.getName());
+        project2.add(model.getExperimentleaders());
+        project2.add(model.getDescription());
+        project2.add(model.getOrganisations());
+        project2.add(model.getBusinessOwners());
+        project2.add(String.format("%s", status));
+        project2.add(model.getInovationCost());
+        project2.add(model.getMoneySource());
+
+        try {
+            dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     *@author Cyriel van der Raaf
+     *Gebruikt een prepared statement om een project te verwijderen.
+     */
+    public void deleteExperiment(ExperimentModel2 projectModel){
+        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
+
+        String query1 = String.format("DELETE FROM %s WHERE id='&d';", tableName, projectModel.getId());
+
+        try {
+            databaseUtilities.connectThisDatabase2(databaseModel, query1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

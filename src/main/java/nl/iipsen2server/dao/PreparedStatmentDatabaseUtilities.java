@@ -1,28 +1,17 @@
 package main.java.nl.iipsen2server.dao;
 
-import java.sql.Connection;
+import main.java.nl.iipsen2server.models.DatabaseModel;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 
-import main.java.nl.iipsen2server.models.DatabaseModel;
-
 public class PreparedStatmentDatabaseUtilities {
 
-	
-	
+
     /**
-     *
      * @author Anthony Scheeres
-     * @return  
-     *
+     * @return
      */
     //use a database object to connect to database and perform a query
     public String connectDatabaseJson(
@@ -46,10 +35,8 @@ public class PreparedStatmentDatabaseUtilities {
 
 
     /**
-     *
      * @author Anthony Scheeres
-     * @return 
-     *
+     * @return
      */
     //use a database object to connect to database and perform a query
     public HashMap < String, List < String >> connectDatabaseHashmap(
@@ -70,15 +57,10 @@ public class PreparedStatmentDatabaseUtilities {
     }
 
 
-
-
-
     /**
-     *
      * @author Anthony Scheeres
      * @return 
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     private String connectToDatabaseJson(
             String username,
@@ -95,7 +77,6 @@ public class PreparedStatmentDatabaseUtilities {
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver"); 
-
 
         try  {
             System.out.println("Java JDBC PostgreSQL: " + databaseName);
@@ -129,23 +110,14 @@ public class PreparedStatmentDatabaseUtilities {
             System.out.println("Connection failure.");
             err.printStackTrace();
         }
-
         return result;
-
-
-
-
     }
 
 
-
-
     /**
-     *
      * @author Anthony Scheeres
      * @return 
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     private HashMap < String, List < String >> connectToDatabaseHashmap(
             String username,
@@ -184,21 +156,14 @@ public class PreparedStatmentDatabaseUtilities {
             System.out.println("Connection failure.");
             err.printStackTrace();
         }
-
         return result;
-
-
-
-
     }
 
 
     /**
-     *
      * @author Anthony Scheeres
      * @return 
-     * @throws Exception 
-     *
+     * @throws Exception
      */
     private static boolean isNumeric(String strNum) {
         try {
@@ -208,6 +173,4 @@ public class PreparedStatmentDatabaseUtilities {
         }
         return true;
     }
-
-
 }

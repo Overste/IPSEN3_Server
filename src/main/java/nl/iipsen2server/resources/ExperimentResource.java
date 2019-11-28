@@ -1,6 +1,5 @@
 package main.java.nl.iipsen2server.resources;
 
-
 import main.java.nl.iipsen2server.controlllers.ExperimentController;
 import main.java.nl.iipsen2server.dao.ExperimentDAO;
 import main.java.nl.iipsen2server.models.ExperimentModel;
@@ -27,22 +26,11 @@ public class ExperimentResource {
     }
 
 
-    /**
-     * @author Jesse Poleij
-     */
-    @GET
-    @Path("/{token}/overview")
-    @Produces(MediaType.TEXT_PLAIN)
-    public void showOverview(@PathParam("token") String token){
-        experimentcontroller.showOverview(token);
-    }
-
-
 	/**
 	 * @author AnthonySchuijlenburg
 	 */
     @GET
-    @Path("/show")
+    @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(){
         ExperimentDAO experimentDAO = new ExperimentDAO();
@@ -54,7 +42,7 @@ public class ExperimentResource {
      * @author AnthonySchuijlenburg
      */
     @GET
-    @Path("/showSingle/{id}")
+    @Path("/showSingleExperiment/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public String showSingleExperiment(@PathParam("id") int id){
         ExperimentController experimentController = new ExperimentController();
@@ -73,8 +61,7 @@ public class ExperimentResource {
         return experimentDAO.showAllExperimentHashmap();
     }
     
-    
-    
+
     /**
      * @author Anthony Scheeres
      */
@@ -85,4 +72,29 @@ public class ExperimentResource {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showAllExperimentJson();
     }
+
+
+//TODO CYRIEL NEEDS TO CLEAN THIS UP
+//
+//    /**
+//     *@author Cyriel van der Raaf
+//     */
+//    @POST
+//    @Path("/{token}/createProject")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String openProject(ExperimentModel2 project, @PathParam("token") String token){
+//        ExperimentController experimentController = new ExperimentController();
+//        return projectsController.handleCreateProject(project, token);
+//    }
+//
+//    /**
+//     *@author Cyriel van der Raaf
+//     */
+//    @POST
+//    @Path("/{token}/createProject")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String deleteProject(ExperimentModel2 project, @PathParam("token") String token){
+//        ExperimentController experimentController = new ExperimentController();
+//        return projectsController.deleteCreateProject(project, token);
+//    }
 }

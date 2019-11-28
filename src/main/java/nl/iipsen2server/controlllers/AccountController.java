@@ -1,20 +1,15 @@
 package main.java.nl.iipsen2server.controlllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
 import main.java.nl.iipsen2server.models.DataModel;
-import main.java.nl.iipsen2server.models.DatabaseModel;
-import main.java.nl.iipsen2server.models.LogModel;
 import main.java.nl.iipsen2server.models.Permission;
 import main.java.nl.iipsen2server.models.Response;
 import main.java.nl.iipsen2server.models.UserModel;
-import main.java.nl.iipsen2server.dao.DatabaseUtilities;
 import main.java.nl.iipsen2server.dao.PermissionDAO;
-import main.java.nl.iipsen2server.dao.PreparedStatmentDatabaseUtilities;
 import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.AccountModel;
 
@@ -42,7 +37,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
  * @author Anthony Scheeres
  */
     public boolean giveRead2(String username) {
-        return permissionDatabase.giveRead2(username);
+        return permissionDatabase.giveRead(username);
     }
 
 
@@ -50,14 +45,14 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
      * @author Anthony Scheeres
      */
     public boolean giveWrite2(String user) {
-        return permissionDatabase.giveWrite2(user);
+        return permissionDatabase.giveWrite(user);
     }
 
     /**
      * @author Anthony Scheeres
      */
     public boolean giveDelete2(String user) {
-        return permissionDatabase.giveDelete2(user);
+        return permissionDatabase.giveDelete(user);
     }
 
     /**
@@ -216,6 +211,6 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
      * @author Jesse Poleij, Anthony Scheeres
      */
     public void handleRemoveUser(AccountModel u, String token) {
-        userDatabase.removeUserMode(u);
+        userDatabase.removeUserModel(u);
     }
 }
