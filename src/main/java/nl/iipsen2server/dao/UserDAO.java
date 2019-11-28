@@ -47,8 +47,10 @@ public class UserDAO {
         HashMap<String, List<String>> hashMap;
         List<String> array = new ArrayList<String>();
         array.add(u);
+
         try {
             hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
+            List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
             boolean hasPermission = hashMap.get("permission").contains(null);
             if (hasPermission) {
                 return false;

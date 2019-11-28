@@ -21,7 +21,7 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     public boolean giveRead(String username) {
-        String query2 = String.format("select permission from %s where username=?;", tableName);
+        String query2 = String.format("select has_read from %s where username=?;", tableName);
         Enum permission = Permission.READ;
         if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
             try {

@@ -99,7 +99,8 @@ class Iipsen2groep2serverApplication extends Application<Configuration> {
 	        	 MailController mailController = new MailController();
 	        	ServerModel serverModel = e.createNewServer();
 	        	r.createNewRest(8080, "localhost", serverModel);
-	    		f.createNewDatabase("postgres","",5432,"postgres", "localhost", e.createNewServer()); 
+	        	//TODO Change database name to postgres2.0
+	    		f.createNewDatabase("postgres","",5432,"postgres", "localhost", e.createNewServer());
 	    		
 	    		mailController.createNewMailModel("****@gmail.com", "******", serverModel);
 	    		// Write object as YAML file
