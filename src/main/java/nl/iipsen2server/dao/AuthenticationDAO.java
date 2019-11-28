@@ -108,7 +108,6 @@ public class AuthenticationDAO {
 	  */
 	public boolean hasEnumHandeler(long employeeId, String permission) {
 	  	String query2 = "select permission from app_user where user_id=?;";
-
 	  	return userDatabase.hasPermission( permission, Long.toString(employeeId), query2) ;
 }
 	public String userIDtoUsername(String userID){

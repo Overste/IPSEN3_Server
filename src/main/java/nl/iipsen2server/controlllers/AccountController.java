@@ -60,16 +60,25 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     /**
      * @author Anthony Scheeres
      */
-    private String createUserModel(UserModel userModel) throws Exception {
+    private String createUserModel(UserModel userModel) {
         UserController r = new UserController();
         HashMap<String, List<String>> hashmap;
         String result = null;
-        hashmap = userDatabase.getUsers();
+        try {
+			hashmap = userDatabase.getUsers();
+		
         List<String> usernames = hashmap.get("username");
         
         if (r.checkIfUsernameExist(usernames, userModel.getUsername()) != true) {
         	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
         }
+        
+        
+        } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         return result;
     }
 
@@ -98,17 +107,25 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
         if (!checkInputValide(u.getEmail(), u.getPassword())) {
             return fail;
         }
-        try {
+   
             String token = createUserModel(u);
-            if (!token.equals(null)) {
-                validateEmail(token, u.getEmail());
+            
+            
+        	new Thread(() -> {
+        		try {
+					validateEmail(token, u.getEmail());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}).start();
+            
+            
+            if (!token.equals(null)) {   
                 return token;
             }
             return fail;
-        } catch (Exception e2) {
-
-        }
-        return fail;
+      
     }
 
 
