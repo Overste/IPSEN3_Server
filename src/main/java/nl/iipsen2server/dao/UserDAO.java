@@ -59,7 +59,7 @@ public class UserDAO {
             }
             
             
-            if(permission1.contains("true")) {
+            if(permission1.contains("t")) {
             	return true;
             }
             
