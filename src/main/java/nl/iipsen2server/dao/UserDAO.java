@@ -100,7 +100,8 @@ public class UserDAO {
                         "has_read, " +
                         "has_write, " +
                         "has_delete, " +
-                        "is_super_user FROM %s;", tableName);
+                        "is_super_user FROM %s"
+                        + "order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         return d.connectThisDatabase2(databaseModel, query);
     }
