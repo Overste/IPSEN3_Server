@@ -33,8 +33,8 @@ public class ExperimentResource {
     @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(){
-        ExperimentDAO experimentDAO = new ExperimentDAO();
-        return experimentDAO.showExperiments();
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.showExperiments();
     }
 
 

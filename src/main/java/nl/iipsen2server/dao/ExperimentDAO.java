@@ -56,13 +56,13 @@ public class ExperimentDAO {
      */
     private String ConnectToDatabase(String url){
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        String e1 = null;
+        String returnQuery = null;
         try {
-            e1 = databaseUtilities.connectThisDatabase2(databaseModel, url);
+            returnQuery = databaseUtilities.connectThisDatabase2(databaseModel, url);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return e1;
+        return returnQuery;
     }
 
 

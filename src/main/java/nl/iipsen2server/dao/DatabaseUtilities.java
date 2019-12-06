@@ -70,7 +70,6 @@ public class DatabaseUtilities {
      */
     //use a database object to connect to database and perform a query
     public String connectThisDatabase2(DatabaseModel databaseModel, String query) throws Exception {
-
         return connectToDatabase(
         		databaseModel.getUsername(),
         		databaseModel.getPassword(),
