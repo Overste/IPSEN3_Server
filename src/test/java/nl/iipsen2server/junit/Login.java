@@ -1,4 +1,4 @@
-package main.java.nl.iipsen2server.junit;
+package test.java.nl.iipsen2server.junit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
