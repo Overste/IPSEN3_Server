@@ -27,14 +27,10 @@ public class UserController {
      * @throws Exception 
      */
 	public String handleShowUsers(String token) throws Exception {
-		
-		
-		
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
 		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString())){
 			return Response.fail.toString();
 		}
-		
 		return userDAO.showUsers();
 	}
 

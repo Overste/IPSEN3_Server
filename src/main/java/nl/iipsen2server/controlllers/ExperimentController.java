@@ -12,7 +12,6 @@ import main.java.nl.iipsen2server.models.Response;
  * @author Anthony Schuijlenburg, Jesse Poleij
  */
 public class ExperimentController {
-
     private AuthenticationController authenticationController = new AuthenticationController();
     private ExperimentDAO experimentDAO = new ExperimentDAO();
    private  AuthenticationDAO authenticationDAO = new AuthenticationDAO();
