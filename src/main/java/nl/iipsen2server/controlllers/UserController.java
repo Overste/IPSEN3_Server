@@ -6,7 +6,11 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import main.java.nl.iipsen2server.dao.AuthenticationDAO;
+import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.DataModel;
+import main.java.nl.iipsen2server.models.Permission;
+import main.java.nl.iipsen2server.models.Response;
 import main.java.nl.iipsen2server.models.UserModel;
 
 
@@ -14,7 +18,25 @@ import main.java.nl.iipsen2server.models.UserModel;
  * @author Anthony Scheeres
  */
 public class UserController {
-
+	   private  AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+		private TokenController tokenController = new TokenController();
+	private UserDAO userDAO = new UserDAO (); 
+	
+    /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+	public String handleShowUsers(String token) throws Exception {
+		
+		
+		
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString())){
+			return Response.fail.toString();
+		}
+		
+		return userDAO.showUsers();
+	}
 
     /**
      * @author Anthony Scheeres

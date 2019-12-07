@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import main.java.nl.iipsen2server.controlllers.AccountController;
 import main.java.nl.iipsen2server.controlllers.AuthenticationController;
 import main.java.nl.iipsen2server.controlllers.TokenController;
+import main.java.nl.iipsen2server.controlllers.UserController;
 import main.java.nl.iipsen2server.dao.UserDAO;
 import main.java.nl.iipsen2server.models.UserModel;
 import main.java.nl.iipsen2server.models.AccountModel;
@@ -25,6 +26,7 @@ import main.java.nl.iipsen2server.models.Permission;
 */
 @Path("/user")
 public class UserResource {
+	private UserController 	userController  = new 	UserController ();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
@@ -153,8 +155,7 @@ public class UserResource {
 	@Path("/{token}/showAllUsers")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String showUsers(@PathParam("token") String token) throws Exception {
-		UserDAO userDatabase = new UserDAO ();
-		return userDatabase.showUsers();
+		return userController.handleShowUsers(token);
 	}
 	
 	/**

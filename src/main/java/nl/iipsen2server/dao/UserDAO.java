@@ -5,6 +5,8 @@ import main.java.nl.iipsen2server.controlllers.UserController;
 import main.java.nl.iipsen2server.models.AccountModel;
 import main.java.nl.iipsen2server.models.DataModel;
 import main.java.nl.iipsen2server.models.DatabaseModel;
+import main.java.nl.iipsen2server.models.Permission;
+import main.java.nl.iipsen2server.models.Response;
 import main.java.nl.iipsen2server.models.UserModel;
 
 import java.util.ArrayList;
@@ -219,4 +221,6 @@ public class UserDAO {
         } catch (Exception e) {
         }
     }
+
+
 }

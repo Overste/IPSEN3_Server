@@ -1,5 +1,6 @@
 package main.java.nl.iipsen2server.controlllers;
 
+import main.java.nl.iipsen2server.dao.AuthenticationDAO;
 import main.java.nl.iipsen2server.dao.ExperimentDAO;
 import main.java.nl.iipsen2server.models.ExperimentModel;
 import main.java.nl.iipsen2server.models.ExperimentModel2;
@@ -13,9 +14,9 @@ import main.java.nl.iipsen2server.models.Response;
 public class ExperimentController {
 
     private AuthenticationController authenticationController = new AuthenticationController();
-    private TokenController tokenController = new TokenController();
     private ExperimentDAO experimentDAO = new ExperimentDAO();
-
+   private  AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+	private TokenController tokenController = new TokenController();
 
     /**
      * @author Jesse Poleij
@@ -44,6 +45,22 @@ public class ExperimentController {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showExperiment(id);
     }
+
+
+
+	/**
+	* @author Anthony Scheeres
+	*/
+	public String handleShowExperiments(String token) {
+		
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString())){
+			return Response.fail.toString();
+		}
+		
+		return showExperiments();
+		
+	}
 
 
 //TODO CYRIEL NEEDS TO CLEAN THIS UP
