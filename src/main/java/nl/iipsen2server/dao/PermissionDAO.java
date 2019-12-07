@@ -57,7 +57,7 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     public boolean giveDelete(String username) {
-        String query2 = String.format("select has_delete from app_user where username=?;", tableName);
+        String query2 = String.format("select has_delete from application_users where username=?;", tableName);
         Enum permission = Permission.DELETE;
         if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
             try {
@@ -77,7 +77,7 @@ public class PermissionDAO {
     private void givePermission(String u, Enum e) throws Exception {
         PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
         List<String> list = new ArrayList<String>();
-        String query2 = String.format("UPDATE application_user SET %s = true WHERE username = ?;", "has_"+e.toString().toLowerCase(),e);
+        String query2 = String.format("UPDATE application_users SET %s = true WHERE username = ?;", "has_"+e.toString().toLowerCase(),e);
         list.add(u);
         databaseController.connectDatabaseJson(databaseModel, query2, list, false);
     }
@@ -87,7 +87,7 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     public boolean hasEnumHandeler(long employeeId, String permission) {
-        String query2 = "select permission from app_user where user_id=?;";
+        String query2 = "select permission from application_users where user_id=?;";
         return userDatabase.hasPermission(permission, Long.toString(employeeId), query2);
     }
 }

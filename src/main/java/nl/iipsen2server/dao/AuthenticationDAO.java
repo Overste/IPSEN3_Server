@@ -12,7 +12,7 @@ import main.java.nl.iipsen2server.models.AccountModel;
 
 public class AuthenticationDAO {
 
-	 String tableName = "app_user";
+	 String tableName = "application_users";
 	 private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 	 AuthenticationController autenticationController = new AuthenticationController();
 	 private UserDAO userDatabase = new UserDAO();
@@ -28,7 +28,7 @@ public class AuthenticationDAO {
 	  *
 	  */
 	 public boolean giveRead2(AccountModel u) {
-		  String query2 = "select permission from app_user where username=?;";
+		  String query2 = "select permission from application_users where username=?;";
 		  Enum permission = Permission.READ;
 	 if (!userDatabase.hasPermission(permission.toString(), u.getUsername(), query2)) {
 		  try {
@@ -48,7 +48,7 @@ public class AuthenticationDAO {
 	 *
 	 */
 	 public boolean giveWrite2(AccountModel u) {
-		  String query2 = "select permission from app_user where username=?;";
+		  String query2 = "select permission from application_users where username=?;";
 		  Enum permission = Permission.WRITE;
 	 if (!userDatabase.hasPermission(permission.toString(), u.getUsername(), query2)) {
 		  try {
@@ -68,7 +68,7 @@ public class AuthenticationDAO {
 	  * @author Anthony Scheeres
 	  */
 	 public boolean giveDelete2(AccountModel accountModel) {
-		  String query2 = "select permission from app_user where username=?;";
+		  String query2 = "select permission from application_users where username=?;";
 		  Enum permission = Permission.DELETE;
 		  if (!userDatabase.hasPermission(Permission.DELETE.toString(), accountModel.getUsername(), query2)) {
 		 	  try {
@@ -94,7 +94,7 @@ public class AuthenticationDAO {
 	 private void givePermission(AccountModel u, Enum e) throws Exception {
 		  PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
 		  List < String > list = new ArrayList < String > ();
-		  String query2 = String.format("UPDATE app_user SET permission = array_append(permission,'%s') WHERE username = ?;", e);
+		  String query2 = String.format("UPDATE application_users SET permission = array_append(permission,'%s') WHERE username = ?;", e);
 		  list.add(u.getUsername());
 		  databaseController.connectDatabaseJson(databaseModel, query2, list, false);
 	 }
@@ -107,13 +107,21 @@ public class AuthenticationDAO {
 	  *  
 	  */
 	public boolean hasEnumHandeler(long employeeId, String permission) {
-	  	String query2 = "select has_"+permission+" from app_user where user_id=?;";
-	  	return userDatabase.hasPermission( permission, Long.toString(employeeId), query2) ;
+	  	String query2 = "select has_"+permission+" from application_users where user_id=?;";
+	  	boolean hasPermission = userDatabase.hasPermission( permission, Long.toString(employeeId), query2) ;
+	  	return hasPermission;
 }
+	
+	
+	 /**
+	  *
+	  * @author Anthony Scheeres
+	  *  
+	  */
 	public String userIDtoUsername(String userID){
 		PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
 		List < String > list = new ArrayList < String > ();
-		String query = "select username, user_id from app_user where user_id = ?";
+		String query = "select username, user_id from application_users where user_id = ?";
 		list.add(userID);
 
 		try {

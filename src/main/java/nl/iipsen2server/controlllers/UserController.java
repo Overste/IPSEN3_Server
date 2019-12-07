@@ -28,12 +28,34 @@ public class UserController {
      */
 	public String handleShowUsers(String token) throws Exception {
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString())){
+		AuthenticationController authenticationController = new AuthenticationController();
+		if (!authenticationController.hasSuperPermission(employeeId)) {
 			return Response.fail.toString();
 		}
 		return userDAO.showUsers();
+
 	}
 
+	
+	   /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+	public String giveResourceByPermission(boolean hasPermissionRead) throws Exception {
+		System.out.println("handleShowUsers "+hasPermissionRead);
+		if (hasPermissionRead){
+			   System.out.println("show users");
+		
+				return userDAO.showUsers();
+		}
+		   System.out.println("don't show users");
+		return Response.fail.toString();
+	}
+
+	
+	
+	
+	
     /**
      * @author Anthony Scheeres
      */
