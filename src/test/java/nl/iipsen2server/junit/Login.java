@@ -1,10 +1,10 @@
 package test.java.nl.iipsen2server.junit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
 
 import main.java.nl.iipsen2server.controlllers.AccountController;
+import org.junit.jupiter.api.Test;
 
 class Login {
 

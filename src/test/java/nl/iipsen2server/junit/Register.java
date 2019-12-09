@@ -1,9 +1,10 @@
 package test.java.nl.iipsen2server.junit;
 
-import org.junit.Test;
 
 import main.java.nl.iipsen2server.controlllers.AccountController;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Register {
 
