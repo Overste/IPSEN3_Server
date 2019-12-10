@@ -55,7 +55,7 @@ public class UserDAO {
             List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
             System.out.println(permission1);
             if(permission1.contains("t")) {
-            //	   System.out.println("return true");
+               System.out.println("return true");
             	return true;
             }
             
@@ -98,9 +98,11 @@ public class UserDAO {
                         "has_write, " +
                         "has_delete, " +
                         "is_super_user FROM %s"
-                        + "order by username;", tableName);
+                        + " order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
-        return d.connectThisDatabase2(databaseModel, query);
+        String json = d.connectThisDatabase2(databaseModel, query);
+        System.out.println(json);
+        return json;
     }
 
 

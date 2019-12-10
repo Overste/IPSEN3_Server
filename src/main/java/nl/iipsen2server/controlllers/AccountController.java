@@ -225,8 +225,9 @@ private String askNewTokenForAccount(int id) {
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public String validateToken(String token) {
+    public String validateToken(String token) throws Exception {
         MailController mailController = new MailController();
         HashMap<String, List<String>> data = mailController.getTokens();
         String domain = "OM.NL";

@@ -33,36 +33,39 @@ public class UserResource {
 
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/	
 	@POST
 	@Path("/{token}/giveRead")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveRead(@PathParam("token") String token, AccountModel u)  {
+	public String giveRead(@PathParam("token") String token, AccountModel u) throws Exception  {
 		return authenticationController.handleGiveRead(u.getUsername(), token);
 	}
 	
 	
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/
 	@POST
 	@Path("/{token}/giveWrite")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveWrite(@PathParam("token") String token,AccountModel u)  {
+	public String giveWrite(@PathParam("token") String token,AccountModel u) throws Exception  {
 		return authenticationController.handleGiveWrite(u.getUsername(), token);
 	}
 	
 	
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/
 	@POST
 	@Path("/{token}/giveDelete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveDelete(@PathParam("token") String token,AccountModel u)  {
+	public String giveDelete(@PathParam("token") String token,AccountModel u) throws Exception  {
 		TokenController tokenController = new TokenController();
-		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-		return authenticationController.handleGiveDelete(u.getUsername(), employeeId);
+	
+		return authenticationController.handleGiveDelete(u.getUsername(), token);
 	}
 	
 
@@ -125,10 +128,11 @@ public class UserResource {
 	/**
  	* @author Anthony Scheeres
  	* @return
+	 * @throws Exception 
 	*/
 	@GET
 	@Path("/{token}/token")
-	public String validateToken(@PathParam("token") String token){
+	public String validateToken(@PathParam("token") String token) throws Exception{
 		return accountController.validateToken(token);
 	}
 

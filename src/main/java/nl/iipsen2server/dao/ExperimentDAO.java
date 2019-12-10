@@ -41,7 +41,10 @@ public class ExperimentDAO {
     	
     	
         String query = String.format("SELECT * FROM %s;", tableName);
-        return ConnectToDatabase(query);
+        
+        String json = ConnectToDatabase(query);
+        System.out.println(json);
+        return json;
     }
 
 

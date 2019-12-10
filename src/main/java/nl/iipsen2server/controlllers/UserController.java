@@ -29,9 +29,11 @@ public class UserController {
 	public String handleShowUsers(String token) throws Exception {
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
 		AuthenticationController authenticationController = new AuthenticationController();
-		if (!authenticationController.hasSuperPermission(employeeId)) {
+		if (!authenticationController.hasReadPermission(employeeId)) {
+			System.out.println("fail");
 			return Response.fail.toString();
 		}
+		System.out.println("success");
 		return userDAO.showUsers();
 
 	}

@@ -53,11 +53,15 @@ public class ExperimentController {
 	public String handleShowExperiments(String token) {
 		
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString())){
+		boolean hasPermission = authenticationController.hasReadPermission(employeeId);
+		
+		
+		if (!hasPermission ) {
+			System.out.println("fail");
 			return Response.fail.toString();
 		}
-		
-		return showExperiments();
+		String json = showExperiments();
+		return json;
 		
 	}
 
