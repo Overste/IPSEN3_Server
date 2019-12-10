@@ -150,17 +150,19 @@ public class AuthenticationController {
 */
 public boolean validate(String token, String permission) {
 	TokenController tokenController = new TokenController();
-	AuthenticationController authenticationController = new AuthenticationController();
 	AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 	long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
 	return authenticationDAO.hasEnumHandeler(employeeId, permission);
 }
-/**
-*
-* @author Jesse Poleij
-*
-*
-*/
+
+
+	
+	/**
+	*
+	* @author Jesse Poleij
+	*
+	*
+	*/
 	public void userIDtoUsername(String userID) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 

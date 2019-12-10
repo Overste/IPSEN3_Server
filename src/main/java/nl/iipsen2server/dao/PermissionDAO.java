@@ -17,57 +17,32 @@ public class PermissionDAO {
 
 
     /**
-     * @return
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public boolean giveRead(String username) {
-        String query2 = String.format("select has_read from %s where username=?;", tableName);
-        Enum permission = Permission.READ;
-        if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
-            try {
-                givePermission(username, permission);
-                return true;
-            } catch (Exception e) {
-            }
-        }
-        return false;
+    public void giveRead(String username) throws Exception {
+    	   Enum permission = Permission.READ;
+           givePermission(username, permission);
     }
 
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public boolean giveWrite(String username) {
-        String query2 = String.format("select has_write from %s where username=?;", tableName);
+    public void giveWrite(String username) throws Exception {
         Enum permission = Permission.WRITE;
-        if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
-            try {
-                givePermission(username, permission);
-                return true;
-            } catch (Exception e) {
-
-            }
-
-        }
-        return false;
+        givePermission(username, permission);
     }
-
-
+    
+    
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public boolean giveDelete(String username) {
-        String query2 = String.format("select has_delete from application_users where username=?;", tableName);
-        Enum permission = Permission.DELETE;
-        if (!userDatabase.hasPermission(permission.toString(), username, query2)) {
-            try {
-                givePermission(username, permission);
-                return true;
-            } catch (Exception e) {
-            }
-
-        }
-        return false;
+    public void giveDelete(String username) throws Exception {
+    	   Enum permission = Permission.DELETE;
+           givePermission(username, permission);
     }
 
 
