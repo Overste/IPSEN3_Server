@@ -136,7 +136,6 @@ public class UserResource {
 		return accountController.validateToken(token);
 	}
 
-
 	/**
 	*
 	* @author Anthony Scheeres
