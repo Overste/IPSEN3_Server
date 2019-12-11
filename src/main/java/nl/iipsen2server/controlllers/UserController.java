@@ -43,31 +43,7 @@ public class UserController {
     /**
      * @author Anthony Scheeres
      */
-    public UserModel createNewUserModel(@NotNull String username, @NotNull String password) {
-        ApplicationController applicationController = new ApplicationController();
-        UserModel userModel = createJUser(username, password, createUserId(DataModel.getApplicationModel().getUsers()), new ArrayList<Enum>());
-        applicationController.addUser(userModel, DataModel.getApplicationModel());
-        return userModel;
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    private long createUserId(List<UserModel> list) {
-        long id = 1;
-        for (UserModel databaseModel : list) {
-            if (id <= databaseModel.getId()) {
-                id = databaseModel.getId() + 1;
-            }
-        }
-        return id;
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public long createUserId2(List<String> list) {
+    public long createUserId(List<String> list) {
         if (list == null) {
             return 1;
         }
@@ -94,9 +70,6 @@ public class UserController {
 
                 return true;
             }
-
-        //    System.out.println(name);
-
         }
         return false;
     }

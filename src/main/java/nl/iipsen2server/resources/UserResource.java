@@ -2,6 +2,7 @@ package main.java.nl.iipsen2server.resources;
 
 
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,15 +20,14 @@ import main.java.nl.iipsen2server.models.UserModel;
 import main.java.nl.iipsen2server.models.AccountModel;
 import main.java.nl.iipsen2server.models.Permission;
 
-
 /**
 * @author Anthony Scheeres
 */
 @Path("/user")
 public class UserResource {
-	private AccountController accountController = new AccountController();
-	private AuthenticationController authenticationController = new AuthenticationController();
 
+	private final AccountController accountController = new AccountController();
+	private final AuthenticationController authenticationController = new AuthenticationController();
 
 	/**
 	* @author Anthony Scheeres
@@ -165,7 +165,7 @@ public class UserResource {
 	@GET
 	@Path("/{token}/{id}/showSingleUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUser(@PathParam("token") String token, @PathParam("id") int id){
+	public String showUser(@PathParam("token") String token, @PathParam("id") int id) {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}

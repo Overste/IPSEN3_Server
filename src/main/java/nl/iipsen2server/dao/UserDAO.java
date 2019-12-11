@@ -100,7 +100,7 @@ public class UserDAO {
                         "has_read, " +
                         "has_write, " +
                         "has_delete, " +
-                        "is_super_user FROM %s"
+                        "user_role FROM %s"
                         + " order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         return d.connectThisDatabase2(databaseModel, query);
@@ -117,7 +117,7 @@ public class UserDAO {
                 "has_read, " +
                 "has_write, " +
                 "has_delete, " +
-                "is_super_user, " +
+                "user_role, " +
                 "FROM %s" +
                 "WHERE user_id = %d;", tableName, user_id);
         List<String> usernameArray = new ArrayList<String>();
@@ -143,7 +143,7 @@ public class UserDAO {
                         "has_read, " +
                         "has_write, " +
                         "has_delete, " +
-                        "is_super_user, " +
+                        "user_role, " +
                         "token FROM %s ORDER BY user_id;", tableName);
         return d.connectThisDatabase(databaseModel, query);
     }
@@ -166,7 +166,7 @@ public class UserDAO {
         PreparedStatmentDatabaseUtilities pUtilites = new PreparedStatmentDatabaseUtilities();
         MailController mailController = new MailController();
         UserController userController = new UserController();
-        long id = userController.createUserId2(e1.get("user_id"));
+        long id = userController.createUserId(e1.get("user_id"));
         String query2 = String.format("INSERT INTO %s (username, password, user_id, email, token) VALUES (" +
                 "?," +
                 "?," +
