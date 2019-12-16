@@ -1,16 +1,16 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 
-import main.java.nl.iipsen3server.dao.DatabaseUtilities;
-import main.java.nl.iipsen3server.dao.SendEmailSMTP;
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.DatabaseModel;
-import main.java.nl.iipsen3server.models.MailModel;
-import main.java.nl.iipsen3server.models.ServerModel;
+import nl.ipsen3server.dao.DatabaseUtilities;
+import nl.ipsen3server.dao.SendEmailSMTP;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.MailModel;
+import nl.ipsen3server.models.ServerModel;
 /**
  * @author Anthony Scheeres
  */

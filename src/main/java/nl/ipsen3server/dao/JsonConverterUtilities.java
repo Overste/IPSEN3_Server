@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
 
 import java.io.IOException;
@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import main.java.nl.iipsen3server.models.ApplicationModel;
-import main.java.nl.iipsen3server.models.RefrigeratorModel;
-import main.java.nl.iipsen3server.models.UserModel;
-import main.java.nl.iipsen3server.models.DashboardModel;
+import nl.ipsen3server.models.ApplicationModel;
+import nl.ipsen3server.models.RefrigeratorModel;
+import nl.ipsen3server.models.UserModel;
+import nl.ipsen3server.models.DashboardModel;
 
 /**
  * @author Anthony Scheeres

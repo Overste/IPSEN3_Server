@@ -1,16 +1,16 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.util.HashMap;
 import java.util.List;
 
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.Response;
-import main.java.nl.iipsen3server.models.RestApiModel;
-import main.java.nl.iipsen3server.models.User;
-import main.java.nl.iipsen3server.models.UserModel;
-import main.java.nl.iipsen3server.dao.PermissionDAO;
-import main.java.nl.iipsen3server.dao.UserDAO;
-import main.java.nl.iipsen3server.models.AccountModel;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.RestApiModel;
+import nl.ipsen3server.models.User;
+import nl.ipsen3server.models.UserModel;
+import nl.ipsen3server.dao.PermissionDAO;
+import nl.ipsen3server.dao.UserDAO;
+import nl.ipsen3server.models.AccountModel;
 
 
 /**

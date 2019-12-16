@@ -1,13 +1,13 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.RestApiModel;
-import main.java.nl.iipsen3server.models.ServerModel;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.RestApiModel;
+import nl.ipsen3server.models.ServerModel;
 
 /**
  * @author Anthony Scheeres

@@ -1,12 +1,12 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 
-import main.java.nl.iipsen3server.dao.AuthenticationDAO;
+import nl.ipsen3server.dao.AuthenticationDAO;
 
-import main.java.nl.iipsen3server.models.LogModel;
-import main.java.nl.iipsen3server.models.Permission;
-import main.java.nl.iipsen3server.models.Response;
-import main.java.nl.iipsen3server.models.UserModel;
+import nl.ipsen3server.models.LogModel;
+import nl.ipsen3server.models.Permission;
+import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.UserModel;
 
 
 /**

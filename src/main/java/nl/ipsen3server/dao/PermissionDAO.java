@@ -1,9 +1,9 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
-import main.java.nl.iipsen3server.controlllers.AuthenticationController;
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.DatabaseModel;
-import main.java.nl.iipsen3server.models.Permission;
+import nl.ipsen3server.controlllers.AuthenticationController;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.Permission;
 
 import java.util.ArrayList;
 import java.util.List;

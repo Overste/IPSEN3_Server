@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.io.BufferedWriter;
 import java.io.File;

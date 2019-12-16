@@ -1,7 +1,7 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
 
-import main.java.nl.iipsen3server.models.MyAuthenticator;
+import nl.ipsen3server.models.MyAuthenticator;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.Session;

@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.models;
+package nl.ipsen3server.models;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

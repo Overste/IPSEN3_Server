@@ -1,8 +1,8 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
-import main.java.nl.iipsen3server.dao.ExperimentDAO;
-import main.java.nl.iipsen3server.models.ExperimentModel;
-import main.java.nl.iipsen3server.models.Permission;
+import nl.ipsen3server.dao.ExperimentDAO;
+import nl.ipsen3server.models.ExperimentModel;
+import nl.ipsen3server.models.Permission;
 
 
 /**

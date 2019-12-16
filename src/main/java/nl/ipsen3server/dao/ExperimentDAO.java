@@ -1,9 +1,9 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.DatabaseModel;
-import main.java.nl.iipsen3server.models.ExperimentModel;
-import main.java.nl.iipsen3server.models.ExperimentModel2;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.ExperimentModel;
+import nl.ipsen3server.models.ExperimentModel2;
 
 import java.util.ArrayList;
 import java.util.List;

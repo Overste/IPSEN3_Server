@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import main.java.nl.iipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {
 
     /**
      * @author Anthony Scheeres
      */
-    // potenially returns all data from an table added an methode that returns all column values in an 2d array!!
+    // potentially returns all data from an table added an method that returns all column values in an 2d array!!
     public HashMap < String, List < String >> getTableContents2(ResultSet resultSet) {
         HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
         List < List < String >> array = new ArrayList < List < String >> ();

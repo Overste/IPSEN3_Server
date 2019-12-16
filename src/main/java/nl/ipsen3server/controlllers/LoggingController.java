@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.postgresql.util.PSQLException;
 
-import main.java.nl.iipsen3server.dao.DatabaseUtilities;
-import main.java.nl.iipsen3server.dao.PreparedStatmentDatabaseUtilities;
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.DatabaseModel;
-import main.java.nl.iipsen3server.models.LogModel;
+import nl.ipsen3server.dao.DatabaseUtilities;
+import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.LogModel;
 
 public class LoggingController {
 

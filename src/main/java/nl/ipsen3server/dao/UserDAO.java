@@ -1,11 +1,11 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
-import main.java.nl.iipsen3server.controlllers.MailController;
-import main.java.nl.iipsen3server.controlllers.UserController;
-import main.java.nl.iipsen3server.models.AccountModel;
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.DatabaseModel;
-import main.java.nl.iipsen3server.models.UserModel;
+import nl.ipsen3server.controlllers.MailController;
+import nl.ipsen3server.controlllers.UserController;
+import nl.ipsen3server.models.AccountModel;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 
 
@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 
 
 
-import main.java.nl.iipsen3server.models.ApplicationModel;
-import main.java.nl.iipsen3server.models.DataModel;
-import main.java.nl.iipsen3server.models.LogModel;
-import main.java.nl.iipsen3server.models.OrganisationModel;
-import main.java.nl.iipsen3server.models.ServerModel;
-import main.java.nl.iipsen3server.models.UserModel;
+import nl.ipsen3server.models.ApplicationModel;
+import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.LogModel;
+import nl.ipsen3server.models.OrganisationModel;
+import nl.ipsen3server.models.ServerModel;
+import nl.ipsen3server.models.UserModel;
 
 
 

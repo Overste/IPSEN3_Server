@@ -1,6 +1,6 @@
-package main.java.nl.iipsen3server.dao;
+package nl.ipsen3server.dao;
 
-import main.java.nl.iipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.DatabaseModel;
 
 import java.sql.*;
 import java.util.HashMap;

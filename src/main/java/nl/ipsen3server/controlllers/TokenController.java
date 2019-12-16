@@ -1,10 +1,10 @@
-package main.java.nl.iipsen3server.controlllers;
+package nl.ipsen3server.controlllers;
 
 import java.util.HashMap;
 import java.util.List;
 
-import main.java.nl.iipsen3server.dao.UserDAO;
-import main.java.nl.iipsen3server.models.Response;
+import nl.ipsen3server.dao.UserDAO;
+import nl.ipsen3server.models.Response;
 
 public class TokenController {
 	 
