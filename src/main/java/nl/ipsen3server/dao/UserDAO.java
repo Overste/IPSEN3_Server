@@ -113,12 +113,10 @@ public class UserDAO {
         String query = String.format("SELECT username, " +
                 "has_read, " +
                 "has_write, " +
-                "has_delete, " +
-                "is_super_user, " +
+                "has_delete " +
                 "FROM %s" +
                 "WHERE user_id = %d;", tableName, user_id);
         List<String> usernameArray = new ArrayList<String>();
-//        usernameArray.add(accountModel.getUsername());
         try {
             result = f.connectDatabaseJson(databaseModel, query, usernameArray, false);
         } catch (Exception e) {
@@ -140,7 +138,6 @@ public class UserDAO {
                         "has_read, " +
                         "has_write, " +
                         "has_delete, " +
-                        "is_super_user, " +
                         "token FROM %s ORDER BY user_id;", tableName);
         return d.connectThisDatabase(databaseModel, query);
     }
