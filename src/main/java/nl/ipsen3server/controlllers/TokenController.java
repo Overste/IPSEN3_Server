@@ -1,86 +1,4 @@
-<<<<<<< HEAD:src/main/java/nl/iipsen2server/controlllers/TokenController.java
-package main.java.nl.iipsen2server.controlllers;
 
-import java.util.HashMap;
-import java.util.List;
-
-import main.java.nl.iipsen2server.dao.DatabaseUtilities;
-import main.java.nl.iipsen2server.dao.UserDAO;
-import main.java.nl.iipsen2server.models.DataModel;
-import main.java.nl.iipsen2server.models.DatabaseModel;
-import main.java.nl.iipsen2server.models.Response;
-
-public class TokenController {
-	 
-		/**
-		*
-		* @author Anthony Scheeres
-		 *  
-		* get tokens from database
-		*
-		*/
-		private HashMap<String, List<String>> getTokens() throws Exception {
-		 UserDAO userDatabase = new UserDAO();
-		 return userDatabase.getTokens();
-	 }
-	 
-	 
-	 private boolean isStringEmty(String token){
-		  if (token.length()!=0) {
-			  return true;
-		  }
-		  return false;
-	 }
-	 
-	 
-	 
-		/**
-		*
-		* @author Anthony Scheeres
-		 *  
-		* 
-		*looks if token exist in hashmap
-		*/
-		private String findValideTokenInHashmap(HashMap<String, List<String>> hashmap, String token) {
-		 //System.out.println(hashmap.get("token").get(0));
-		 String result = null ;
-		 
-		 
-		   for (int index = 0; index <hashmap.get("token").size(); index++) {
-			  String myToken =  hashmap.get("token").get(index);
-			   if (isStringEmty(myToken)) {
-				   if (myToken.equals(token)) {
-					   result = hashmap.get("user_id").get(index);; 
-				   }
-			   }
-			   }
-		   return result;
-	 }
-	
-	 
-	 
-	 /**
-	 *
-	 * @author Anthony Scheeres
-	 *  
-	 * 
-	 *
-	 */
-	 public String tokenToUserId(String token) {
-		  HashMap < String, List < String >> hashmap = null;
-		  try {
-			  hashmap = getTokens();
-		   return findValideTokenInHashmap( hashmap, token);
-		   }
-		   catch (Exception e) {
-		   e.printStackTrace();
-		  }
-		  return Response.fail.toString();
-	 }
-	 
-	 
-}
-=======
 package nl.ipsen3server.controlllers;
 
 import java.util.HashMap;
@@ -88,7 +6,6 @@ import java.util.List;
 
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Response;
-
 public class TokenController {
 	 
 		/**
@@ -159,4 +76,3 @@ public class TokenController {
 	 
 	 
 }
->>>>>>> master:src/main/java/nl/ipsen3server/controlllers/TokenController.java
