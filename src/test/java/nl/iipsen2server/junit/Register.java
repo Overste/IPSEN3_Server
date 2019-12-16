@@ -1,7 +1,7 @@
 package test.java.nl.iipsen2server.junit;
 
 
-import main.java.nl.iipsen2server.controlllers.AccountController;
+import nl.ipsen3server.controlllers.AccountController;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
