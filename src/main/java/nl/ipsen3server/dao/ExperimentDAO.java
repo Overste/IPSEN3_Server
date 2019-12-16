@@ -37,8 +37,14 @@ public class ExperimentDAO {
      * @author AnthonySchuijleburg
      */
     public String showExperiments(){
+    	
+    	
+    	
         String query = String.format("SELECT * FROM %s;", tableName);
-        return ConnectToDatabase(query);
+        
+        String json = ConnectToDatabase(query);
+        System.out.println(json);
+        return json;
     }
 
 

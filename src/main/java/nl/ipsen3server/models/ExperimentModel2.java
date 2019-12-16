@@ -1,3 +1,4 @@
+
 package nl.ipsen3server.models;
 
 import java.awt.image.BufferedImage;
@@ -21,27 +22,32 @@ public class ExperimentModel2 {
     private String inovationCost;
     private String moneySource;
 
+    
+    
+    public ExperimentModel2(@Pattern(regexp = "^[0-9]*$") long id, @NotNull String name,String experimentleaders,
+            String description, String organisations, String businessOwners, Enum status, String inovationCost,
+            String moneySource) {
+super();
+this.id = id;
+this.name = name;
+this.description = description;
+//this.fasen = fasen;
+//this.img = img;
+this.status = status;
+this.experimentleaders = experimentleaders;
+//this.experimentTeam = experimentTeam;
+Organisations = organisations;
+this.businessOwners = businessOwners;
+this.inovationCost = inovationCost;
+this.moneySource = moneySource;
+}
+
+    
+    
     public ExperimentModel2() {
 
     }
 
-    public ExperimentModel2(@Pattern(regexp = "^[0-9]*$") long id, @NotNull String name,String experimentleaders,
-                        String description, String organisations, String businessOwners, Enum status, String inovationCost,
-                        String moneySource) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.description = description;
-//		this.fasen = fasen;
-//		this.img = img;
-        this.status = status;
-        this.experimentleaders = experimentleaders;
-//		this.experimentTeam = experimentTeam;
-        Organisations = organisations;
-        this.businessOwners = businessOwners;
-        this.inovationCost = inovationCost;
-        this.moneySource = moneySource;
-    }
 
     public long getId() {
         return id;

@@ -1,19 +1,20 @@
 package nl.ipsen3server.controlllers;
 
+import nl.ipsen3server.dao.AuthenticationDAO;
 import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
+import nl.ipsen3server.models.Response;
 
 
 /**
  * @author Anthony Schuijlenburg, Jesse Poleij
  */
 public class ExperimentController {
-
     private AuthenticationController authenticationController = new AuthenticationController();
-    private TokenController tokenController = new TokenController();
     private ExperimentDAO experimentDAO = new ExperimentDAO();
-
+   private  AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+	private TokenController tokenController = new TokenController();
 
     /**
      * @author Jesse Poleij
@@ -42,6 +43,26 @@ public class ExperimentController {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showExperiment(id);
     }
+
+
+
+	/**
+	* @author Anthony Scheeres
+	*/
+	public String handleShowExperiments(String token) {
+		
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		boolean hasPermission = authenticationController.hasReadPermission(employeeId);
+		
+		
+		if (!hasPermission ) {
+			System.out.println("fail");
+			return Response.fail.toString();
+		}
+		String json = showExperiments();
+		return json;
+		
+	}
 
 
 //TODO CYRIEL NEEDS TO CLEAN THIS UP

@@ -1,3 +1,4 @@
+
 package nl.ipsen3server.models;
 
 public enum Response {

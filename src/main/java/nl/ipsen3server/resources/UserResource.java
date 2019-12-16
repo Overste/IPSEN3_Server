@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import nl.ipsen3server.controlllers.AccountController;
 import nl.ipsen3server.controlllers.AuthenticationController;
 import nl.ipsen3server.controlllers.TokenController;
+import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.models.AccountModel;
@@ -25,42 +26,46 @@ import nl.ipsen3server.models.Permission;
 */
 @Path("/user")
 public class UserResource {
+	private UserController 	userController  = new 	UserController ();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
 
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/	
 	@POST
 	@Path("/{token}/giveRead")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveRead(@PathParam("token") String token, AccountModel u)  {
+	public String giveRead(@PathParam("token") String token, AccountModel u) throws Exception  {
 		return authenticationController.handleGiveRead(u.getUsername(), token);
 	}
 	
 	
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/
 	@POST
 	@Path("/{token}/giveWrite")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveWrite(@PathParam("token") String token,AccountModel u)  {
+	public String giveWrite(@PathParam("token") String token,AccountModel u) throws Exception  {
 		return authenticationController.handleGiveWrite(u.getUsername(), token);
 	}
 	
 	
 	/**
 	* @author Anthony Scheeres
+	 * @throws Exception 
 	*/
 	@POST
 	@Path("/{token}/giveDelete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveDelete(@PathParam("token") String token,AccountModel u)  {
+	public String giveDelete(@PathParam("token") String token,AccountModel u) throws Exception  {
 		TokenController tokenController = new TokenController();
-		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-		return authenticationController.handleGiveDelete(u.getUsername(), employeeId);
+	
+		return authenticationController.handleGiveDelete(u.getUsername(), token);
 	}
 	
 
@@ -123,13 +128,13 @@ public class UserResource {
 	/**
  	* @author Anthony Scheeres
  	* @return
+	 * @throws Exception 
 	*/
 	@GET
 	@Path("/{token}/token")
-	public String validateToken(@PathParam("token") String token){
+	public String validateToken(@PathParam("token") String token) throws Exception{
 		return accountController.validateToken(token);
 	}
-
 
 	/**
 	*
@@ -153,8 +158,7 @@ public class UserResource {
 	@Path("/{token}/showAllUsers")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String showUsers(@PathParam("token") String token) throws Exception {
-		UserDAO userDatabase = new UserDAO ();
-		return userDatabase.showUsers();
+		return userController.handleShowUsers(token);
 	}
 	
 	/**
@@ -169,4 +173,6 @@ public class UserResource {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}
+
+
 }	

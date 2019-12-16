@@ -17,7 +17,7 @@ public class DatabaseUtilities {
     /**
      * @author Anthony Scheeres
      */
-    // potentially returns all data from an table added an method that returns all column values in an 2d array!!
+    // potenially returns all data from an table added an methode that returns all column values in an 2d array!!
     public HashMap < String, List < String >> getTableContents2(ResultSet resultSet) {
         HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
         List < List < String >> array = new ArrayList < List < String >> ();

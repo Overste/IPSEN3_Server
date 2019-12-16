@@ -1,3 +1,4 @@
+
 package nl.ipsen3server.controlllers;
 
 
@@ -6,16 +7,56 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import nl.ipsen3server.dao.AuthenticationDAO;
+import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.DataModel;
+import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.UserModel;
-
 
 /**
  * @author Anthony Scheeres
  */
 public class UserController {
+	   private  AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+		private TokenController tokenController = new TokenController();
+	private UserDAO userDAO = new UserDAO (); 
+	
+    /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+	public String handleShowUsers(String token) throws Exception {
+		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		AuthenticationController authenticationController = new AuthenticationController();
+		if (!authenticationController.hasReadPermission(employeeId)) {
+			System.out.println("fail");
+			return Response.fail.toString();
+		}
+		System.out.println("success");
+		return userDAO.showUsers();
 
+	}
 
+	
+	   /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+	public String giveResourceByPermission(boolean hasPermissionRead) throws Exception {
+		System.out.println("handleShowUsers "+hasPermissionRead);
+		if (hasPermissionRead){
+			   System.out.println("show users");
+		
+				return userDAO.showUsers();
+		}
+		   System.out.println("don't show users");
+		return Response.fail.toString();
+	}
+
+	
+	
+	
+	
     /**
      * @author Anthony Scheeres
      */

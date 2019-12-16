@@ -51,21 +51,16 @@ public class UserDAO {
         try {
             hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
             List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
-            
-            
-            boolean hasPermission = permission1.contains(null);
-            if (hasPermission) {
-                return false;
-            }
-            
-            
+            System.out.println(permission1);
             if(permission1.contains("t")) {
+               System.out.println("return true");
             	return true;
             }
             
           
             
         } catch (Exception e) {
+        	e.printStackTrace();
         }
         return false;
     }
@@ -103,7 +98,9 @@ public class UserDAO {
                         "is_super_user FROM %s"
                         + " order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
-        return d.connectThisDatabase2(databaseModel, query);
+        String json = d.connectThisDatabase2(databaseModel, query);
+        System.out.println(json);
+        return json;
     }
 
 
@@ -192,7 +189,7 @@ public class UserDAO {
     public void removeUserModel2(AccountModel u) {
         PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
         String query =
-                "DELETE FROM app_user\r\n" +
+                "DELETE FROM application_users\r\n" +
                         "WHERE username = ? ;";
         List<String> f1 = new ArrayList<String>();
         f1.add(u.getUsername());
@@ -219,4 +216,5 @@ public class UserDAO {
         } catch (Exception e) {
         }
     }
+
 }

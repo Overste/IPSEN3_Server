@@ -1,3 +1,4 @@
+
 package nl.ipsen3server.resources;
 
 import nl.ipsen3server.controlllers.ExperimentController;
@@ -30,11 +31,12 @@ public class ExperimentResource {
 	 * @author AnthonySchuijlenburg
 	 */
     @GET
-    @Path("/showAllExperiments")
+    @Path("{token}/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showExperiments(){
-        ExperimentController experimentController = new ExperimentController();
-        return experimentController.showExperiments();
+    public String showExperiments(@PathParam("token") String token){
+    	
+        ExperimentController experimentDAO = new ExperimentController();
+        return experimentDAO.handleShowExperiments(token);
     }
 
 

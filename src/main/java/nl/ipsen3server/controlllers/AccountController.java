@@ -23,35 +23,32 @@ private UserDAO userDatabase = new UserDAO();
 private PermissionDAO permissionDatabase = new PermissionDAO();
 
 
-/**
-*
-* @author Anthony Scheeres
 
-*
-*
-*/
 
 /**
  * @return
  * @author Anthony Scheeres
+ * @throws Exception 
  */
-    public boolean giveRead2(String username) {
-        return permissionDatabase.giveRead(username);
+    public void giveRead2(String username) throws Exception {
+        permissionDatabase.giveRead(username);
     }
 
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public boolean giveWrite2(String user) {
-        return permissionDatabase.giveWrite(user);
+    public void giveWrite2(String user) throws Exception {
+        permissionDatabase.giveWrite(user);
     }
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public boolean giveDelete2(String user) {
-        return permissionDatabase.giveDelete(user);
+    public void giveDelete2(String user) throws Exception {
+        permissionDatabase.giveDelete(user);
     }
 
     /**
@@ -225,8 +222,9 @@ private String askNewTokenForAccount(int id) {
 
     /**
      * @author Anthony Scheeres
+     * @throws Exception 
      */
-    public String validateToken(String token) {
+    public String validateToken(String token) throws Exception {
         MailController mailController = new MailController();
         HashMap<String, List<String>> data = mailController.getTokens();
         String domain = "OM.NL";
