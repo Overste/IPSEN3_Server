@@ -94,8 +94,8 @@ public class UserDAO {
                 "SELECT username, " +
                         "has_read, " +
                         "has_write, " +
-                        "has_delete, " +
-                        "is_super_user FROM %s"
+                        "has_delete " +
+                        " FROM %s"
                         + " order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         String json = d.connectThisDatabase2(databaseModel, query);
