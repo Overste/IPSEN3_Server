@@ -91,12 +91,7 @@ public class UserDAO {
      */
     public String showUsers() throws Exception {
         String query = String.format(
-                "SELECT username, " +
-                        "has_read, " +
-                        "has_write, " +
-                        "has_delete " +
-                        " FROM %s"
-                        + " order by username;", tableName);
+                "SELECT * FROM %s order by username;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         String json = d.connectThisDatabase2(databaseModel, query);
         System.out.println(json);
@@ -110,11 +105,7 @@ public class UserDAO {
     public String showOneUserPermission(int user_id) {
         PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
         String result = null;
-        String query = String.format("SELECT username, " +
-                "has_read, " +
-                "has_write, " +
-                "has_delete " +
-                "FROM %s" +
+        String query = String.format("SELECT * FROM %s" +
                 "WHERE user_id = %d;", tableName, user_id);
         List<String> usernameArray = new ArrayList<String>();
         try {
