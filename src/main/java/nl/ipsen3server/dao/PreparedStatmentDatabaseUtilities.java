@@ -168,7 +168,7 @@ public class PreparedStatmentDatabaseUtilities {
             System.out.println(pstmt);
             ResultSet r = pstmt.executeQuery();
             DatabaseUtilities g = new DatabaseUtilities();
-            HashMap < String, List < String >> hashmap = g.getTableContents2(r);
+            HashMap < String, List < String >> hashmap = g.getTableContents(r);
             connection.close();
             result = hashmap;
         } catch (SQLException err) {
