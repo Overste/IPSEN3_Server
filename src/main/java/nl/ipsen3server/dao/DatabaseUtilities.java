@@ -7,6 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,10 +16,107 @@ import nl.ipsen3server.models.DatabaseModel;
 public class DatabaseUtilities {
 
     /**
+     * Call this method to execute a query. This method accepts a query type and calls for the desired method.
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @param databaseModel DatabaseModel
+     * @param query STRING query ("SELECT * FROM tablename")
+     * @param queryType string SELECT, UPDATE, INSERT, DELETE
+     * @return returns a hashmap a from database
+     */
+    public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType){
+
+        String result = null;
+        List<String> updateQueries = new ArrayList<>(Arrays.asList("INSERT", "UPDATE", "DELETE"));
+
+        try {
+            if(queryType.equals("SELECT")) {
+                result = executeQuery(databaseModel, query);
+            } else if (updateQueries.contains(queryType)){
+                executeUpdate(databaseModel, query);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
+     * Executes a SELECT statement and returns the result in a String format
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @param databaseModel DatabaseModel
+     * @param query STRING query ("SELECT * FROM tablename")
+     * @return String result of entered query
+     */
+    public String executeQuery(DatabaseModel databaseModel, String query){
+        String username = databaseModel.getUsername();
+        String password = databaseModel.getPassword();
+        int portNumber = databaseModel.getPortNumber();
+        String databaseName = databaseModel.getDatabaseName();
+        String hostName = databaseModel.getHostName();
+
+        String url = createUrl(portNumber, databaseName, hostName);
+        String resultsInJson = null;
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+
+            ResultSet resultSet = this.enterQuery(connection, query);
+
+            JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
+            resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
+
+        } catch (SQLException e) {
+            System.out.println(query);
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(query);
+            e.printStackTrace();
+        }
+        return resultsInJson;
+    }
+
+
+    /**
+     * Executes and update request (DELETE, UPDATE, INSERT), inserts it into the database
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @param databaseModel DatabaseModel
+     * @param query STRING query ("SELECT * FROM tablename")
+     * @return Nothing
+     */
+    public void executeUpdate(DatabaseModel databaseModel, String query){
+        String username = databaseModel.getUsername();
+        String password = databaseModel.getPassword();
+        int portNumber = databaseModel.getPortNumber();
+        String databaseName = databaseModel.getDatabaseName();
+        String hostName = databaseModel.getHostName();
+
+        String url = createUrl(portNumber, databaseName, hostName);
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+
+            this.enterUpdate(connection, query);
+
+        } catch (SQLException e) {
+            System.out.println(query);
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(query);
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * @author Anthony Scheeres
      */
     // potenially returns all data from an table added an methode that returns all column values in an 2d array!!
-    public HashMap < String, List < String >> getTableContents2(ResultSet resultSet) {
+    public HashMap < String, List < String >> getTableContents(ResultSet resultSet) {
         HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
         List < List < String >> array = new ArrayList < List < String >> ();
         List < String > singleArray = new ArrayList < String > ();
@@ -70,7 +168,7 @@ public class DatabaseUtilities {
      */
     //use a database object to connect to database and perform a query
     public String connectThisDatabase2(DatabaseModel databaseModel, String query) throws Exception {
-        return connectToDatabase(
+        return connectToDatabaseOld(
         		databaseModel.getUsername(),
         		databaseModel.getPassword(),
         		databaseModel.getPortNumber(),
@@ -90,7 +188,7 @@ public class DatabaseUtilities {
      * @author Anthony Scheeres
      * @throws Exception
      */
-    private String connectToDatabase(
+    private String connectToDatabaseOld(
             String username,
             String password,
             int portNumber,
@@ -141,7 +239,7 @@ public class DatabaseUtilities {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             System.out.println("Java JDBC PostgreSQL: " + databaseName);
             ResultSet resultSet = this.enterQuery(connection, query);
-            HashMap < String, List < String >> hashmap = getTableContents2(resultSet);
+            HashMap < String, List < String >> hashmap = getTableContents(resultSet);
             connection.close();
             result =  hashmap;
         } catch (SQLException err) {
