@@ -26,7 +26,7 @@ public class UserController {
      * @throws Exception 
      */
 	public String handleShowUsers(String token) throws Exception {
-		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+		int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
 		AuthenticationController authenticationController = new AuthenticationController();
 		if (!authenticationController.hasReadPermission(employeeId)) {
 			System.out.println("fail");

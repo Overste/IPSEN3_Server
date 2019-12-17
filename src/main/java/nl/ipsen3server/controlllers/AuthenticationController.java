@@ -3,10 +3,8 @@ package nl.ipsen3server.controlllers;
 
 import nl.ipsen3server.dao.AuthenticationDAO;
 
-import nl.ipsen3server.models.LogModel;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
-import nl.ipsen3server.models.UserModel;
 
 /**
 *
@@ -28,7 +26,7 @@ public class AuthenticationController {
 	public String handleGiveRead(String u, String token) throws Exception {
 		AccountController accountController = new AccountController();
 		TokenController tokkenController = new TokenController();
-		long employeeId = Long.parseLong(tokkenController.tokenToUserId(token));
+		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
 			return Response.fail.toString();
 		}
@@ -52,7 +50,7 @@ public class AuthenticationController {
 		LoggingController loggingController = new LoggingController();
 		AccountController accountController = new AccountController();
 		TokenController tokkenController = new TokenController();
-		long employeeId = Long.parseLong(tokkenController.tokenToUserId(token));
+		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
 			return Response.fail.toString();
 		}
@@ -70,9 +68,9 @@ public class AuthenticationController {
 	  * @author Anthony Scheeres 
 	  *
 	  */
-	public boolean hasSuperPermission(long employeeId) {
+	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		if (authenticationDAO.hasEnumHandeler(employeeId, Permission.WRITE.toString()) && authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString()) && authenticationDAO.hasEnumHandeler(employeeId, Permission.DELETE.toString())){
+		if (authenticationDAO.hasEnumHandler(employeeId, Permission.WRITE.toString()) && authenticationDAO.hasEnumHandler(employeeId, Permission.READ.toString()) && authenticationDAO.hasEnumHandler(employeeId, Permission.DELETE.toString())){
 			return true;
 		}
 		return false;
@@ -82,9 +80,9 @@ public class AuthenticationController {
 	  * @author Anthony Scheeres 
 	  *
 	  */
-	public boolean hasReadPermission(long employeeId) {
+	public boolean hasReadPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.hasEnumHandeler(employeeId, Permission.READ.toString());
+		return authenticationDAO.hasEnumHandler(employeeId, Permission.READ.toString());
 		
 	}
 
@@ -100,7 +98,7 @@ public class AuthenticationController {
 		LoggingController loggingController = new LoggingController();
 		AccountController accountController = new AccountController();
 		TokenController tokkenController = new TokenController();
-		long employeeId = Long.parseLong(tokkenController.tokenToUserId(token));
+		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
 			return Response.fail.toString();
 		}
@@ -122,8 +120,8 @@ public class AuthenticationController {
 public boolean validate(String token, String permission) {
 	TokenController tokenController = new TokenController();
 	AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-	long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-	return authenticationDAO.hasEnumHandeler(employeeId, permission);
+	int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
+	return authenticationDAO.hasEnumHandler(employeeId, permission);
 }
 
 
@@ -143,15 +141,19 @@ public boolean validate(String token, String permission) {
 
 
 	}
+
 	/**
+	 * takes in a userId and a permission and checks the database to see if this user has this permission
 	 *
-	 * @author Jesse Poleij
+	 * @author AnthonySchuijlenburg
 	 *
-	 *
+	 * @param userID The id of the user of which it's permissions need to be checked
+	 * @param permission The permission it need te checked against
+	 * @return true or false depending on the users rights
 	 */
-	public boolean hasPermission(Long userID, String permission) {
+	public boolean hasPermission(int userID, String permission) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.hasEnumHandeler(userID, permission);
+		return authenticationDAO.hasEnumHandler(userID, permission);
 	}
 
 }

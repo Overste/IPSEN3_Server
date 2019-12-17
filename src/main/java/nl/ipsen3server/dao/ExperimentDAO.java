@@ -2,7 +2,6 @@ package nl.ipsen3server.dao;
 
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
-import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.ExperimentModel2;
 
 import java.util.ArrayList;
@@ -10,61 +9,76 @@ import java.util.List;
 
 
 /**
- * @author Jesse Poleij, Anthony Schuijlenburg
- *
+ * @author Jesse Poleij, Anthony Schuijlenburg, Cyriel van der Raaf
  */
 public class ExperimentDAO {
     private String tableName = "experiments";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    private PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+    private DatabaseUtilities databaseUtilities = new DatabaseUtilities();
 
 
-/**
- * @author Jesse Poleij
- */
-    public void deleteExperiment(ExperimentModel project) {
-        String query = String.format("DELETE FROM %s WHERE id = ?;", tableName);
+    /**
+     * Deletes the experiment, is only called after permission checks!
+     *
+     * @author Jesse Poleij, AnthonySchuijlenburg
+     *
+     * @param experimentId The experimentId of the experiment that needs to be deleted
+     * @return The status of the deleting attempt
+     */
+    public String deleteExperiment(int experimentId) {
+        String query = String.format("DELETE FROM %s WHERE experiment_id = %d;", tableName, experimentId);
 
-        List< String > arrayList = new ArrayList<>();
-        arrayList.add(Long.toString(project.getId()));
         try {
-            preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, query, arrayList, false);
-        } catch (Exception e) { e.printStackTrace(); }
+            connectToDatabase(query, "DELETE");
+            return "Delete was succesfull!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Was not able to connect to database";
+        }
     }
 
 
     /**
-     * @author AnthonySchuijleburg
+     * Requests all experiments from the database
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @return a JSON of all the the experiments in the database
      */
-    public String showExperiments(){
-    	
-    	
-    	
+    public String showExperiments() {
         String query = String.format("SELECT * FROM %s;", tableName);
-        
-        String json = ConnectToDatabase(query);
-        System.out.println(json);
-        return json;
+        return connectToDatabase(query, "SELECT");
     }
 
 
     /**
-     * @author AnthonySchuijleburg
+     * Requests a single specific experiment from the database
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @param id the id of the experiment that needs to be showed
+     * @return the
      */
-    public String showExperiment(int id){
+    public String showExperiment(int id) {
         String query = String.format("SELECT * FROM %s WHERE experiment_id = %d;", tableName, id);
-        return ConnectToDatabase(query);
+        return connectToDatabase(query, "SELECT");
     }
 
 
     /**
-     * @author AnthonySchuijleburg
+     * Makes a local reference point for talking with DatabaseUtilities.
+     *
+     * @author AnthonySchuijlenburg
+     *
+     * @param query the query that needs to be executes
+     * @param queryType the type of that Query (SELECT, INSERT, UPDATE, DELETE)
+     * @return the resultSet of the query. Returns an empty string if the query type is not SELECT
      */
-    private String ConnectToDatabase(String url){
+    private String connectToDatabase(String query, String queryType) {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = databaseUtilities.connectThisDatabase2(databaseModel, url);
+            returnQuery = databaseUtilities.connectToDatabase(databaseModel, query, queryType);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,10 +107,10 @@ public class ExperimentDAO {
 
 
     /**
-     *@author Cyriel van der Raaf
-     *Gebruikt een prepared statement om waardes in het tabel projects te plaatsen.
+     * @author Cyriel van der Raaf
+     * Gebruikt een prepared statement om waardes in het tabel projects te plaatsen.
      */
-    public void uploadProject(ExperimentModel2 model){
+    public void uploadProject(ExperimentModel2 model) {
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
@@ -117,7 +131,7 @@ public class ExperimentDAO {
 
         //TODO Make the values above align with model
 
-        List <String> project2 = new ArrayList<>();
+        List<String> project2 = new ArrayList<>();
         project2.add(String.format("%d", id));
         project2.add(model.getName());
         project2.add(model.getExperimentleaders());
@@ -137,10 +151,10 @@ public class ExperimentDAO {
 
 
     /**
-     *@author Cyriel van der Raaf
-     *Gebruikt een prepared statement om een project te verwijderen.
+     * @author Cyriel van der Raaf
+     * Gebruikt een prepared statement om een project te verwijderen.
      */
-    public void deleteExperiment(ExperimentModel2 projectModel){
+    public void deleteExperiment(ExperimentModel2 projectModel) {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
 
         String query1 = String.format("DELETE FROM %s WHERE id='&d';", tableName, projectModel.getId());
