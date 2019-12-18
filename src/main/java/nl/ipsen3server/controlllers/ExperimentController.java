@@ -90,7 +90,7 @@ public class ExperimentController {
 //        }
 //        //write model to db
 //        ExperimentDAO experimentDAO = new ExperimentDAO();
-//        experimentDAO.uploadProject(new ExperimentModel2());
+//        experimentDAO.uploadExperiment(new ExperimentModel2());
 //
 //
 //        return Response.fail.toString();
