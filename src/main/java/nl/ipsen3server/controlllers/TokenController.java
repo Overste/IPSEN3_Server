@@ -16,8 +16,8 @@ public class TokenController {
 		*
 		*/
 		private HashMap<String, List<String>> getTokens() throws Exception {
-		 UserDAO userDatabase = new UserDAO();
-		 return userDatabase.getTokens();
+		 UserDAO userDAO = new UserDAO();
+		 return userDAO.getTokens();
 	 }
 	 
 	 
