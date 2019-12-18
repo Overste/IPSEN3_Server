@@ -71,7 +71,7 @@ public class PreparedStatmentDatabaseUtilities {
             List<String> values,
             boolean isUpdate
     ) throws Exception {
-    	  String result = null;
+        String result = "failed";
         DatabaseUtilities dataUtilities = new DatabaseUtilities();
         String url = dataUtilities.createUrl(portNumber, databaseName, hostName);
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
@@ -95,15 +95,13 @@ public class PreparedStatmentDatabaseUtilities {
 
             if(isUpdate){
                 pstmt.executeUpdate();
-                
-                result = "Update was succecfull";
+                result = "succes";
             }else{
                 ResultSet r = pstmt.executeQuery();
                 JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
                 result= jsonConverter.convertToJSON(r).toString();
                 connection.close();
                 pstmt.close();
-                ;
             }
 
         } catch (SQLException err) {

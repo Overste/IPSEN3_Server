@@ -73,7 +73,9 @@ public class UserDAO {
         String query = String.format(""
                 + "UPDATE %s "
                 + "SET token = '%s' "
-                + "WHERE user_id = %d;", tableName, token, id);
+                + "WHERE user_id = %d"
+                + "RETURNING \"username\", \"password\", \"email\", \"has_read\", \"has_write\", \"has_delete\", \"user_role\", \"token\"", tableName, token, id);
+
         System.out.println(query);
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         try {

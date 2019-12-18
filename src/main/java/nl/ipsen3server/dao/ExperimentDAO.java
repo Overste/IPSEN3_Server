@@ -22,14 +22,21 @@ public class ExperimentDAO {
 /**
  * @author Jesse Poleij
  */
-    public void deleteExperiment(ExperimentModel project) {
-        String query = String.format("DELETE FROM %s WHERE id = ?;", tableName);
+    public String deleteExperiment(long experiment_id) {
+        String result = "failed";
+        String query = String.format(
+            "DELETE FROM %s WHERE experiment_id = ?",
+            tableName
+        );
 
         List< String > arrayList = new ArrayList<>();
-        arrayList.add(Long.toString(project.getId()));
+        arrayList.add(Long.toString(experiment_id));
         try {
-            preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, query, arrayList, false);
+            System.out.println(query);
+            System.out.println(arrayList.get(0));
+            result =  preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, query, arrayList, true);
         } catch (Exception e) { e.printStackTrace(); }
+        return result;
     }
 
 

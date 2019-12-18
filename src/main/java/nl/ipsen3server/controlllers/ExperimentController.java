@@ -19,11 +19,15 @@ public class ExperimentController {
     /**
      * @author Jesse Poleij
      */
-    public void deleteExperiment(ExperimentModel project, String token) {
+    public String deleteExperiment(long experiment_id, String token) {
         String userID = tokenController.tokenToUserId(token);
+        String result = "failed";
+
         if (authenticationController.hasPermission(Long.parseLong(userID), Permission.DELETE.toString())) {
-            experimentDAO.deleteExperiment(project);
+            result = experimentDAO.deleteExperiment(experiment_id);
         }
+        System.out.println(result);
+        return result;
     }
 
 
@@ -50,8 +54,9 @@ public class ExperimentController {
 	* @author Anthony Scheeres
 	*/
 	public String handleShowExperiments(String token) {
-		
+        System.out.println(token);
 		long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
+        System.out.println(employeeId);
 		boolean hasPermission = authenticationController.hasReadPermission(employeeId);
 		
 		

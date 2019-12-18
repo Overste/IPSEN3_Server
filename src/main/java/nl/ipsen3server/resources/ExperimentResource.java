@@ -20,10 +20,13 @@ public class ExperimentResource {
     /**
      * @author Jesse Poleij
      */
-    @POST
-    @Path("/{token}/remove")
-    public void deleteExperiment(@PathParam("token") String token, ExperimentModel experimentModel) {
-        experimentcontroller.deleteExperiment(experimentModel, token);
+    @DELETE
+    @Path("/{token}/remove/{experiment_id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteExperiment(@PathParam("token") String token, @PathParam("experiment_id") long experiment_id) {
+        System.out.println("delete Experiment");
+//        System.out.println("resource " + experimentModel.toString());
+        return experimentcontroller.deleteExperiment(experiment_id, token);
     }
 
 
@@ -34,9 +37,9 @@ public class ExperimentResource {
     @Path("{token}/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(@PathParam("token") String token){
-    	
-        ExperimentController experimentDAO = new ExperimentController();
-        return experimentDAO.handleShowExperiments(token);
+        // TODO: 16/12/2019 need to translate to ExperimentModel
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.handleShowExperiments(token);
     }
 
 
