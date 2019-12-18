@@ -1,11 +1,6 @@
 package nl.ipsen3server.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +18,7 @@ public class DatabaseUtilities {
      * @param databaseModel DatabaseModel
      * @param query STRING query ("SELECT * FROM tablename")
      * @param queryType string SELECT, UPDATE, INSERT, DELETE
-     * @return returns a hashmap a from database
+     * @return returns a String(JSON) a from database
      */
     public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType){
 
@@ -64,7 +59,8 @@ public class DatabaseUtilities {
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
 
-            ResultSet resultSet = this.enterQuery(connection, query);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
 
             JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
@@ -99,8 +95,8 @@ public class DatabaseUtilities {
         String url = createUrl(portNumber, databaseName, hostName);
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-
-            this.enterUpdate(connection, query);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
 
         } catch (SQLException e) {
             System.out.println(query);
@@ -188,7 +184,7 @@ public class DatabaseUtilities {
      * @author Anthony Scheeres
      * @throws Exception
      */
-    private String connectToDatabaseOld(
+    public String connectToDatabaseOld(
             String username,
             String password,
             int portNumber,

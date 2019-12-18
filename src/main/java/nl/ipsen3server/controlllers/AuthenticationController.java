@@ -70,7 +70,7 @@ public class AuthenticationController {
 	  */
 	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		if (authenticationDAO.hasEnumHandler(employeeId, Permission.WRITE.toString()) && authenticationDAO.hasEnumHandler(employeeId, Permission.READ.toString()) && authenticationDAO.hasEnumHandler(employeeId, Permission.DELETE.toString())){
+		if (authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString())){
 			return true;
 		}
 		return false;
@@ -82,7 +82,7 @@ public class AuthenticationController {
 	  */
 	public boolean hasReadPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.hasEnumHandler(employeeId, Permission.READ.toString());
+		return authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString());
 		
 	}
 
@@ -121,7 +121,7 @@ public boolean validate(String token, String permission) {
 	TokenController tokenController = new TokenController();
 	AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 	int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
-	return authenticationDAO.hasEnumHandler(employeeId, permission);
+	return authenticationDAO.checkUserPermission(employeeId, permission);
 }
 
 
@@ -153,7 +153,7 @@ public boolean validate(String token, String permission) {
 	 */
 	public boolean hasPermission(int userID, String permission) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.hasEnumHandler(userID, permission);
+		return authenticationDAO.checkUserPermission(userID, permission);
 	}
 
 }
