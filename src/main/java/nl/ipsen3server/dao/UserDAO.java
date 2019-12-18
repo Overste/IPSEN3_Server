@@ -8,7 +8,6 @@ import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.UserModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,8 +24,18 @@ public class UserDAO {
      */
     public HashMap<String, List<String>> getTokens() throws Exception {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        String query = String.format("SELECT user_id, token FROM %s;", tableName);
+        String query = String.format("select user_id, token from %s;", tableName);
         return databaseUtilities.connectThisDatabase(databaseModel, query);
+    }
+
+
+    /**
+     * @author Anthony Scheeres
+     */
+    public boolean hasEnumHandeler(long employeeId, String permission) {
+        String query2 = String.format("select permission from %s where user_id=?;", tableName);
+        UserDAO userDAO = new UserDAO();
+        return userDAO.hasPermission(permission, Long.toString(employeeId), query2);
     }
 
 
@@ -61,12 +70,17 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public void changeToken(String token, int id) {
-        String query = String.format("UPDATE %s SET token = ? WHERE user_id = ?;", tableName);
-        ArrayList data = new ArrayList(Arrays.asList(token, Integer.toString(id)));
-        PreparedStatmentDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        String query = String.format(""
+                + "UPDATE %s "
+                + "SET token = '%s' "
+                + "WHERE user_id = %d;", tableName, token, id);
+        System.out.println(query);
+        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         try {
-            preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
+            databaseUtilities.connectThisDatabase2(databaseModel, query);
+
         } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -76,9 +90,11 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public String showUsers() throws Exception {
-        String query = String.format("SELECT * FROM %s ORDER BY username;", tableName);
-        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        String json = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
+        String query = String.format(
+                "SELECT * FROM %s order by username;", tableName);
+        DatabaseUtilities d = new DatabaseUtilities();
+        String json = d.connectThisDatabase2(databaseModel, query);
+        System.out.println(json);
         return json;
     }
 
@@ -87,12 +103,13 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public String showOneUserPermission(int user_id) {
-        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
         String result = null;
-        String query = String.format("SELECT * FROM %s WHERE user_id = ?;", tableName);
-        ArrayList data = new ArrayList(Arrays.asList(user_id));
+        String query = String.format("SELECT * FROM %s" +
+                "WHERE user_id = %d;", tableName, user_id);
+        List<String> usernameArray = new ArrayList<String>();
         try {
-            result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data);
+            result = f.connectDatabaseJson(databaseModel, query, usernameArray, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,28 +203,6 @@ public class UserDAO {
             preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, deletequery, usernameArray, false);
         } catch (Exception e) {
         }
-    }
-
-
-    public boolean updateUserRole(long id, String role) {
-        boolean succes = false;
-
-        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
-        String updateQuery =
-                String.format("UPDATE %s\r\n" +
-                        "SET user_role=?::user_role WHERE user_id=?", tableName);
-
-        List<String> variables = new ArrayList<>();
-        variables.add(role);
-        variables.add(String.valueOf(id));
-
-        try {
-            preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, updateQuery, variables, true);
-            succes = true;
-        } catch (Exception e) {
-            e.getMessage();
-        }
-        return succes;
     }
 
 }
