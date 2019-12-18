@@ -1,20 +1,20 @@
 
 package nl.ipsen3server.dao;
 
-import nl.ipsen3server.controlllers.AuthenticationController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.Permission;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
+/**
+ *
+ */
 public class PermissionDAO {
-
     String tableName = "application_users";
-    private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    AuthenticationController autenticationController = new AuthenticationController();
-    private UserDAO userDatabase = new UserDAO();
+    DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
 
 
     /**
@@ -50,20 +50,10 @@ public class PermissionDAO {
     /**
      * @author Anthony Scheeres
      */
-    private void givePermission(String u, Enum e) throws Exception {
+    private void givePermission(String username, Enum e) throws Exception {
         PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
-        List<String> list = new ArrayList<String>();
-        String query2 = String.format("UPDATE application_users SET %s = true WHERE username = ?;", "has_"+e.toString().toLowerCase(),e);
-        list.add(u);
-        databaseController.connectDatabaseJson(databaseModel, query2, list, false);
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public boolean hasEnumHandeler(long employeeId, String permission) {
-        String query2 = "select permission from application_users where user_id=?;";
-        return userDatabase.hasPermission(permission, Long.toString(employeeId), query2);
+        ArrayList data = new ArrayList(Arrays.asList(username));
+        String query = String.format("UPDATE %s SET %s = true WHERE username = ?;", tableName, "has_"+e.toString().toLowerCase(),e);
+        preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
     }
 }
