@@ -10,7 +10,26 @@ import java.util.List;
 
 public class PreparedStatmentDatabaseUtilities {
 
+  
+    
     /**
+    *
+    * @author Anthony Scheeres
+    * @return  
+    *
+    */
+   //use a database object to connect to database and perform a query
+   public String connectDatabaseJson(
+   		DatabaseModel databaseModel, 
+   		String query, 
+   		List < String > values
+   		) throws Exception {
+	   
+	   boolean isUpdate = false;
+	   
+	   return  connectDatabaseJson(databaseModel, query, values,isUpdate );
+   }
+   
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
      *
      * @author AnthonySchuijlenburg
