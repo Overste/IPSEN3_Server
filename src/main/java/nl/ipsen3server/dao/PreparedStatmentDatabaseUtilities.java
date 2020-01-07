@@ -40,6 +40,12 @@ public class PreparedStatmentDatabaseUtilities {
      * @param data the data that needs to be filled into the prepared statement
      * @return returns a String(JSON) a from database
      */
+=======
+  
+    
+ 
+
+>>>>>>> Stashed changes
     public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType, ArrayList<String> data){
 
         String result = null;
@@ -153,47 +159,7 @@ public class PreparedStatmentDatabaseUtilities {
     }
 
 
-    /**
-    *
-    * @author Anthony Scheeres
-    * @return  
-    *
-    */
-   //use a database object to connect to database and perform a query
-   public String connectDatabaseJson(
-   		DatabaseModel databaseModel, 
-   		String query, 
-   		List < String > values
-   		) throws Exception {
-	   
-	   boolean isUpdate = false;
-	   
-	   return  connectDatabaseJson(databaseModel, query, values,isUpdate );
-   }
-   
-    /**
-     * @author Anthony Scheeres
-     * @return
-     */
-    //use a database object to connect to database and perform a query
-    public String connectDatabaseJson(
-    		DatabaseModel databaseModel, 
-    		String query, 
-    		List < String > values,
-            boolean isUpdate 
-    		) throws Exception {
-    	
-        return connectToDatabaseJson(
-        		databaseModel.getUsername(),
-        		databaseModel.getPassword(),
-        		databaseModel.getPortNumber(),
-        		databaseModel.getDatabaseName(),
-        		databaseModel.getHostName(),
-        		query,
-        		values,
-                isUpdate
-        		);
-    }
+  
 
 
     /**
