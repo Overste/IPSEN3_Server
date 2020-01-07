@@ -8,7 +8,26 @@ import java.util.List;
 
 public class PreparedStatmentDatabaseUtilities {
 
-
+  
+    
+    /**
+    *
+    * @author Anthony Scheeres
+    * @return  
+    *
+    */
+   //use a database object to connect to database and perform a query
+   public String connectDatabaseJson(
+   		DatabaseModel databaseModel, 
+   		String query, 
+   		List < String > values
+   		) throws Exception {
+	   
+	   boolean isUpdate = false;
+	   
+	   return  connectDatabaseJson(databaseModel, query, values,isUpdate );
+   }
+   
     /**
      * @author Anthony Scheeres
      * @return

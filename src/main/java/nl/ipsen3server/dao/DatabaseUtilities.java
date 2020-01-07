@@ -14,6 +14,12 @@ import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {
 
+	
+	
+	
+	
+	
+	
     /**
      * @author Anthony Scheeres
      */
