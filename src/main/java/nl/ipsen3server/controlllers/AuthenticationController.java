@@ -164,10 +164,7 @@ public boolean validate(String token, String permission) {
 		
 		boolean w = validate(token, Permission.WRITE.toString());
 		
-		return d && r && w ;
-		
-		
-		
+		return d && r && w ;		
 	}
 
 }
