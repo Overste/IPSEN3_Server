@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.postgresql.util.PSQLException;
 
@@ -20,6 +22,7 @@ public class LoggingController {
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
     SimpleDateFormat dateFormat;
 
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
 
 
@@ -65,11 +68,11 @@ public class LoggingController {
                 f.connectDatabaseJson(databaseModel, query2, f2, true);
             } catch (PSQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                 LOGGER.log(Level.SEVERE, "Error occur", e);
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 }

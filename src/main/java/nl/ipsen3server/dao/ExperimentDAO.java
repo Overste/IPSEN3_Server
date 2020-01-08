@@ -1,5 +1,7 @@
 package nl.ipsen3server.dao;
 
+import java.util.logging.Level;
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.ExperimentModel;
@@ -7,6 +9,7 @@ import nl.ipsen3server.models.ExperimentModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -17,6 +20,8 @@ public class ExperimentDAO{
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Deletes the experiment, is only called after permission checks!
      *
@@ -33,7 +38,7 @@ public class ExperimentDAO{
             connectToDatabase(query, "DELETE", data);
             return "Delete was succesfull!";
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
         }
     }
@@ -83,7 +88,7 @@ public class ExperimentDAO{
         try {
             returnQuery = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return returnQuery;
     }
@@ -104,7 +109,7 @@ public class ExperimentDAO{
         try {
             returnQuery = databaseUtilities.connectToDatabase(databaseModel, query, queryType);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return returnQuery;
     }
@@ -152,7 +157,7 @@ public class ExperimentDAO{
         try {
             dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 

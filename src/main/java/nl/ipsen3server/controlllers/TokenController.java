@@ -1,13 +1,16 @@
 
 package nl.ipsen3server.controlllers;
 
+import java.util.logging.Level;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Response;
 public class TokenController {
-	 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 		/**
 		*
 		* @author Anthony Scheeres
@@ -69,7 +72,7 @@ public class TokenController {
 		   return findValideTokenInHashmap( hashmap, token);
 		   }
 		   catch (Exception e) {
-		   e.printStackTrace();
+		    LOGGER.log(Level.SEVERE, "Error occur", e);
 		  }
 		  return Response.fail.toString();
 	 }

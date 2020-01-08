@@ -1,5 +1,7 @@
 package nl.ipsen3server.controlllers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +19,8 @@ import nl.ipsen3server.models.ServerModel;
 public class MailController {
 	 private String tableName = "application_users";
 	 private int tokenLength = 20;
-	 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 	 
 	 private MailModel createMailModel(String username, String password) {
 		 return new MailModel(username, password);
@@ -125,7 +128,7 @@ public class MailController {
 					sendMail(text, mailFrom, mailTo, subject);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					 LOGGER.log(Level.SEVERE, "Error occur", e);
 				}
      	}).start();
 	 }
