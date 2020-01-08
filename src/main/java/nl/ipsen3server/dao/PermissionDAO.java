@@ -1,6 +1,7 @@
 
 package nl.ipsen3server.dao;
 
+import java.util.logging.Level;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.Permission;

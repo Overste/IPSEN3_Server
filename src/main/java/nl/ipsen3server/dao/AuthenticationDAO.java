@@ -1,5 +1,7 @@
 package nl.ipsen3server.dao;
 
+import java.util.logging.Level;
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.AccountModel;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
@@ -8,6 +10,7 @@ import nl.ipsen3server.models.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -19,6 +22,8 @@ public class AuthenticationDAO {
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
     PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * @author Anthony Scheeres
      */
@@ -65,7 +70,7 @@ public class AuthenticationDAO {
         try {
             return preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT" ,data);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return Response.fail.toString();
     }
