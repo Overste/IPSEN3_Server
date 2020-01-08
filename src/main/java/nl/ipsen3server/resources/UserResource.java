@@ -174,4 +174,19 @@ public class UserResource {
 		return authenticationController.validate(token, Permission.DELETE.toString());
 
 	}
+	
+
+	/**
+	* @author Anthony Scheeres
+	*/
+	@POST
+	@Path("/{token}/hasAdmin")
+	public boolean hasAdmin(@PathParam("token") String token) {
+		return authenticationController.hasAdmin(token));
+
+	}
+	
+	
+	
+	
 }	
