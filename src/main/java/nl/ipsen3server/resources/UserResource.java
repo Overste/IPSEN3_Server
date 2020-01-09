@@ -77,9 +77,10 @@ public class UserResource {
 	 */
 	@POST
 	@Path("/{token}/removeUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void removeUserModel(@PathParam("token") String employeeId, AccountModel u)  {
-		accountController.handleRemoveUser(u, employeeId);
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void removeUserModel(String u)  {
+		System.out.println("Username " +  u);
+		accountController.handleRemoveUser(u);
 	}
 
 
@@ -177,7 +178,7 @@ public class UserResource {
 		return authenticationController.validate(token, Permission.DELETE.toString());
 
 	}
-	
+
 
 	/**
 	* @author Anthony Scheeres
@@ -188,8 +189,4 @@ public class UserResource {
 		return authenticationController.hasAdmin(token);
 
 	}
-	
-	
-	
-	
 }	

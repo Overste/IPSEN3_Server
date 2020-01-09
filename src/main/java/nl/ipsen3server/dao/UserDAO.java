@@ -180,15 +180,14 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public void removeUserModel(AccountModel u) {
+    public void removeUserModel(String u) {
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String deletequery =
-                String.format("DELETE FROM %s\r\n" +
-                        "WHERE username = ?;", tableName);
-        List<String> usernameArray = new ArrayList<String>();
-        usernameArray.add(u.getUsername());
+                String.format("DELETE FROM %s WHERE username = ?;", tableName);
+        ArrayList<String> usernameArray = new ArrayList<>(Arrays.asList(u));
+
         try {
-            preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, deletequery, usernameArray, false);
+            preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, deletequery, "DELETE", usernameArray);
         } catch (Exception e) {
         }
     }

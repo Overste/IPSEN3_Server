@@ -206,9 +206,6 @@ private String askNewTokenForAccount(int id) {
 	  userDatabase.changeToken(newToken, id);
 	  return newToken;
 }
- 
- 
- 
 
  /**
   *
@@ -262,7 +259,7 @@ private String askNewTokenForAccount(int id) {
     /**
      * @author Jesse Poleij, Anthony Scheeres
      */
-    public void handleRemoveUser(AccountModel u, String token) {
+    public void handleRemoveUser(String u) {
         userDatabase.removeUserModel(u);
     }
 }
