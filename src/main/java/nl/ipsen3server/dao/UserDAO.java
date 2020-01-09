@@ -1,5 +1,6 @@
 package nl.ipsen3server.dao;
 
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.MailController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.models.AccountModel;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class UserDAO {
@@ -18,6 +21,8 @@ public class UserDAO {
     private String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
     /**
      * @author Anthony Scheeres
@@ -51,7 +56,7 @@ public class UserDAO {
           
             
         } catch (Exception e) {
-        	e.printStackTrace();
+        	 LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return false;
     }
@@ -67,7 +72,7 @@ public class UserDAO {
         try {
             preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 
@@ -94,7 +99,7 @@ public class UserDAO {
         try {
             result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return result;
     }

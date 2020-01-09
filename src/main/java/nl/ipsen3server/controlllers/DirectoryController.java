@@ -7,10 +7,13 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DirectoryController {
 	
-	
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
 /**
 *
@@ -25,7 +28,7 @@ public class DirectoryController {
 				result = writeFile(url, folder, fileName, value);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 LOGGER.log(Level.SEVERE, "Error occur", e);
 			}
 	    	return result;
 	    
