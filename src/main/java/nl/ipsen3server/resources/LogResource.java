@@ -13,27 +13,28 @@ import nl.ipsen3server.models.LogModel;
 @Path("/log")
 public class LogResource {
 
-    private LoggingController log = new LoggingController();
+    private LoggingController loggingController = new LoggingController();
 
 
     /**
      * @author Anthony Scheeres, Anthony Schuijlenburg
      */
     @POST
-    @Path("/log/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void createLog(LogModel l, @PathParam("id") int id) {
-        log.createLog(l, id);
+    @Path("/upload/")
+//    @Consumes(MediaType.APPLICATION_JSON)
+    public void createLog() {
+        LogModel logModel = new LogModel();
+        loggingController.createLog(logModel);
     }
 
     /**
      * @author Anthony Scheeres, Anthony Schuijlenburg
      */
     @GET
-    @Path("/logs/{id}")
+    @Path("/{token}/download/{experimentId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showlogs(@PathParam("id") int id) throws Exception {
-        return log.showlogs(id);
+    public String showlogs(@PathParam("experimentId") int id, @PathParam("token") String token) throws Exception {
+        return loggingController.showlogs(id, token);
     }
 
 }
