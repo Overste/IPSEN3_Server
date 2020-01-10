@@ -1,5 +1,6 @@
 package nl.ipsen3server.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 public class LogModel {
 
     private int logId;
-    private Timestamp timestamp;
+    private String timestamp;
     private String title;
     private String description;
     private int byUserId;
@@ -27,12 +28,14 @@ public class LogModel {
     }
 
     public LogModel(){
-
+        this.timestamp = getCurrentTime();
+        this.title = "TestTitle";
+        this.description = "Empty description";
+        this.experimentId = 1;
     }
 
-    private Timestamp getCurrentTime(){
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
+    private String getCurrentTime(){
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
         return timestamp;
     }
 
@@ -44,12 +47,12 @@ public class LogModel {
         this.logId = logId;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestamp() {
+        this.timestamp = getCurrentTime();
     }
 
     public String getTitle() {
