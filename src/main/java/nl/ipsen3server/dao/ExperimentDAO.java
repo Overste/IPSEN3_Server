@@ -4,9 +4,8 @@ import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
-import nl.ipsen3server.models.ExperimentModel2;
+import nl.ipsen3server.models.ExperimentModel;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -123,7 +122,7 @@ public class ExperimentDAO{
      *
      * @param model
      */
-    public void uploadExperiment(ExperimentModel2 model) {
+    public void uploadExperiment(ExperimentModel model) {
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
