@@ -52,6 +52,24 @@ public class AuthenticationDAO {
     }
 
 
+    public int tokenToUserId(String token){
+        String query = String.format("SELECT user_id FROM %s WHERE token = ?", tableName);
+        ArrayList data = new ArrayList(Arrays.asList(token));
+        String result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query , "SELECT", data);
+        String[] results = result.split("");
+
+        int returnValue = 0;
+
+        for(int i=0; i< results.length; i++){
+            try{
+                returnValue += Integer.parseInt(results[i]);
+            }catch (Exception e){}
+        }
+
+        return returnValue;
+    }
+
+
     public boolean checkForSuperUser(int userId){
         String query = String.format("SELECT user_role FROM %s WHERE user_id = ?", tableName);
         ArrayList data = new ArrayList(Arrays.asList(Integer.toString(userId)));
