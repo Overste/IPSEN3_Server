@@ -1,9 +1,9 @@
 package nl.ipsen3server.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 
 /**
@@ -11,43 +11,48 @@ import javax.validation.constraints.Pattern;
  */
 public class LogModel {
 
-    private Timestamp time;
-    @NotNull
+    private int logId;
+    private String timestamp;
     private String title;
     private String description;
-    @NotNull
-    private UserModel byUser;
-    @Pattern(regexp = "^[0-9]*$")
-    private long id;
-    private int project_id;
+    private int byUserId;
+    private int experimentId;
 
-    /**
-     * @author Anthony Scheeres
-     */
-    public LogModel() {
-
-    }
-
-    /**
-     * @author AnthonySchuijlenburg
-     */
-    public LogModel(Timestamp time, @NotNull String title, String description, @NotNull UserModel byUser,
-                    @Pattern(regexp = "^[0-9]*$") long id) {
-        super();
-        this.time = time;
+    public LogModel(int logId,  String title, String description, int byUserId, int experimentId) {
+        this.logId = logId;
+        this.timestamp = getCurrentTime();
         this.title = title;
         this.description = description;
-        this.byUser = byUser;
-        this.id = id;
-
+        this.byUserId = byUserId;
+        this.experimentId = experimentId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public LogModel(){
+        this.timestamp = getCurrentTime();
+        this.title = "TestTitle";
+        this.description = "Empty description";
+        this.experimentId = 1;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    private String getCurrentTime(){
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+        return timestamp;
+    }
+
+    public int getLogId() {
+        return logId;
+    }
+
+    public void setLogId(int logId) {
+        this.logId = logId;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp() {
+        this.timestamp = getCurrentTime();
     }
 
     public String getTitle() {
@@ -66,27 +71,19 @@ public class LogModel {
         this.description = description;
     }
 
-    public UserModel getByUser() {
-        return byUser;
+    public int getByUserId() {
+        return byUserId;
     }
 
-    public void setByUser(UserModel byUser) {
-        this.byUser = byUser;
+    public void setByUserId(int byUserId) {
+        this.byUserId = byUserId;
     }
 
-    public long getId() {
-        return id;
+    public int getExperimentId() {
+        return experimentId;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    public void setExperimentId(int experimentId) {
+        this.experimentId = experimentId;
     }
 }
