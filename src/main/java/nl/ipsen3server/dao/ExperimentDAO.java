@@ -128,34 +128,35 @@ public class ExperimentDAO{
         long id = model.getId();
         Enum status = model.getStatus();
 
-        String query = String.format("INSERT INTO %s (" +
+        String query = String.format("INSERT INTO %s VALUES (" +
                 "" + "?,"               // experiment_id
                 + "?,"                  // experiment_name
                 + "?,"                  // experiment_leader
                 + "?,"                  // experiment_description
                 + "?,"                  // organisation
                 + "?,"                  // business_owner
-                + "?,"                  // experiment_status
-                + "?,"                  // experiment_phase
-                + "?"                   // inovation_cost
+                + "?" + "::experiment_status,"                 // experiment_status
+                + "?" + "::experiment_phase,"                 // experiment_phase
+                + "?,"                   // inovation_cost
                 + "?"                   // money_source
                 + ");", tableName);
 
         //TODO Make the values above align with model
 
-        List<String> project2 = new ArrayList<>();
-        project2.add(String.format("%d", id));
-        project2.add(model.getName());
-        project2.add(model.getExperimentleaders());
-        project2.add(model.getDescription());
-        project2.add(model.getOrganisations());
-        project2.add(model.getBusinessOwners());
-        project2.add(String.format("%s", status));
-        project2.add(model.getInovationCost());
-        project2.add(model.getMoneySource());
+        ArrayList<String> createProject = new ArrayList<>();
+        createProject.add(String.format("%d", id));
+        createProject.add(model.getName());
+        createProject.add(model.getExperimentleaders());
+        createProject.add(model.getDescription());
+        createProject.add(model.getOrganisations());
+        createProject.add(model.getBusinessOwners());
+        createProject.add(String.format("%s", model.getStatussen()));
+        createProject.add(model.getFasens());
+        createProject.add(model.getInovationCost());
+        createProject.add(model.getMoneySource());
 
         try {
-            dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
+            dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }

@@ -80,13 +80,15 @@ public class ExperimentController {
      */
     public String handleCreateProject(ExperimentModel project, String token){
         //validate user
-        int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
+/*        int employeeId = tokenController.tokenToUserId(token));
 
         if (!authenticationController.hasSuperPermission(employeeId)) {
             return Response.fail.toString();
         }
         //write model to db
-        experimentDAO.uploadExperiment(new ExperimentModel());
+
+ */
+        experimentDAO.uploadExperiment(project);
 
 
         return Response.fail.toString();

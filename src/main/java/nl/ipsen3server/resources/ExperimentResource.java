@@ -98,9 +98,11 @@ public class ExperimentResource {
     @POST
     @Path("/{token}/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String openProject(ExperimentModel project, @PathParam("token") String token){
+    public String createProject(ExperimentModel project, @PathParam("token") String token){
+        System.out.println(project);
         return experimentcontroller.handleCreateProject(project, token);
     }
+
 //TODO CYRIEL NEEDS TO CLEAN THIS UP
 //    /**
 //     *@author Cyriel van der Raaf
