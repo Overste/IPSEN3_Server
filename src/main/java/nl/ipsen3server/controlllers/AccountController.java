@@ -2,6 +2,8 @@ package nl.ipsen3server.controlllers;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.Response;
@@ -19,6 +21,8 @@ import nl.ipsen3server.models.AccountModel;
 
 
 public class AccountController {
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 private UserDAO userDatabase = new UserDAO();
 private PermissionDAO permissionDatabase = new PermissionDAO();
 
@@ -70,7 +74,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
         
         } catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			 LOGGER.log(Level.SEVERE, "Error occur", e);
 		}
         
         return result;

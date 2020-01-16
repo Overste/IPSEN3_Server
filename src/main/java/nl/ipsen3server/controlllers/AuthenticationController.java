@@ -156,4 +156,21 @@ public boolean validate(String token, String permission) {
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
 
+
+	public int tokenToUserId(String token){
+		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+		return authenticationDAO.tokenToUserId(token);
+	}
+
+
+	public boolean hasAdmin(String token) {
+		boolean d = validate(token, Permission.DELETE.toString());
+		
+		boolean r = validate(token, Permission.READ.toString());
+		
+		boolean w = validate(token, Permission.WRITE.toString());
+		
+		return d && r && w ;		
+	}
+
 }

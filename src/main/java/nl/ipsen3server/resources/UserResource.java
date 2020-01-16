@@ -1,11 +1,14 @@
 package nl.ipsen3server.resources;
 
+import java.util.logging.Logger;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
 import nl.ipsen3server.controlllers.AccountController;
 import nl.ipsen3server.controlllers.AuthenticationController;
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
@@ -177,4 +180,14 @@ public class UserResource {
 
 	}
 
+
+	/**
+	* @author Anthony Scheeres
+	*/
+	@POST
+	@Path("/{token}/hasAdmin")
+	public boolean hasAdmin(@PathParam("token") String token) {
+		return authenticationController.hasAdmin(token);
+
+	}
 }	

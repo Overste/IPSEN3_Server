@@ -1,15 +1,20 @@
 package nl.ipsen3server.dao;
 
+import java.util.logging.Level;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
      *
@@ -31,8 +36,8 @@ public class DatabaseUtilities {
             } else if (updateQueries.contains(queryType)){
                 executeUpdate(databaseModel, query);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+             LOGGER.log(Level.SEVERE, "Error occur", exception);
         }
         return result;
     }
@@ -67,10 +72,10 @@ public class DatabaseUtilities {
 
         } catch (SQLException e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
     }
@@ -100,10 +105,10 @@ public class DatabaseUtilities {
 
         } catch (SQLException e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 
@@ -262,7 +267,7 @@ public class DatabaseUtilities {
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return columnNames;
     }
@@ -281,7 +286,7 @@ public class DatabaseUtilities {
             result = statement.executeQuery(query);
         } catch (SQLException e) {
 
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
             return result;
     }
@@ -297,7 +302,7 @@ public class DatabaseUtilities {
             statement = connection.createStatement();
             return statement.executeUpdate(query);
         } catch (SQLException e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
             return 0;
         }
     }

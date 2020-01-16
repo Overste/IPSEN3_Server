@@ -74,29 +74,27 @@ public class ExperimentController {
     }
 
 
+
+    /*
+     * @author Cyriel van der Raaf, Jesse Poleij
+     */
+    public String handleCreateProject(ExperimentModel project, String token){
+        //validate user
+/*        int employeeId = tokenController.tokenToUserId(token));
+
+        if (!authenticationController.hasSuperPermission(employeeId)) {
+            return Response.fail.toString();
+        }
+        //write model to db
+
+ */
+        experimentDAO.uploadExperiment(project);
+
+
+        return Response.fail.toString();
+    }
+
 //TODO CYRIEL NEEDS TO CLEAN THIS UP
-//
-//    /*
-//     * @author Cyriel van der Raaf
-//     */
-//    public String handleCreateProject(ExperimentModel2 project, String token){
-//        //validate user
-//        TokenController tokenController = new TokenController();
-//        AuthenticationController authenticationController = new AuthenticationController();
-//        long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-//
-//        if (!authenticationController.hasSuperPermission(employeeId)) {
-//            return Response.fail.toString();
-//        }
-//        //write model to db
-//        ExperimentDAO experimentDAO = new ExperimentDAO();
-//        experimentDAO.uploadExperiment(new ExperimentModel2());
-//
-//
-//        return Response.fail.toString();
-//    }
-//
-//
 //    /**
 //     *@author Cyriel van der Raaf
 //     */

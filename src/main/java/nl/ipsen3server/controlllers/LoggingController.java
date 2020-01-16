@@ -1,10 +1,14 @@
 package nl.ipsen3server.controlllers;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import nl.ipsen3server.dao.LoggingDAO;
 import org.postgresql.util.PSQLException;
 
 import nl.ipsen3server.dao.DatabaseUtilities;
@@ -13,63 +17,44 @@ import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.LogModel;
 
+import javax.lang.model.type.ArrayType;
+
 public class LoggingController {
 
-
-    private String tableName = "logs";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    SimpleDateFormat dateFormat;
-
-
-
+    private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
 
     /**
-     * @author Anthony Scheeres, Anthony Schuijlenburg
+     * @author Anthony Schuijlenburg
+     * @param experimentId The id of the experiment from which the logs need to be retrieved
+     * @param token The token from the user requesting the log
+     * @return Returns the logs
      */
-
-    public String showlogs(int id) throws Exception {
-        String query = String.format("SELECT title FROM %s WHERE project_id = ", tableName);
-        query += id + ";";
-        System.out.println(query);
-        DatabaseUtilities d = new DatabaseUtilities();
-        return d.connectThisDatabase2(databaseModel, query);
+    public String showlogs(int experimentId, String token){
+        AuthenticationController authenticationController = new AuthenticationController();
+        int userId = authenticationController.tokenToUserId(token);
+        if(authenticationController.hasPermission(userId, "READ")){
+            LoggingDAO loggingDAO = new LoggingDAO();
+            return loggingDAO.showLogs(experimentId);
+        }
+        return "Not sufficient rights";
     }
 
 
-
-
     /**
-     * @author Anthony Scheeres, Anthony Schuijlenburg
+     * @author Anthony Schuijlenburg
+     * @param logModel A model of the log file that needs to be uploaded
+     * @param token The token from the user trying to access
      */
-    public void createLog(LogModel l, int project_id) {
-        DatabaseUtilities d = new DatabaseUtilities();
-        String query = String.format("select id from %s;", tableName);
-        LogController r = new LogController();
-        PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
-        HashMap < String, List < String >> e1;
-        try {
-            e1 = d.connectThisDatabase(databaseModel, query);
-            long id = r.createUserId2(e1.get("id"));
-            String query2 = "INSERT INTO logs(title, id, project_id) VALUES (" +
-                "?," +
-                "?," +
-                "?" +
-                ");";
-            System.out.println(query2);
-            try {
-                List <String> f2 = new ArrayList < > ();
-                f2.add(l.getTitle());
-                f2.add(Long.toString(id));
-                f2.add(Integer.toString(project_id));
-                f.connectDatabaseJson(databaseModel, query2, f2, true);
-            } catch (PSQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public void createLog(LogModel logModel, String token) {
+        AuthenticationController authenticationController = new AuthenticationController();
+        int userId = authenticationController.tokenToUserId(token);
+        logModel.setByUserId(userId);
+        logModel.setTimestamp();
+        if(authenticationController.hasPermission(userId, "WRITE")){
+            LoggingDAO loggingDAO = new LoggingDAO();
+            loggingDAO.CreateLog(logModel);
         }
     }
 }

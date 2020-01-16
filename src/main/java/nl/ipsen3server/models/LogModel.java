@@ -1,92 +1,115 @@
 package nl.ipsen3server.models;
 
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-
-/**
- * @author Anthony Scheeres
- */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "log_id",
+        "timestamp",
+        "title",
+        "description",
+        "by_user_id",
+        "experiment_id"
+})
 public class LogModel {
 
-    private Timestamp time;
-    @NotNull
+    @JsonProperty("log_id")
+    private Integer logId;
+    @JsonProperty("timestamp")
+    private String timestamp;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("description")
     private String description;
-    @NotNull
-    private UserModel byUser;
-    @Pattern(regexp = "^[0-9]*$")
-    private long id;
-    private int project_id;
+    @JsonProperty("by_user_id")
+    private Integer byUserId;
+    @JsonProperty("experiment_id")
+    private Integer experimentId;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * @author Anthony Scheeres
-     */
-    public LogModel() {
-
+    @JsonProperty("log_id")
+    public Integer getLogId() {
+        return logId;
     }
 
-    /**
-     * @author AnthonySchuijlenburg
-     */
-    public LogModel(Timestamp time, @NotNull String title, String description, @NotNull UserModel byUser,
-                    @Pattern(regexp = "^[0-9]*$") long id) {
-        super();
-        this.time = time;
-        this.title = title;
-        this.description = description;
-        this.byUser = byUser;
-        this.id = id;
-
+    @JsonProperty("log_id")
+    public void setLogId(Integer logId) {
+        this.logId = logId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    @JsonProperty("timestamp")
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    @JsonProperty("timestamp")
+    public void setTimestamp() {
+        this.timestamp = getCurrentTime();
     }
 
+    @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public UserModel getByUser() {
-        return byUser;
+    @JsonProperty("by_user_id")
+    public Integer getByUserId() {
+        return byUserId;
     }
 
-    public void setByUser(UserModel byUser) {
-        this.byUser = byUser;
+    @JsonProperty("by_user_id")
+    public void setByUserId(Integer byUserId) {
+        this.byUserId = byUserId;
     }
 
-    public long getId() {
-        return id;
+    @JsonProperty("experiment_id")
+    public Integer getExperimentId() {
+        return experimentId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @JsonProperty("experiment_id")
+    public void setExperimentId(Integer experimentId) {
+        this.experimentId = experimentId;
     }
 
-    public int getProject_id() {
-        return project_id;
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
+
+    private String getCurrentTime(){
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+        return timestamp;
+    }
+
 }

@@ -1,5 +1,6 @@
 package nl.ipsen3server.dao;
 
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DatabaseModel;
 import org.postgresql.util.PSQLException;
 
@@ -8,9 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PreparedStatmentDatabaseUtilities {
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
      *
@@ -34,7 +39,7 @@ public class PreparedStatmentDatabaseUtilities {
                 executeUpdate(databaseModel, query, data);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return result;
     }
@@ -78,10 +83,10 @@ public class PreparedStatmentDatabaseUtilities {
 
         } catch (SQLException e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
     }
@@ -121,10 +126,10 @@ public class PreparedStatmentDatabaseUtilities {
 
         } catch (SQLException e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
             System.out.println(query);
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 

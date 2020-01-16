@@ -1,13 +1,15 @@
 package nl.ipsen3server.dao;
 
+import java.util.logging.Level;
+import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
-import nl.ipsen3server.models.ExperimentModel2;
+import nl.ipsen3server.models.ExperimentModel;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -18,6 +20,8 @@ public class ExperimentDAO{
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 
 
+
+	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Deletes the experiment, is only called after permission checks!
      *
@@ -32,9 +36,9 @@ public class ExperimentDAO{
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "Delete was succesfull!";
+            return "succes";
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
         }
     }
@@ -84,7 +88,7 @@ public class ExperimentDAO{
         try {
             returnQuery = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return returnQuery;
     }
@@ -105,7 +109,7 @@ public class ExperimentDAO{
         try {
             returnQuery = databaseUtilities.connectToDatabase(databaseModel, query, queryType);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return returnQuery;
     }
@@ -118,42 +122,43 @@ public class ExperimentDAO{
      *
      * @param model
      */
-    public void uploadExperiment(ExperimentModel2 model) {
+    public void uploadExperiment(ExperimentModel model) {
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
         Enum status = model.getStatus();
 
-        String query = String.format("INSERT INTO %s (" +
+        String query = String.format("INSERT INTO %s VALUES (" +
                 "" + "?,"               // experiment_id
                 + "?,"                  // experiment_name
                 + "?,"                  // experiment_leader
                 + "?,"                  // experiment_description
                 + "?,"                  // organisation
                 + "?,"                  // business_owner
-                + "?,"                  // experiment_status
-                + "?,"                  // experiment_phase
-                + "?"                   // inovation_cost
+                + "?" + "::experiment_status,"                 // experiment_status
+                + "?" + "::experiment_phase,"                 // experiment_phase
+                + "?,"                   // inovation_cost
                 + "?"                   // money_source
                 + ");", tableName);
 
         //TODO Make the values above align with model
 
-        List<String> project2 = new ArrayList<>();
-        project2.add(String.format("%d", id));
-        project2.add(model.getName());
-        project2.add(model.getExperimentleaders());
-        project2.add(model.getDescription());
-        project2.add(model.getOrganisations());
-        project2.add(model.getBusinessOwners());
-        project2.add(String.format("%s", status));
-        project2.add(model.getInovationCost());
-        project2.add(model.getMoneySource());
+        ArrayList<String> createProject = new ArrayList<>();
+        createProject.add(String.format("%d", id));
+        createProject.add(model.getName());
+        createProject.add(model.getExperimentleaders());
+        createProject.add(model.getDescription());
+        createProject.add(model.getOrganisations());
+        createProject.add(model.getBusinessOwners());
+        createProject.add(String.format("%s", model.getStatussen()));
+        createProject.add(model.getFasens());
+        createProject.add(model.getInovationCost());
+        createProject.add(model.getMoneySource());
 
         try {
-            dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
+            dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
 
