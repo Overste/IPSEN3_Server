@@ -73,6 +73,15 @@ public class ExperimentDAO{
     }
 
 
+
+    public String showExperimentPhase(String phase, String id){
+        String query = String.format("UPDATE %s SET experiment_phase = ? WHERE experiment_id = ?)", tableName);
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(phase, id));
+
+        return connectToDatabase(query, "UPDATE", data);
+    }
+
+
     /**
      * Makes a local reference point for talking with PreparedStatementDatabaseUtilities.
      *

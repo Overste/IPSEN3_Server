@@ -38,6 +38,17 @@ public class ExperimentController {
     }
 
 
+    public String showPhases(String phase, String id, String token){
+        String userID = tokenController.tokenToUserId(token);
+        if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
+            ExperimentDAO experimentDAO = new ExperimentDAO();
+            return experimentDAO.showExperimentPhase(phase, id);
+        } else{
+            return "Not sufficient rights to delete this experiment";
+        }
+    }
+
+
     /**
      * Checks whether or not a user has_read rights to view experiments
      *

@@ -4,10 +4,7 @@ package nl.ipsen3server.resources;
 import nl.ipsen3server.controlllers.ExperimentController;
 import nl.ipsen3server.dao.ExperimentDAO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -52,6 +49,17 @@ public class ExperimentResource {
     }
 
 
+
+    @POST
+    @Path("/{token}/showPhaseOfExperiments")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String showPhases(String phase, String id, @PathParam("token") String token){
+        ExperimentController experimentController = new ExperimentController();
+        System.out.println(phase);
+        return experimentController.showPhases(phase, id, token);
+    }
+
+
     /**
      * Shows a single experiment to a user requesting it
      *
@@ -80,7 +88,6 @@ public class ExperimentResource {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showAllExperimentHashmap();
     }
-    
 
     /**
      * @author Anthony Scheeres
@@ -92,29 +99,4 @@ public class ExperimentResource {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showAllExperimentJson();
     }
-
-
-//TODO CYRIEL NEEDS TO CLEAN THIS UP
-//
-//    /**
-//     *@author Cyriel van der Raaf
-//     */
-//    @POST
-//    @Path("/{token}/createProject")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public String openProject(ExperimentModel2 project, @PathParam("token") String token){
-//        ExperimentController experimentController = new ExperimentController();
-//        return projectsController.handleCreateProject(project, token);
-//    }
-//
-//    /**
-//     *@author Cyriel van der Raaf
-//     */
-//    @POST
-//    @Path("/{token}/createProject")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public String deleteProject(ExperimentModel2 project, @PathParam("token") String token){
-//        ExperimentController experimentController = new ExperimentController();
-//        return projectsController.deleteCreateProject(project, token);
-//    }
 }
