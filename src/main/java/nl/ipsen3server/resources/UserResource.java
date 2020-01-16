@@ -12,6 +12,7 @@ import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
+import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.models.AccountModel;
 import nl.ipsen3server.models.Permission;
@@ -78,9 +79,9 @@ public class UserResource {
 	@POST
 	@Path("/{token}/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void removeUserModel(String u)  {
+	public Response removeUserModel(String u)  {
 		System.out.println("Username " +  u);
-		accountController.handleRemoveUser(u);
+		return accountController.handleRemoveUser(u);
 	}
 
 
