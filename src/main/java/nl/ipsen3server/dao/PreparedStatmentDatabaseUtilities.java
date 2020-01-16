@@ -1,6 +1,7 @@
 package nl.ipsen3server.dao;
 
 import nl.ipsen3server.models.DatabaseModel;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;

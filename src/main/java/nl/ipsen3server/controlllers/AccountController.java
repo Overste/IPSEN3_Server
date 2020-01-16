@@ -255,7 +255,11 @@ private String askNewTokenForAccount(int id) {
     /**
      * @author Jesse Poleij, Anthony Scheeres
      */
-    public void handleRemoveUser(String u) {
-        userDatabase.removeUserModel(u);
+    public Response handleRemoveUser(String u) {
+        if(userDatabase.removeUserModel(u)) {
+            return Response.success;
+        } else {
+            return Response.fail;
+        }
     }
 }
