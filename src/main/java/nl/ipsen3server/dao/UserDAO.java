@@ -194,8 +194,7 @@ public class UserDAO {
                 succes = true;
             }
         } catch (Exception e) {
-            succes = false;
-            System.out.println("ILLEGAL");
+            e.getMessage();
         }
         return succes;
     }

@@ -38,8 +38,12 @@ public class PreparedStatmentDatabaseUtilities {
             } else if (updateQueries.contains(queryType)){
                 executeUpdate(databaseModel, query, data);
             }
+            if(queryType.equals("DELETE")) {
+                result = "Deleted";
+            }
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
+             result = null;
         }
         return result;
     }
