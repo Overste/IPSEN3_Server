@@ -51,6 +51,7 @@ public class LoggingController {
         AuthenticationController authenticationController = new AuthenticationController();
         int userId = authenticationController.tokenToUserId(token);
         logModel.setByUserId(userId);
+        logModel.setTimestamp();
         if(authenticationController.hasPermission(userId, "WRITE")){
             LoggingDAO loggingDAO = new LoggingDAO();
             loggingDAO.CreateLog(logModel);
