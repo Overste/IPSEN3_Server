@@ -26,7 +26,7 @@ public class ExperimentResource {
      * @param token The token of the user trying to delete a experiment
      * @return a string with the status of the DELETE REQUEST
      */
-    @GET
+    @DELETE
     @Path("/{token}/remove/{id}")
     public String deleteExperiment(@PathParam("token") String token, @PathParam("id") int id) {
         return experimentcontroller.deleteExperiment(id, token);

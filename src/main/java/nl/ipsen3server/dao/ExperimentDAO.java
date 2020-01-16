@@ -36,7 +36,7 @@ public class ExperimentDAO{
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "Delete was succesfull!";
+            return "succes";
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
