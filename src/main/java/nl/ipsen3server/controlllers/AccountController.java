@@ -209,20 +209,18 @@ private String askNewTokenForAccount(int id) {
  
  
  
+/**
+*
+* @author Anthony Scheeres
+*  
+* 
+*
+*/
+public boolean checkCredentials(String username,String username2, String password, String password2){
+return username.equals(username2) && password.equals(password2);
 
- /**
-  *
-  * @author Anthony Scheeres
-  *  
-  * 
-  *
-  */
- public boolean checkCredentials(String username,String username2, String password, String password2){
-  if (username.equals(username2) && password.equals(password2)) {
-   return true;
-  }
-  return false;
- }
+}
+
 
     /**
      * @author Anthony Scheeres
