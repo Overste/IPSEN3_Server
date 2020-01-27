@@ -176,7 +176,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
   */
  private String GetLoginInformation(String username, String username2, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
 	 String failtResponse = Response.fail.toString();
-	 System.out.println("token : "+token + "permission :"+permission );
+	 //"token : "+token + "permission :"+permission );
 	  if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
 	    	boolean hasPermission = permission.length() ==0;
 	    	if(hasPermission) {
@@ -188,7 +188,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 	    	
 	    	if (permission.contains("t") || token.equals(null)) {
 	    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));		 
-	    		 System.out.println("token : "+token + "new token :"+newToken );
+	    		 //"token : "+token + "new token :"+newToken );
 	    		  return newToken;
 	    	}
 	     return token;

@@ -47,9 +47,9 @@ public class UserDAO {
         try {
             hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
             List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
-            System.out.println(permission1);
+            //permission1);
             if(permission1.contains("t")) {
-               System.out.println("return true");
+               //"return true");
             	return true;
             }
             

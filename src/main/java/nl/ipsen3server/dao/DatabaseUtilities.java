@@ -71,10 +71,10 @@ public class DatabaseUtilities {
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
@@ -104,10 +104,10 @@ public class DatabaseUtilities {
             statement.executeUpdate(query);
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
@@ -204,7 +204,7 @@ public class DatabaseUtilities {
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver"); 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
 
             ResultSet resultSet = this.enterQuery(connection, query);
             JsonConverterUtilities jsonConverer = new JsonConverterUtilities();
@@ -212,7 +212,7 @@ public class DatabaseUtilities {
             connection.close();
             result = json;
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -238,13 +238,13 @@ public class DatabaseUtilities {
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver"); 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
             ResultSet resultSet = this.enterQuery(connection, query);
             HashMap < String, List < String >> hashmap = getTableContents(resultSet);
             connection.close();
             result =  hashmap;
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -280,7 +280,7 @@ public class DatabaseUtilities {
     private ResultSet enterQuery(Connection connection, String query) {
         Statement statement;
         ResultSet result = null;
-        System.out.println(query);
+        //query);
         try {
             statement = connection.createStatement();
             result = statement.executeQuery(query);
