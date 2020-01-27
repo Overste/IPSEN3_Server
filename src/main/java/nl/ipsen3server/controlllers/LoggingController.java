@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nl.ipsen3server.dao.LoggingDAO;
 import org.postgresql.util.PSQLException;
 
 import nl.ipsen3server.dao.DatabaseUtilities;
+import nl.ipsen3server.dao.LoggingDAO;
 import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
