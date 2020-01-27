@@ -1,10 +1,13 @@
 package nl.ipsen3server.controlllers;
 
 
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import nl.ipsen3server.dao.AuthenticationDAO;
 
+import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.User;
 
 /**
 *
@@ -14,6 +17,23 @@ import nl.ipsen3server.models.Response;
 *
 */
 public class AuthenticationController {
+
+	public String getUserRole(String token) {
+		int user_id = tokenToUserId(token);
+		UserDAO userDAO = new UserDAO();
+ 		String data = userDAO.getUserRole(user_id);
+
+ 		if(data.contains("SUPERUSER")) {
+			return "SUPERUSER";
+		} else if(data.contains("EMPLOYEE")) {
+			return "EMPLOYEE";
+		} else if(data.contains("USER")) {
+			return "USER";
+		} else {
+			return "UNCLASSIFIED";
+		}
+
+	}
 
 	 /**
 	  *
@@ -156,6 +176,11 @@ public boolean validate(String token, String permission) {
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
 
+	public int tokenToUserId(String token){
+		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
+		return authenticationDAO.tokenToUserId(token);
+	}
+
 
 	public boolean hasAdmin(String token) {
 		boolean d = validate(token, Permission.DELETE.toString());
@@ -166,5 +191,7 @@ public boolean validate(String token, String permission) {
 		
 		return d && r && w ;		
 	}
+
+
 
 }

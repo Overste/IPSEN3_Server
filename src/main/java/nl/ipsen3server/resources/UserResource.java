@@ -12,6 +12,7 @@ import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
+import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.models.AccountModel;
 import nl.ipsen3server.models.Permission;
@@ -22,7 +23,7 @@ import nl.ipsen3server.models.Permission;
 */
 @Path("/user")
 public class UserResource {
-	private UserController 	userController  = new 	UserController ();
+	private UserController 	userController  = new UserController ();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
@@ -48,7 +49,6 @@ public class UserResource {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}
-
 
 	/**
 	 * @author Anthony Scheeres
@@ -77,9 +77,10 @@ public class UserResource {
 	 */
 	@POST
 	@Path("/{token}/removeUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void removeUserModel(@PathParam("token") String employeeId, AccountModel u)  {
-		accountController.handleRemoveUser(u, employeeId);
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response removeUserModel(String u)  {
+		System.out.println("Username " +  u);
+		return accountController.handleRemoveUser(u);
 	}
 
 
@@ -94,6 +95,16 @@ public class UserResource {
 		return accountController.validateToken(token);
 	}
 
+	/**
+	 * @author Valerie Timmerman
+	 * Gets a users role in the application.
+	 */
+	@GET
+	@Path("/{token}/getRole")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getUserRole(@PathParam("token") String token) {
+		return authenticationController.getUserRole(token);
+	}
 
 	/**
 	 * @author Valerie Timmerman
@@ -177,7 +188,7 @@ public class UserResource {
 		return authenticationController.validate(token, Permission.DELETE.toString());
 
 	}
-	
+
 
 	/**
 	* @author Anthony Scheeres
@@ -188,8 +199,4 @@ public class UserResource {
 		return authenticationController.hasAdmin(token);
 
 	}
-	
-	
-	
-	
 }	

@@ -260,7 +260,11 @@ return username.equals(username2) && password.equals(password2);
     /**
      * @author Jesse Poleij, Anthony Scheeres
      */
-    public void handleRemoveUser(AccountModel u, String token) {
-        userDatabase.removeUserModel(u);
+    public Response handleRemoveUser(String u) {
+        if(userDatabase.removeUserModel(u)) {
+            return Response.success;
+        } else {
+            return Response.fail;
+        }
     }
 }
