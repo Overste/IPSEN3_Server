@@ -6,6 +6,8 @@ import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
 
+import java.util.List;
+
 
 /**
  * @author Anthony Schuijlenburg, Jesse Poleij
@@ -38,11 +40,11 @@ public class ExperimentController {
     }
 
 
-    public String showPhases(String phase, String id, String token){
+    public String showPhases(List[] phase, String token){
         String userID = tokenController.tokenToUserId(token);
         if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
             ExperimentDAO experimentDAO = new ExperimentDAO();
-            return experimentDAO.showExperimentPhase(phase, id);
+            return experimentDAO.showExperimentPhase(phase);
         } else{
             return "Not sufficient rights to delete this experiment";
         }
@@ -85,29 +87,27 @@ public class ExperimentController {
     }
 
 
+
+    /*
+     * @author Cyriel van der Raaf, Jesse Poleij
+     */
+    public String handleCreateProject(ExperimentModel project, String token){
+        //validate user
+/*        int employeeId = tokenController.tokenToUserId(token));
+
+        if (!authenticationController.hasSuperPermission(employeeId)) {
+            return Response.fail.toString();
+        }
+        //write model to db
+
+ */
+        experimentDAO.uploadExperiment(project);
+
+
+        return Response.fail.toString();
+    }
+
 //TODO CYRIEL NEEDS TO CLEAN THIS UP
-//
-//    /*
-//     * @author Cyriel van der Raaf
-//     */
-//    public String handleCreateProject(ExperimentModel2 project, String token){
-//        //validate user
-//        TokenController tokenController = new TokenController();
-//        AuthenticationController authenticationController = new AuthenticationController();
-//        long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-//
-//        if (!authenticationController.hasSuperPermission(employeeId)) {
-//            return Response.fail.toString();
-//        }
-//        //write model to db
-//        ExperimentDAO experimentDAO = new ExperimentDAO();
-//        experimentDAO.uploadExperiment(new ExperimentModel2());
-//
-//
-//        return Response.fail.toString();
-//    }
-//
-//
 //    /**
 //     *@author Cyriel van der Raaf
 //     */

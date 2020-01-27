@@ -4,9 +4,8 @@ import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
-import nl.ipsen3server.models.ExperimentModel2;
+import nl.ipsen3server.models.ExperimentModel;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +36,7 @@ public class ExperimentDAO{
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "Delete was succesfull!";
+            return "succes";
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
@@ -74,9 +73,11 @@ public class ExperimentDAO{
 
 
 
-    public String showExperimentPhase(String phase, String id){
+    public String showExperimentPhase(List[] phase){
         String query = String.format("UPDATE %s SET experiment_phase = ? WHERE experiment_id = ?)", tableName);
-        ArrayList<String> data = new ArrayList<>(Arrays.asList(phase, id));
+        ArrayList<String> data = new ArrayList<String>();
+        data.add(phase[0].toString());
+        data.add(phase[1].toString());
 
         return connectToDatabase(query, "UPDATE", data);
     }
@@ -132,40 +133,41 @@ public class ExperimentDAO{
      *
      * @param model
      */
-    public void uploadExperiment(ExperimentModel2 model) {
+    public void uploadExperiment(ExperimentModel model) {
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
         Enum status = model.getStatus();
 
-        String query = String.format("INSERT INTO %s (" +
+        String query = String.format("INSERT INTO %s VALUES (" +
                 "" + "?,"               // experiment_id
                 + "?,"                  // experiment_name
                 + "?,"                  // experiment_leader
                 + "?,"                  // experiment_description
                 + "?,"                  // organisation
                 + "?,"                  // business_owner
-                + "?,"                  // experiment_status
-                + "?,"                  // experiment_phase
-                + "?"                   // inovation_cost
+                + "?" + "::experiment_status,"                 // experiment_status
+                + "?" + "::experiment_phase,"                 // experiment_phase
+                + "?,"                   // inovation_cost
                 + "?"                   // money_source
                 + ");", tableName);
 
         //TODO Make the values above align with model
 
-        List<String> project2 = new ArrayList<>();
-        project2.add(String.format("%d", id));
-        project2.add(model.getName());
-        project2.add(model.getExperimentleaders());
-        project2.add(model.getDescription());
-        project2.add(model.getOrganisations());
-        project2.add(model.getBusinessOwners());
-        project2.add(String.format("%s", status));
-        project2.add(model.getInovationCost());
-        project2.add(model.getMoneySource());
+        ArrayList<String> createProject = new ArrayList<>();
+        createProject.add(String.format("%d", id));
+        createProject.add(model.getName());
+        createProject.add(model.getExperimentleaders());
+        createProject.add(model.getDescription());
+        createProject.add(model.getOrganisations());
+        createProject.add(model.getBusinessOwners());
+        createProject.add(String.format("%s", model.getStatussen()));
+        createProject.add(model.getFasens());
+        createProject.add(model.getInovationCost());
+        createProject.add(model.getMoneySource());
 
         try {
-            dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
+            dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }

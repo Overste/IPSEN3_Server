@@ -23,8 +23,7 @@ public class LogResource {
     @POST
     @Path("/{token}/upload/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createLog(@PathParam("token") String token) {
-        LogModel logModel = new LogModel();
+    public void createLog(LogModel logModel, @PathParam("token") String token) {
         loggingController.createLog(logModel, token);
     }
 

@@ -180,16 +180,24 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public void removeUserModel(String u) {
+    public boolean removeUserModel(String u) {
+
+        boolean succes = false;
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String deletequery =
                 String.format("DELETE FROM %s WHERE username = ?;", tableName);
         ArrayList<String> usernameArray = new ArrayList<>(Arrays.asList(u));
 
         try {
-            preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, deletequery, "DELETE", usernameArray);
+            String result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, deletequery, "DELETE", usernameArray);
+            if(result != null) {
+                succes = true;
+            }
         } catch (Exception e) {
+            succes = false;
+            System.out.println("ILLEGAL");
         }
+        return succes;
     }
 
 
