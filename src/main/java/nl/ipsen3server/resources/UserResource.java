@@ -23,7 +23,7 @@ import nl.ipsen3server.models.Permission;
 */
 @Path("/user")
 public class UserResource {
-	private UserController 	userController  = new 	UserController ();
+	private UserController 	userController  = new UserController ();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
@@ -49,7 +49,6 @@ public class UserResource {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}
-
 
 	/**
 	 * @author Anthony Scheeres
@@ -96,6 +95,16 @@ public class UserResource {
 		return accountController.validateToken(token);
 	}
 
+	/**
+	 * @author Valerie Timmerman
+	 * Gets a users role in the application.
+	 */
+	@GET
+	@Path("/{token}/getRole")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getUserRole(@PathParam("token") String token) {
+		return authenticationController.getUserRole(token);
+	}
 
 	/**
 	 * @author Valerie Timmerman

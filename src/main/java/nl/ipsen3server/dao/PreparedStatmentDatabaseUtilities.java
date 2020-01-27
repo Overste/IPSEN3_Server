@@ -36,11 +36,12 @@ public class PreparedStatmentDatabaseUtilities {
             if(queryType.equals("SELECT")) {
                 result = executeQuery(databaseModel, query, data);
             } else if (updateQueries.contains(queryType)){
-                executeUpdate(databaseModel, query, data);
+                result = executeUpdate(databaseModel, query, data);
             }
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
+        System.out.println("Result: " + result);
         return result;
     }
 
@@ -102,7 +103,9 @@ public class PreparedStatmentDatabaseUtilities {
      * @param data the data that needs to be filled into the prepared statement, needs to be all strings!
      * @return Nothing
      */
-    private void executeUpdate(DatabaseModel databaseModel, String query, ArrayList<String> data){
+    private String executeUpdate(DatabaseModel databaseModel, String query, ArrayList<String> data){
+
+        String result = null;
         String username = databaseModel.getUsername();
         String password = databaseModel.getPassword();
         int portNumber = databaseModel.getPortNumber();
@@ -122,7 +125,10 @@ public class PreparedStatmentDatabaseUtilities {
                 }
             }
 
-            preparedStatement.executeUpdate();
+            int response = preparedStatement.executeUpdate();
+            if(response == 1 || response == 2) {
+                result = "Succes";
+            }
 
         } catch (SQLException e) {
             System.out.println(query);
@@ -131,6 +137,7 @@ public class PreparedStatmentDatabaseUtilities {
             System.out.println(query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
+        return result;
     }
 
     private String createUrl(int portNumber, String databaseName, String hostName) {

@@ -194,12 +194,10 @@ public class UserDAO {
                 succes = true;
             }
         } catch (Exception e) {
-            succes = false;
-            System.out.println("ILLEGAL");
+            e.getMessage();
         }
         return succes;
     }
-
 
     public boolean updateUserRole(long id, String role) {
         boolean succes = false;
@@ -220,6 +218,26 @@ public class UserDAO {
             e.getMessage();
         }
         return succes;
+    }
+
+    public String getUserRole(int id) {
+        String result = null;
+
+        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        String getQuery =
+                String.format("SELECT user_role FROM %s WHERE user_id=?", tableName);
+
+        ArrayList<String> variables = new ArrayList<>();
+        variables.add(String.valueOf(id));
+
+        try {
+            result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, getQuery, "SELECT", variables);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return result;
+
     }
 
 }
