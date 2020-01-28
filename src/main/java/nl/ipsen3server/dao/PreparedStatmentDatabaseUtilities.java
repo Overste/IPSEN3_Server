@@ -301,7 +301,7 @@ public class PreparedStatmentDatabaseUtilities {
      * @return 
      * @throws Exception
      */
-    private static boolean isNumeric(String strNum) {
+    public static boolean isNumeric(String strNum) {
         try {
             double integer = Double.parseDouble(strNum);
         } catch (NumberFormatException | NullPointerException nfe) {
