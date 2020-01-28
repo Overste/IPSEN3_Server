@@ -11,6 +11,7 @@ import nl.ipsen3server.dao.AuthenticationDAO;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseModel;
 import nl.ipsen3server.models.UserModel;
 
 /**
@@ -101,11 +102,11 @@ public class UserController {
      * @return
      * @author Valerie Timmerman
      */
-    public String updateUserRole(long id, String userRole) {
+    public ResponseModel updateUserRole(long id, String userRole) {
         if (userDAO.updateUserRole(id, userRole)) {
-            return Response.success.toString();
+            return new ResponseModel(Response.success.toString());
         } else {
-            return Response.fail.toString();
+            return new ResponseModel(Response.fail.toString());
         }
     }
 

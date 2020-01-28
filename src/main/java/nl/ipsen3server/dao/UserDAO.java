@@ -205,7 +205,8 @@ public class UserDAO {
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String updateQuery =
                 String.format("UPDATE %s\r\n" +
-                        "SET user_role=?::user_role WHERE user_id=?", tableName);
+                        "SET user_role=?::user_role WHERE user_id=?",
+                        tableName);
 
         List<String> variables = new ArrayList<>();
         variables.add(role);
