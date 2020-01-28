@@ -1,13 +1,11 @@
 package nl.ipsen3server.controlllers;
 
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import nl.ipsen3server.dao.AuthenticationDAO;
 
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
-import nl.ipsen3server.models.User;
 
 /**
 *
@@ -90,10 +88,8 @@ public class AuthenticationController {
 	  */
 	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		if (authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString())){
-			return true;
-		}
-		return false;
+		return authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString());
+		
 	}
 	 /**
 	  *
@@ -157,7 +153,7 @@ public boolean validate(String token, String permission) {
 
 		String resultset = authenticationDAO.userIDtoUsername(userID);
 
-		System.out.println(resultset);
+		//resultset);
 
 
 	}

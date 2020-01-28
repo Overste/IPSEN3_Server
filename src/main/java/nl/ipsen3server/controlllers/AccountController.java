@@ -176,7 +176,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
   */
  private String GetLoginInformation(String username, String username2, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
 	 String failtResponse = Response.fail.toString();
-	 System.out.println("token : "+token + "permission :"+permission );
+	 //"token : "+token + "permission :"+permission );
 	  if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
 	    	boolean hasPermission = permission.length() ==0;
 	    	if(hasPermission) {
@@ -188,7 +188,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 	    	
 	    	if (permission.contains("t") || token.equals(null)) {
 	    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));		 
-	    		 System.out.println("token : "+token + "new token :"+newToken );
+	    		 //"token : "+token + "new token :"+newToken );
 	    		  return newToken;
 	    	}
 	     return token;
@@ -206,20 +206,21 @@ private String askNewTokenForAccount(int id) {
 	  userDatabase.changeToken(newToken, id);
 	  return newToken;
 }
+ 
+ 
+ 
+/**
+*
+* @author Anthony Scheeres
+*  
+* 
+*
+*/
+public boolean checkCredentials(String username,String username2, String password, String password2){
+return username.equals(username2) && password.equals(password2);
 
- /**
-  *
-  * @author Anthony Scheeres
-  *  
-  * 
-  *
-  */
- public boolean checkCredentials(String username,String username2, String password, String password2){
-  if (username.equals(username2) && password.equals(password2)) {
-   return true;
-  }
-  return false;
- }
+}
+
 
     /**
      * @author Anthony Scheeres

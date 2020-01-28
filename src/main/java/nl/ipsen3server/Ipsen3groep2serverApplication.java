@@ -89,7 +89,7 @@ class Ipsen3groep2serverApplication extends Application<Configuration> {
 	        	
 	        	mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 	        	ServerModel server = mapper.readValue(new File(path), ServerModel.class);
-	            System.out.println(ReflectionToStringBuilder.toString(server,ToStringStyle.MULTI_LINE_STYLE));
+	            //ReflectionToStringBuilder.toString(server,ToStringStyle.MULTI_LINE_STYLE));
 	            ApplicationController i = new ApplicationController();
 	            i.add(server, p);
 	            System.out.print(server);
@@ -102,7 +102,7 @@ class Ipsen3groep2serverApplication extends Application<Configuration> {
 	    		mailController.createNewMailModel("****@gmail.com", "******", serverModel);
 	    		// Write object as YAML file
 	    		String yaml = mapper.writeValueAsString(serverModel);
-	    		System.out.println(yaml);
+	    		//yaml);
 	    		y.writeFileToDocuments(folder, file, yaml);
 	        }
 	    }

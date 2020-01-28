@@ -32,7 +32,7 @@ public class UserController {
         if (!authenticationController.hasReadPermission(employeeId)) {
             return Response.fail.toString();
         }
-        System.out.println("success");
+        //"success");
         return userDAO.showUsers();
 
     }
@@ -114,13 +114,13 @@ public class UserController {
      * @author Anthony Scheeres
      */
     public String giveResourceByPermission(boolean hasPermissionRead) throws Exception {
-        System.out.println("handleShowUsers " + hasPermissionRead);
+        //"handleShowUsers " + hasPermissionRead);
         if (hasPermissionRead) {
-            System.out.println("show users");
+            //"show users");
 
             return userDAO.showUsers();
         }
-        System.out.println("don't show users");
+        //"don't show users");
         return Response.fail.toString();
     }
 
