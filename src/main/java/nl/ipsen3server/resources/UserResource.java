@@ -12,10 +12,7 @@ import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
-import nl.ipsen3server.models.Response;
-import nl.ipsen3server.models.UserModel;
-import nl.ipsen3server.models.AccountModel;
-import nl.ipsen3server.models.Permission;
+import nl.ipsen3server.models.*;
 
 
 /**
@@ -111,8 +108,8 @@ public class UserResource {
 	 */
 	@PUT
 	@Path("/{token}/{id}/{user_role}/updateUserRole")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseModel updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
 		return userController.updateUserRole(id, userRole);
 	}
 
