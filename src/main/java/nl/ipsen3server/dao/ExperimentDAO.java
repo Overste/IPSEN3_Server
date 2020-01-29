@@ -4,11 +4,11 @@ import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -72,16 +72,19 @@ public class ExperimentDAO{
     }
 
 
+    /**
+     * Updates a single experiment phase value from the database.
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @return a query statement that updates the database.
+     */
+    public String showExperimentPhase(BoxModel phaseChange){
+        String query = String.format("UPDATE %s SET experiment_phase = '%s' WHERE experiment_id = %s;", tableName, phaseChange.getPhase(), phaseChange.getId());
 
-    public String showExperimentPhase(List[] phase){
-        String query = String.format("UPDATE %s SET experiment_phase = ? WHERE experiment_id = ?)", tableName);
-        ArrayList<String> data = new ArrayList<String>();
-        data.add(phase[0].toString());
-        data.add(phase[1].toString());
-
-        return connectToDatabase(query, "UPDATE", data);
+        return  connectToDatabase(query, "UPDATE");
     }
-
 
     /**
      * Makes a local reference point for talking with PreparedStatementDatabaseUtilities.

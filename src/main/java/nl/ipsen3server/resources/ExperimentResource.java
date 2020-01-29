@@ -3,11 +3,10 @@ package nl.ipsen3server.resources;
 
 import nl.ipsen3server.controlllers.ExperimentController;
 import nl.ipsen3server.dao.ExperimentDAO;
-import nl.ipsen3server.models.ExperimentModel;
+import nl.ipsen3server.models.BoxModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 /**
  * @author AnthonySchuijlenburg, AnthonyScheeres
@@ -51,16 +50,23 @@ public class ExperimentResource {
     }
 
 
-
+    /**
+     * gets values of boxModel
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @param token the token of the user trying to acces the experiments
+     * @return a JSON of experiment phase and id from the database
+     */
     @POST
     @Path("/{token}/showPhaseOfExperiments")
-    @Consumes(MediaType.TEXT_PLAIN)
-    public String showPhases(List[] phase, @PathParam("token") String token){
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String showPhases(BoxModel phaseChange, @PathParam("token") String token){
         ExperimentController experimentController = new ExperimentController();
-        System.out.println(phase);
-        return experimentController.showPhases(phase, token);
+        return experimentController.showPhases(phaseChange, token);
     }
-
 
     /**
      * Shows a single experiment to a user requesting it
