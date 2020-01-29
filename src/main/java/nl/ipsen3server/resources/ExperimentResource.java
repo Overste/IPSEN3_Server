@@ -51,7 +51,7 @@ public class ExperimentResource {
 
 
     /**
-     * gets values of boxModel
+     * gets values of boxModel.
      *
      * @author CyrielvdRaaf
      *
