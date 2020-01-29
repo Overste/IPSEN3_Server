@@ -11,6 +11,7 @@ import nl.ipsen3server.models.RestApiModel;
 import nl.ipsen3server.models.User;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.dao.PermissionDAO;
+import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.AccountModel;
 
@@ -84,16 +85,27 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     /**
      * @author Anthony Scheeres
      */
-    public boolean checkInputValide(String email, String password) {
+    public boolean checkInputValide(UserModel u) {
+    	
+    	String email = u.getEmail(); 
+    	String password = u.getPassword();
         MailController m = new MailController();
+        boolean response = true;
+        
         if (!m.isValidEmailAddress(email)) {
-            return false;
+        	response= false;
         }
 
         if (password.length() == 0) {
-            return false;
+        	response= false;
         }
-        return true;
+        
+        if (PreparedStatmentDatabaseUtilities.isNumeric(u.getUsername())){
+        	response= false;
+        }
+        
+        
+        return response;
     }
 
 
@@ -103,7 +115,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
      */
     public String handleCreateUserModel2(UserModel u) throws Exception {
     	String fail = Response.fail.toString();
-        if (!checkInputValide(u.getEmail(), u.getPassword())) {
+        if (!checkInputValide(u)) {
             return fail;
         }
    
