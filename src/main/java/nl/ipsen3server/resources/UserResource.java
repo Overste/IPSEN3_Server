@@ -76,6 +76,7 @@ public class UserResource {
 	@Path("/{token}/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeUserModel(String u)  {
+		System.out.println("Username " +  u);
 		return accountController.handleRemoveUser(u);
 	}
 

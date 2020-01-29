@@ -17,7 +17,8 @@ import nl.ipsen3server.models.Response;
 public class AuthenticationController {
 
 	public String getUserRole(String token) {
-		int user_id = tokenToUserId(token);
+		TokenController tokenController = new TokenController();
+		int user_id = Integer.parseInt(tokenController.tokenToUserId(token));
 		UserDAO userDAO = new UserDAO();
  		String data = userDAO.getUserRole(user_id);
 
@@ -172,10 +173,7 @@ public boolean validate(String token, String permission) {
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
 
-	public int tokenToUserId(String token){
-		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.tokenToUserId(token);
-	}
+
 
 
 	public boolean hasAdmin(String token) {
