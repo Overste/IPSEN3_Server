@@ -83,10 +83,10 @@ public class PreparedStatmentDatabaseUtilities {
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
@@ -131,10 +131,10 @@ public class PreparedStatmentDatabaseUtilities {
             }
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return result;
@@ -215,7 +215,7 @@ public class PreparedStatmentDatabaseUtilities {
         //     Class.forName("org.postgresql.Driver"); 
 
         try  {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
             Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
@@ -243,7 +243,7 @@ public class PreparedStatmentDatabaseUtilities {
             }
 
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -270,26 +270,26 @@ public class PreparedStatmentDatabaseUtilities {
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver"); 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
             for (int index = 0; index < values.size(); index++) {
                 counter = index + 1;
-                System.out.println(values.get(index));
+                //values.get(index));
                 if (isNumeric(values.get(index))) {
                     pstmt.setInt(counter, Integer.parseInt(values.get(index)));
                 } else {
                     pstmt.setString(counter, values.get(index));
                 }
             }
-            System.out.println(pstmt);
+            //pstmt);
             ResultSet r = pstmt.executeQuery();
             DatabaseUtilities g = new DatabaseUtilities();
             HashMap < String, List < String >> hashmap = g.getTableContents(r);
             connection.close();
             result = hashmap;
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -301,7 +301,7 @@ public class PreparedStatmentDatabaseUtilities {
      * @return 
      * @throws Exception
      */
-    private static boolean isNumeric(String strNum) {
+    public static boolean isNumeric(String strNum) {
         try {
             double integer = Double.parseDouble(strNum);
         } catch (NumberFormatException | NullPointerException nfe) {

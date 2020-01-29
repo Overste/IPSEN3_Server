@@ -11,6 +11,7 @@ import nl.ipsen3server.models.RestApiModel;
 import nl.ipsen3server.models.User;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.dao.PermissionDAO;
+import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.AccountModel;
 
@@ -84,16 +85,27 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     /**
      * @author Anthony Scheeres
      */
-    public boolean checkInputValide(String email, String password) {
+    public boolean checkInputValide(UserModel u) {
+    	
+    	String email = u.getEmail(); 
+    	String password = u.getPassword();
         MailController m = new MailController();
+        boolean response = true;
+        
         if (!m.isValidEmailAddress(email)) {
-            return false;
+        	response= false;
         }
 
         if (password.length() == 0) {
-            return false;
+        	response= false;
         }
-        return true;
+        
+        if (PreparedStatmentDatabaseUtilities.isNumeric(u.getUsername())){
+        	response= false;
+        }
+        
+        
+        return response;
     }
 
 
@@ -103,7 +115,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
      */
     public String handleCreateUserModel2(UserModel u) throws Exception {
     	String fail = Response.fail.toString();
-        if (!checkInputValide(u.getEmail(), u.getPassword())) {
+        if (!checkInputValide(u)) {
             return fail;
         }
    
@@ -176,7 +188,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
   */
  private String GetLoginInformation(String username, String username2, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
 	 String failtResponse = Response.fail.toString();
-	 System.out.println("token : "+token + "permission :"+permission );
+	 //"token : "+token + "permission :"+permission );
 	  if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
 	    	boolean hasPermission = permission.length() ==0;
 	    	if(hasPermission) {
@@ -188,7 +200,7 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
 	    	
 	    	if (permission.contains("t") || token.equals(null)) {
 	    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));		 
-	    		 System.out.println("token : "+token + "new token :"+newToken );
+	    		 //"token : "+token + "new token :"+newToken );
 	    		  return newToken;
 	    	}
 	     return token;
@@ -206,20 +218,21 @@ private String askNewTokenForAccount(int id) {
 	  userDatabase.changeToken(newToken, id);
 	  return newToken;
 }
+ 
+ 
+ 
+/**
+*
+* @author Anthony Scheeres
+*  
+* 
+*
+*/
+public boolean checkCredentials(String username,String username2, String password, String password2){
+return username.equals(username2) && password.equals(password2);
 
- /**
-  *
-  * @author Anthony Scheeres
-  *  
-  * 
-  *
-  */
- public boolean checkCredentials(String username,String username2, String password, String password2){
-  if (username.equals(username2) && password.equals(password2)) {
-   return true;
-  }
-  return false;
- }
+}
+
 
     /**
      * @author Anthony Scheeres

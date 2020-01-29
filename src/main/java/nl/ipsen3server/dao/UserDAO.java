@@ -47,9 +47,9 @@ public class UserDAO {
         try {
             hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
             List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
-            System.out.println(permission1);
+            //permission1);
             if(permission1.contains("t")) {
-               System.out.println("return true");
+               //"return true");
             	return true;
             }
             
@@ -205,7 +205,8 @@ public class UserDAO {
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String updateQuery =
                 String.format("UPDATE %s\r\n" +
-                        "SET user_role=?::user_role WHERE user_id=?", tableName);
+                        "SET user_role=?::user_role WHERE user_id=?",
+                        tableName);
 
         List<String> variables = new ArrayList<>();
         variables.add(role);
