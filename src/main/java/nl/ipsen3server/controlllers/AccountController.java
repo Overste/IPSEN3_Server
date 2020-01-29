@@ -38,7 +38,15 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     public void giveRead2(String username) throws Exception {
         permissionDatabase.giveRead(username);
     }
-
+    public String handleCheckLogin(UserModel u) {
+    	try {
+    		return checkLogin(u);
+    	} catch (Exception e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	return Response.fail.toString();
+    }
 
     /**
      * @author Anthony Scheeres
