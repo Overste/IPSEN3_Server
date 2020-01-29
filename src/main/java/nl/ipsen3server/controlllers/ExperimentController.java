@@ -115,25 +115,4 @@ public class ExperimentController {
         return Response.fail.toString();
     }
 
-//TODO CYRIEL NEEDS TO CLEAN THIS UP
-//    /**
-//     *@author Cyriel van der Raaf
-//     */
-//    public String deleteCreateProject(ExperimentModel2 project, String token){
-//        //validate user
-//        TokenController tokenController = new TokenController();
-//        AuthenticationController authenticationController = new AuthenticationController();
-//        long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-//
-//        if (!authenticationController.hasSuperPermission(employeeId)) {
-//            return Response.fail.toString();
-//        }
-//
-//        //project delete model
-//        ExperimentDAO experimentDAO = new ExperimentDAO();
-//        experimentDAO.deleteExperiment(new ExperimentModel2());
-//
-//
-//        return Response.fail.toString();
-//    }
 }
