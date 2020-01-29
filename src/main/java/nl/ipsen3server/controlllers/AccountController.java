@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.RestApiModel;
 import nl.ipsen3server.models.User;
 import nl.ipsen3server.models.UserModel;
+import nl.ipsen3server.models.ValidateEmailModel;
 import nl.ipsen3server.dao.PermissionDAO;
 import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
@@ -26,7 +28,7 @@ public class AccountController {
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 private UserDAO userDatabase = new UserDAO();
 private PermissionDAO permissionDatabase = new PermissionDAO();
-
+String domain = "OM.NL";
 
 
 
@@ -249,26 +251,75 @@ return username.equals(username2) && password.equals(password2);
     public String validateToken(String token) throws Exception {
         MailController mailController = new MailController();
         HashMap<String, List<String>> data = mailController.getTokens();
-        String domain = "OM.NL";
+        String response = Response.fail.toString();
+       
+        
+        //loop over database records
         for (int i = 0; i < data.get(User.token.toString()).size(); i++) {
-        	String email = data.get(User.email.toString()).get(i);
-        	String tokenFromDatabase = data.get(User.token.toString()).get(i);
+        	String email = data.get(User.email.toString()).get(i); //get mail from hashmap
+        	String tokenFromDatabase = data.get(User.token.toString()).get(i); //get token  from hashmap
+        	String username = data.get(User.username.toString()).get(i); //use username to uniquely identify a user 
+        	String yourDomain = getDomeinNameFromMail(email.toUpperCase()); //get domain from email
         	
-        	
-            if (email != null && tokenFromDatabase != null) {
-                if (token.equals(tokenFromDatabase)) {
-                	String yourDomain = getDomeinNameFromMail(email.toUpperCase());
-                    if ( yourDomain.equals(domain)) {
-                    	String accountModel = data.get(User.username.toString()).get(i); //use username to uniquely identify a user 
-                        giveRead2(accountModel);
-                        return Response.success.toString();
-                    } else return "domein invalid, should be: " + domain;
-                }
-            }
-        }
-        return Response.fail.toString();
+        	ValidateEmailModel validateEmailModel = new ValidateEmailModel(email, tokenFromDatabase, username, yourDomain, token);
+        	response = isGivePermissionIfTokenValid(validateEmailModel);
     }
+        return response ;
+        
+        
+    }
+    
+    /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+    public String isGivePermissionIfTokenValid(	ValidateEmailModel validateEmailModel) throws Exception {
+    	
+    	String email = validateEmailModel.getEmail(); 
+    	String tokenFromDatabase = validateEmailModel.getTokenFromDatabase();
+    	String username = validateEmailModel.getUsername(); 
+    	String yourDomain = validateEmailModel.getYourDomain(); 
+    	String token = validateEmailModel.getToken();
+    	 String response = Response.fail.toString();
 
+         String role = "UNCLASSIFIED";
+    	 boolean isNullInput = email != null && tokenFromDatabase != null; 
+    	 
+    	if (isNullInput) {
+    		
+            if (token.equals(tokenFromDatabase)) {
+            	
+                if ( yourDomain.equals(domain)) {
+                
+                	//give read permissions
+                	giveRead2(username);
+                    role = "USER";
+      
+                    response = Response.success.toString();
+                } 
+                
+                else response ="domein invalid, should be: " + domain.toLowerCase();
+            
+            }
+
+            givePermissionToThisAccount(token, role);
+            
+        }   return response;
+    }
+ 
+    
+    
+    /**
+     * @author Anthony Scheeres
+     */
+    public void givePermissionToThisAccount(String token, String role) {
+    	UserDAO userDAO= new UserDAO();
+		TokenController tokkenController = new TokenController();
+		
+		long employeeId = Long.parseLong(tokkenController.tokenToUserId(token));
+    	userDAO.updateUserRole(employeeId, role);
+    }
+    
     /**
      * @author Anthony Scheeres
      */
@@ -287,4 +338,16 @@ return username.equals(username2) && password.equals(password2);
             return Response.fail;
         }
     }
+    
+    
+	public String handleValidateToken(String token) {
+		String response = Response.fail.toString();
+	try {
+		return validateToken(token);
+	} catch (Exception e) {
+
+		 LOGGER.log(Level.SEVERE, "Error occur", e);
+	}
+	return response;
+	}
 }

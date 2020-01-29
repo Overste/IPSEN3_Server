@@ -88,8 +88,8 @@ public class UserResource {
 	 */
 	@GET
 	@Path("/{token}/token")
-	public String validateToken(@PathParam("token") String token) throws Exception{
-		return accountController.validateToken(token);
+	public String validateToken(@PathParam("token") String token) {
+		return accountController.handleValidateToken(token);
 	}
 
 	/**
