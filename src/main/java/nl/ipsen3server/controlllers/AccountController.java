@@ -251,28 +251,29 @@ return username.equals(username2) && password.equals(password2);
     public String validateToken(String token) throws Exception {
         MailController mailController = new MailController();
         HashMap<String, List<String>> data = mailController.getTokens();
-
-   	 String response = Response.fail.toString();
+        String response = Response.fail.toString();
        
         
-        
+        //loop over database records
         for (int i = 0; i < data.get(User.token.toString()).size(); i++) {
-        	String email = data.get(User.email.toString()).get(i);
-        	String tokenFromDatabase = data.get(User.token.toString()).get(i);
+        	String email = data.get(User.email.toString()).get(i); //get mail from hashmap
+        	String tokenFromDatabase = data.get(User.token.toString()).get(i); //get token  from hashmap
         	String username = data.get(User.username.toString()).get(i); //use username to uniquely identify a user 
-        	String yourDomain = getDomeinNameFromMail(email.toUpperCase());
+        	String yourDomain = getDomeinNameFromMail(email.toUpperCase()); //get domain from email
         	
         	ValidateEmailModel validateEmailModel = new ValidateEmailModel(email, tokenFromDatabase, username, yourDomain, token);
-        	
-         response = isTokenValid(validateEmailModel);
+        	response = isGivePermissionIfTokenValid(validateEmailModel);
     }
         return response ;
         
         
     }
     
-    
-    public String isTokenValid(	ValidateEmailModel validateEmailModel) throws Exception {
+    /**
+     * @author Anthony Scheeres
+     * @throws Exception 
+     */
+    public String isGivePermissionIfTokenValid(	ValidateEmailModel validateEmailModel) throws Exception {
     	
     	String email = validateEmailModel.getEmail(); 
     	String tokenFromDatabase = validateEmailModel.getTokenFromDatabase();
@@ -282,21 +283,23 @@ return username.equals(username2) && password.equals(password2);
     	 String response = Response.fail.toString();
 
          String role = "UNCLASSIFIED";
+    	 boolean isNullInput = email != null && tokenFromDatabase != null; 
     	 
-    	 
-    	if (email != null && tokenFromDatabase != null) {
+    	if (isNullInput) {
+    		
             if (token.equals(tokenFromDatabase)) {
+            	
                 if ( yourDomain.equals(domain)) {
                 
                 	//give read permissions
                 	giveRead2(username);
                     role = "USER";
-                    
-                    
-                    
+      
                     response = Response.success.toString();
-                } else response ="domein invalid, should be: " + domain.toLowerCase();
+                } 
                 
+                else response ="domein invalid, should be: " + domain.toLowerCase();
+            
             }
 
             givePermissionToThisAccount(token, role);
@@ -335,4 +338,16 @@ return username.equals(username2) && password.equals(password2);
             return Response.fail;
         }
     }
+    
+    
+	public String handleValidateToken(String token) {
+		String response = Response.fail.toString();
+	try {
+		return validateToken(token);
+	} catch (Exception e) {
+
+		 LOGGER.log(Level.SEVERE, "Error occur", e);
+	}
+	return response;
+	}
 }
