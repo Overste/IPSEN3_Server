@@ -52,6 +52,10 @@ public class AuthenticationDAO {
     }
 
 
+
+    /**
+     * @author Anthony Scheeres
+     */
     public boolean checkForSuperUser(int userId){
         String query = String.format("SELECT user_role FROM %s WHERE user_id = ?", tableName);
         ArrayList data = new ArrayList(Arrays.asList(Integer.toString(userId)));

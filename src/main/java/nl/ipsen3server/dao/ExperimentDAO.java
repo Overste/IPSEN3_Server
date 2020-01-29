@@ -4,11 +4,11 @@ import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -36,7 +36,7 @@ public class ExperimentDAO{
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "Delete was succesfull!";
+            return "succes";
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
@@ -71,6 +71,20 @@ public class ExperimentDAO{
         return connectToDatabase(query, "SELECT", data);
     }
 
+
+    /**
+     * Updates a single experiment phase value from the database.
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @return a query statement that updates the database.
+     */
+    public String showExperimentPhase(BoxModel phaseChange){
+        String query = String.format("UPDATE %s SET experiment_phase = '%s' WHERE experiment_id = %s;", tableName, phaseChange.getPhase(), phaseChange.getId());
+
+        return  connectToDatabase(query, "UPDATE");
+    }
 
     /**
      * Makes a local reference point for talking with PreparedStatementDatabaseUtilities.
@@ -126,38 +140,40 @@ public class ExperimentDAO{
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
-        Enum status = model.getStatus();
 
-        String query = String.format("INSERT INTO %s (" +
+        String query = String.format("INSERT INTO %s VALUES (" +
                 "" + "?,"               // experiment_id
                 + "?,"                  // experiment_name
                 + "?,"                  // experiment_leader
                 + "?,"                  // experiment_description
                 + "?,"                  // organisation
                 + "?,"                  // business_owner
-                + "?,"                  // experiment_status
-                + "?,"                  // experiment_phase
-                + "?"                   // inovation_cost
+                + "?" + "::experiment_status,"                 // experiment_status
+                + "?" + "::experiment_phase,"                 // experiment_phase
+                + "?,"                   // inovation_cost
                 + "?"                   // money_source
                 + ");", tableName);
 
+        System.out.println(query);
+
         //TODO Make the values above align with model
 
-        List<String> project2 = new ArrayList<>();
-        project2.add(String.format("%d", id));
-        project2.add(model.getName());
-        project2.add(model.getExperimentleaders());
-        project2.add(model.getDescription());
-        project2.add(model.getOrganisations());
-        project2.add(model.getBusinessOwners());
-        project2.add(String.format("%s", status));
-        project2.add(model.getInovationCost());
-        project2.add(model.getMoneySource());
+        ArrayList<String> createProject = new ArrayList<>();
+        createProject.add(String.format("%d", id));
+        createProject.add(model.getName());
+        createProject.add(model.getExperimentleaders());
+        createProject.add(model.getDescription());
+        createProject.add(model.getOrganisations());
+        createProject.add(model.getBusinessOwners());
+        createProject.add(String.format("%s", model.getStatussen()));
+        createProject.add(model.getFasens());
+        createProject.add(model.getInovationCost());
+        createProject.add(model.getMoneySource());
 
         try {
-            dbUtilities.connectDatabaseHashmap(databaseModel, query, project2);
+            dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
-             LOGGER.log(Level.SEVERE, "Error occur", e);
+             LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
         }
     }
 
@@ -179,5 +195,48 @@ public class ExperimentDAO{
         String query = String.format("SELECT * FROM %s;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         return d.connectThisDatabase2(databaseModel, query);
+    }
+
+    /**
+     * @author Jesse poleij
+     * @param model
+     */
+    public void updateExperiment(ExperimentModel model) {
+        PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
+
+        long id = model.getId();
+
+        String query = String.format("UPDATE %s set " +
+                "experiment_name =" + "?," +
+                "experiment_leader =" + "?," +
+                "experiment_description =" + "?," +
+                "organisation =" + "?," +
+                "business_owner =" + "?," +
+                "experiment_status =" + "?" + "::experiment_status, " +
+                "experiment_phase =" + "?" + "::experiment_phase, " +
+                "inovation_cost =" + "?," +
+                "money_source =" + "?" +
+                "WHERE experiment_id =" + "?" // money_source
+                + ";", tableName);
+
+        //TODO Make the values above align with model
+
+        ArrayList<String> updateProject = new ArrayList<>();
+        updateProject.add(model.getName());
+        updateProject.add(model.getExperimentleaders());
+        updateProject.add(model.getDescription());
+        updateProject.add(model.getOrganisations());
+        updateProject.add(model.getBusinessOwners());
+        updateProject.add(String.format("%s", model.getStatussen()));
+        updateProject.add(model.getFasens());
+        updateProject.add(model.getInovationCost());
+        updateProject.add(model.getMoneySource());
+        updateProject.add(String.format("%d", id));
+
+        try {
+            dbUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Update project error occur", e);
+        }
     }
 }

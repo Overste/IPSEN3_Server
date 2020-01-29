@@ -47,9 +47,9 @@ public class UserDAO {
         try {
             hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
             List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
-            System.out.println(permission1);
+            //permission1);
             if(permission1.contains("t")) {
-               System.out.println("return true");
+               //"return true");
             	return true;
             }
             
@@ -180,19 +180,24 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public void removeUserModel(AccountModel u) {
+    public boolean removeUserModel(String u) {
+
+        boolean succes = false;
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String deletequery =
-                String.format("DELETE FROM %s\r\n" +
-                        "WHERE username = ?;", tableName);
-        List<String> usernameArray = new ArrayList<String>();
-        usernameArray.add(u.getUsername());
-        try {
-            preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, deletequery, usernameArray, false);
-        } catch (Exception e) {
-        }
-    }
+                String.format("DELETE FROM %s WHERE username = ?;", tableName);
+        ArrayList<String> usernameArray = new ArrayList<>(Arrays.asList(u));
 
+        try {
+            String result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, deletequery, "DELETE", usernameArray);
+            if(result != null) {
+                succes = true;
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return succes;
+    }
 
     public boolean updateUserRole(long id, String role) {
         boolean succes = false;
@@ -200,7 +205,8 @@ public class UserDAO {
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
         String updateQuery =
                 String.format("UPDATE %s\r\n" +
-                        "SET user_role=?::user_role WHERE user_id=?", tableName);
+                        "SET user_role=?::user_role WHERE user_id=?",
+                        tableName);
 
         List<String> variables = new ArrayList<>();
         variables.add(role);
@@ -213,6 +219,26 @@ public class UserDAO {
             e.getMessage();
         }
         return succes;
+    }
+
+    public String getUserRole(int id) {
+        String result = null;
+
+        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        String getQuery =
+                String.format("SELECT user_role FROM %s WHERE user_id=?", tableName);
+
+        ArrayList<String> variables = new ArrayList<>();
+        variables.add(String.valueOf(id));
+
+        try {
+            result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, getQuery, "SELECT", variables);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return result;
+
     }
 
 }

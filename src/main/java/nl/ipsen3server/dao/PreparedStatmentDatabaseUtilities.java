@@ -2,6 +2,7 @@ package nl.ipsen3server.dao;
 
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DatabaseModel;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,11 +36,12 @@ public class PreparedStatmentDatabaseUtilities {
             if(queryType.equals("SELECT")) {
                 result = executeQuery(databaseModel, query, data);
             } else if (updateQueries.contains(queryType)){
-                executeUpdate(databaseModel, query, data);
+                result = executeUpdate(databaseModel, query, data);
             }
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
+        System.out.println("Result: " + result);
         return result;
     }
 
@@ -81,10 +83,10 @@ public class PreparedStatmentDatabaseUtilities {
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
@@ -101,7 +103,9 @@ public class PreparedStatmentDatabaseUtilities {
      * @param data the data that needs to be filled into the prepared statement, needs to be all strings!
      * @return Nothing
      */
-    private void executeUpdate(DatabaseModel databaseModel, String query, ArrayList<String> data){
+    private String executeUpdate(DatabaseModel databaseModel, String query, ArrayList<String> data){
+
+        String result = null;
         String username = databaseModel.getUsername();
         String password = databaseModel.getPassword();
         int portNumber = databaseModel.getPortNumber();
@@ -121,15 +125,19 @@ public class PreparedStatmentDatabaseUtilities {
                 }
             }
 
-            preparedStatement.executeUpdate();
+            int response = preparedStatement.executeUpdate();
+            if(response == 1 || response == 2) {
+                result = "Succes";
+            }
 
         } catch (SQLException e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            System.out.println(query);
+            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
+        return result;
     }
 
     private String createUrl(int portNumber, String databaseName, String hostName) {
@@ -207,7 +215,7 @@ public class PreparedStatmentDatabaseUtilities {
         //     Class.forName("org.postgresql.Driver"); 
 
         try  {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
             Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
@@ -235,7 +243,7 @@ public class PreparedStatmentDatabaseUtilities {
             }
 
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -262,26 +270,26 @@ public class PreparedStatmentDatabaseUtilities {
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver"); 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Java JDBC PostgreSQL: " + databaseName);
+            //"Java JDBC PostgreSQL: " + databaseName);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
             for (int index = 0; index < values.size(); index++) {
                 counter = index + 1;
-                System.out.println(values.get(index));
+                //values.get(index));
                 if (isNumeric(values.get(index))) {
                     pstmt.setInt(counter, Integer.parseInt(values.get(index)));
                 } else {
                     pstmt.setString(counter, values.get(index));
                 }
             }
-            System.out.println(pstmt);
+            //pstmt);
             ResultSet r = pstmt.executeQuery();
             DatabaseUtilities g = new DatabaseUtilities();
             HashMap < String, List < String >> hashmap = g.getTableContents(r);
             connection.close();
             result = hashmap;
         } catch (SQLException err) {
-            System.out.println("Connection failure.");
+            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
@@ -293,7 +301,7 @@ public class PreparedStatmentDatabaseUtilities {
      * @return 
      * @throws Exception
      */
-    private static boolean isNumeric(String strNum) {
+    public static boolean isNumeric(String strNum) {
         try {
             double integer = Double.parseDouble(strNum);
         } catch (NumberFormatException | NullPointerException nfe) {
