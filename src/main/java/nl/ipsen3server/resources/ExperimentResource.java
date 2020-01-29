@@ -4,6 +4,7 @@ package nl.ipsen3server.resources;
 import nl.ipsen3server.controlllers.ExperimentController;
 import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.ExperimentModel;
+import nl.ipsen3server.models.BoxModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -26,7 +27,7 @@ public class ExperimentResource {
      * @param token The token of the user trying to delete a experiment
      * @return a string with the status of the DELETE REQUEST
      */
-    @GET
+    @DELETE
     @Path("/{token}/remove/{id}")
     public String deleteExperiment(@PathParam("token") String token, @PathParam("id") int id) {
         return experimentcontroller.deleteExperiment(id, token);
@@ -49,6 +50,24 @@ public class ExperimentResource {
         return experimentController.showExperiments(token);
     }
 
+
+    /**
+     * gets values of boxModel.
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @param token the token of the user trying to acces the experiments
+     * @return a JSON of experiment phase and id from the database
+     */
+    @POST
+    @Path("/{token}/showPhaseOfExperiments")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String showPhases(BoxModel phaseChange, @PathParam("token") String token){
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.showPhases(phaseChange, token);
+    }
 
     /**
      * Shows a single experiment to a user requesting it
@@ -78,7 +97,7 @@ public class ExperimentResource {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showAllExperimentHashmap();
     }
-    
+
 
     /**
      * @author Anthony Scheeres

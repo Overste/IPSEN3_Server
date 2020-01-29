@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nl.ipsen3server.dao.LoggingDAO;
 import org.postgresql.util.PSQLException;
 
 import nl.ipsen3server.dao.DatabaseUtilities;
+import nl.ipsen3server.dao.LoggingDAO;
 import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
@@ -33,7 +33,8 @@ public class LoggingController {
      */
     public String showlogs(int experimentId, String token){
         AuthenticationController authenticationController = new AuthenticationController();
-        int userId = authenticationController.tokenToUserId(token);
+        TokenController tokenController = new TokenController();
+        int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         if(authenticationController.hasPermission(userId, "READ")){
             LoggingDAO loggingDAO = new LoggingDAO();
             return loggingDAO.showLogs(experimentId);
@@ -49,8 +50,10 @@ public class LoggingController {
      */
     public void createLog(LogModel logModel, String token) {
         AuthenticationController authenticationController = new AuthenticationController();
-        int userId = authenticationController.tokenToUserId(token);
+        TokenController tokenController = new TokenController();
+		int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         logModel.setByUserId(userId);
+        logModel.setTimestamp();
         if(authenticationController.hasPermission(userId, "WRITE")){
             LoggingDAO loggingDAO = new LoggingDAO();
             loggingDAO.CreateLog(logModel);

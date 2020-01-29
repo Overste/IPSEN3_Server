@@ -12,9 +12,7 @@ import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
-import nl.ipsen3server.models.UserModel;
-import nl.ipsen3server.models.AccountModel;
-import nl.ipsen3server.models.Permission;
+import nl.ipsen3server.models.*;
 
 
 /**
@@ -22,7 +20,7 @@ import nl.ipsen3server.models.Permission;
 */
 @Path("/user")
 public class UserResource {
-	private UserController 	userController  = new 	UserController ();
+	private UserController 	userController  = new UserController ();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
@@ -49,7 +47,6 @@ public class UserResource {
 		return userDatabase.showOneUserPermission(id);
 	}
 
-
 	/**
 	 * @author Anthony Scheeres
 	 */
@@ -67,8 +64,8 @@ public class UserResource {
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String checkLogin(UserModel u) throws Exception  {
-		return accountController.checkLogin(u);
+	public String checkLogin(UserModel u) {
+		return accountController.handleCheckLogin(u);
 	}
 
 
@@ -78,9 +75,9 @@ public class UserResource {
 	@POST
 	@Path("/{token}/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void removeUserModel(String u)  {
+	public Response removeUserModel(String u)  {
 		System.out.println("Username " +  u);
-		accountController.handleRemoveUser(u);
+		return accountController.handleRemoveUser(u);
 	}
 
 
@@ -91,18 +88,28 @@ public class UserResource {
 	 */
 	@GET
 	@Path("/{token}/token")
-	public String validateToken(@PathParam("token") String token) throws Exception{
-		return accountController.validateToken(token);
+	public String validateToken(@PathParam("token") String token) {
+		return accountController.handleValidateToken(token);
 	}
 
+	/**
+	 * @author Valerie Timmerman
+	 * Gets a users role in the application.
+	 */
+	@GET
+	@Path("/{token}/getRole")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getUserRole(@PathParam("token") String token) {
+		return authenticationController.getUserRole(token);
+	}
 
 	/**
 	 * @author Valerie Timmerman
 	 */
 	@PUT
 	@Path("/{token}/{id}/{user_role}/updateUserRole")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseModel updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
 		return userController.updateUserRole(id, userRole);
 	}
 

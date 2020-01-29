@@ -3,6 +3,7 @@ package nl.ipsen3server.controlllers;
 
 import nl.ipsen3server.dao.AuthenticationDAO;
 
+import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
 
@@ -14,6 +15,24 @@ import nl.ipsen3server.models.Response;
 *
 */
 public class AuthenticationController {
+
+	public String getUserRole(String token) {
+		TokenController tokenController = new TokenController();
+		int user_id = Integer.parseInt(tokenController.tokenToUserId(token));
+		UserDAO userDAO = new UserDAO();
+ 		String data = userDAO.getUserRole(user_id);
+
+ 		if(data.contains("SUPERUSER")) {
+			return "SUPERUSER";
+		} else if(data.contains("EMPLOYEE")) {
+			return "EMPLOYEE";
+		} else if(data.contains("USER")) {
+			return "USER";
+		} else {
+			return "UNCLASSIFIED";
+		}
+
+	}
 
 	 /**
 	  *
@@ -70,10 +89,8 @@ public class AuthenticationController {
 	  */
 	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		if (authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString())){
-			return true;
-		}
-		return false;
+		return authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString());
+		
 	}
 	 /**
 	  *
@@ -137,7 +154,7 @@ public boolean validate(String token, String permission) {
 
 		String resultset = authenticationDAO.userIDtoUsername(userID);
 
-		System.out.println(resultset);
+		//resultset);
 
 
 	}
@@ -157,10 +174,6 @@ public boolean validate(String token, String permission) {
 	}
 
 
-	public int tokenToUserId(String token){
-		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.tokenToUserId(token);
-	}
 
 
 	public boolean hasAdmin(String token) {
@@ -172,5 +185,7 @@ public boolean validate(String token, String permission) {
 		
 		return d && r && w ;		
 	}
+
+
 
 }

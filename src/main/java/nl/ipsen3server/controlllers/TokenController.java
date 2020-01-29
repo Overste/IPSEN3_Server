@@ -23,13 +23,11 @@ public class TokenController {
 		 return userDAO.getTokens();
 	 }
 	 
-	 
-	 private boolean isStringEmty(String token){
-		  if (token.length()!=0) {
-			  return true;
-		  }
-		  return false;
-	 }
+		 
+		 private boolean isStringEmty(String token){
+			  return token.length()!=0;	
+		 }
+		 
 	 
 	 
 	 
@@ -41,7 +39,7 @@ public class TokenController {
 		*looks if token exist in hashmap
 		*/
 		private String findValideTokenInHashmap(HashMap<String, List<String>> hashmap, String token) {
-		 //System.out.println(hashmap.get("token").get(0));
+		 ////hashmap.get("token").get(0));
 		 String result = null ;
 		 
 		 

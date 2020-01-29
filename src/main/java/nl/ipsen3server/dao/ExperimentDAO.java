@@ -4,11 +4,11 @@ import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
+import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -36,7 +36,7 @@ public class ExperimentDAO{
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "Delete was succesfull!";
+            return "succes";
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
@@ -71,6 +71,20 @@ public class ExperimentDAO{
         return connectToDatabase(query, "SELECT", data);
     }
 
+
+    /**
+     * Updates a single experiment phase value from the database.
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @return a query statement that updates the database.
+     */
+    public String showExperimentPhase(BoxModel phaseChange){
+        String query = String.format("UPDATE %s SET experiment_phase = '%s' WHERE experiment_id = %s;", tableName, phaseChange.getPhase(), phaseChange.getId());
+
+        return  connectToDatabase(query, "UPDATE");
+    }
 
     /**
      * Makes a local reference point for talking with PreparedStatementDatabaseUtilities.

@@ -2,6 +2,7 @@ package nl.ipsen3server.controlllers;
 
 import nl.ipsen3server.dao.AuthenticationDAO;
 import nl.ipsen3server.dao.ExperimentDAO;
+import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
@@ -35,6 +36,26 @@ public class ExperimentController {
         } else {
             return "Not sufficient rights to delete this experiment";
         }
+    }
+
+    /**
+     * This method tries to fetch the id and phase. Then uses the Token to checks if the user has the sufficient
+     * rights to do that. After that it tries to update the experiment.
+     *
+     * @author CyrielvdRaaf
+     *
+     * @param phaseChange
+     * @param token the token of the user trying to update an experiment.
+     * @return
+     */
+    public String showPhases(BoxModel phaseChange, String token){
+        String userID = tokenController.tokenToUserId(token);
+        if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
+            ExperimentDAO experimentDAO = new ExperimentDAO();
+            return experimentDAO.showExperimentPhase(phaseChange);
+        }
+
+        return "Not sufficient rights to change this experiment";
     }
 
 
@@ -102,25 +123,4 @@ public class ExperimentController {
         return Response.fail.toString();
     }
 
-//TODO CYRIEL NEEDS TO CLEAN THIS UP
-//    /**
-//     *@author Cyriel van der Raaf
-//     */
-//    public String deleteCreateProject(ExperimentModel2 project, String token){
-//        //validate user
-//        TokenController tokenController = new TokenController();
-//        AuthenticationController authenticationController = new AuthenticationController();
-//        long employeeId = Long.parseLong(tokenController.tokenToUserId(token));
-//
-//        if (!authenticationController.hasSuperPermission(employeeId)) {
-//            return Response.fail.toString();
-//        }
-//
-//        //project delete model
-//        ExperimentDAO experimentDAO = new ExperimentDAO();
-//        experimentDAO.deleteExperiment(new ExperimentModel2());
-//
-//
-//        return Response.fail.toString();
-//    }
 }
