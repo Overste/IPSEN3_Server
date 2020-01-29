@@ -172,10 +172,7 @@ public boolean validate(String token, String permission) {
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
 
-	public int tokenToUserId(String token){
-		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.tokenToUserId(token);
-	}
+
 
 
 	public boolean hasAdmin(String token) {

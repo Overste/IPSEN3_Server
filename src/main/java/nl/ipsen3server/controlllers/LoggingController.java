@@ -33,7 +33,8 @@ public class LoggingController {
      */
     public String showlogs(int experimentId, String token){
         AuthenticationController authenticationController = new AuthenticationController();
-        int userId = authenticationController.tokenToUserId(token);
+        TokenController tokenController = new TokenController();
+        int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         if(authenticationController.hasPermission(userId, "READ")){
             LoggingDAO loggingDAO = new LoggingDAO();
             return loggingDAO.showLogs(experimentId);
