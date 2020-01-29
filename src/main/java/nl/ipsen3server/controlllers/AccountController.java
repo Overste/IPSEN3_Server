@@ -42,8 +42,8 @@ private PermissionDAO permissionDatabase = new PermissionDAO();
     	try {
     		return checkLogin(u);
     	} catch (Exception e) {
-    		// TODO Auto-generated catch block
-    		e.printStackTrace();
+
+			 LOGGER.log(Level.SEVERE, "Error occur", e);
     	}
     	return Response.fail.toString();
     }
