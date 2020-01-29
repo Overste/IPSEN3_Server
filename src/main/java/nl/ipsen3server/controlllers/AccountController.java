@@ -280,20 +280,27 @@ return username.equals(username2) && password.equals(password2);
     	String yourDomain = validateEmailModel.getYourDomain(); 
     	String token = validateEmailModel.getToken();
     	 String response = Response.fail.toString();
+
+         String role = "UNCLASSIFIED";
+    	 
+    	 
     	if (email != null && tokenFromDatabase != null) {
             if (token.equals(tokenFromDatabase)) {
                 if ( yourDomain.equals(domain)) {
                 
                 	//give read permissions
                 	giveRead2(username);
-                    String role = "USER";
-                    givePermissionToThisAccount(token, role);
+                    role = "USER";
                     
                     
                     
                     response = Response.success.toString();
                 } else response ="domein invalid, should be: " + domain.toLowerCase();
+                
             }
+
+            givePermissionToThisAccount(token, role);
+            
         }   return response;
     }
  
