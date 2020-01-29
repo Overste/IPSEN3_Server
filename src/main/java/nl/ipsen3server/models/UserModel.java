@@ -17,7 +17,6 @@ public class UserModel {
 	private String email;
 	
 public UserModel() {
-		
 	}
 
 public UserModel(@NotNull String username, @NotNull String password, @Pattern(regexp = "^[0-9]*$") long id,
