@@ -3,6 +3,7 @@ package nl.ipsen3server.resources;
 
 import nl.ipsen3server.controlllers.ExperimentController;
 import nl.ipsen3server.dao.ExperimentDAO;
+import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.BoxModel;
 
 import javax.ws.rs.*;
@@ -107,5 +108,27 @@ public class ExperimentResource {
     public String showAllExperimentsJson() throws Exception {
         ExperimentDAO experimentDAO = new ExperimentDAO();
         return experimentDAO.showAllExperimentJson();
+    }
+
+
+    /**
+     *@author Cyriel van der Raaf, Jesse Poleij
+     */
+    @POST
+    @Path("/{token}/createProject")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String createProject(ExperimentModel project, @PathParam("token") String token){
+        System.out.println(project);
+        return experimentcontroller.handleCreateProject(project, token);
+    }
+
+    /**
+     *@author Jesse Poleij
+     */
+    @POST
+    @Path("/{token}/updateProject")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String deleteProject(ExperimentModel project, @PathParam("token") String token){
+        return experimentcontroller.handleUpdate(project, token);
     }
 }

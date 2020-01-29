@@ -140,7 +140,6 @@ public class ExperimentDAO{
         PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
 
         long id = model.getId();
-        Enum status = model.getStatus();
 
         String query = String.format("INSERT INTO %s VALUES (" +
                 "" + "?,"               // experiment_id
@@ -154,6 +153,8 @@ public class ExperimentDAO{
                 + "?,"                   // inovation_cost
                 + "?"                   // money_source
                 + ");", tableName);
+
+        System.out.println(query);
 
         //TODO Make the values above align with model
 
@@ -172,7 +173,7 @@ public class ExperimentDAO{
         try {
             dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
-             LOGGER.log(Level.SEVERE, "Error occur", e);
+             LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
         }
     }
 
@@ -194,5 +195,48 @@ public class ExperimentDAO{
         String query = String.format("SELECT * FROM %s;", tableName);
         DatabaseUtilities d = new DatabaseUtilities();
         return d.connectThisDatabase2(databaseModel, query);
+    }
+
+    /**
+     * @author Jesse poleij
+     * @param model
+     */
+    public void updateExperiment(ExperimentModel model) {
+        PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
+
+        long id = model.getId();
+
+        String query = String.format("UPDATE %s set " +
+                "experiment_name =" + "?," +
+                "experiment_leader =" + "?," +
+                "experiment_description =" + "?," +
+                "organisation =" + "?," +
+                "business_owner =" + "?," +
+                "experiment_status =" + "?" + "::experiment_status, " +
+                "experiment_phase =" + "?" + "::experiment_phase, " +
+                "inovation_cost =" + "?," +
+                "money_source =" + "?" +
+                "WHERE experiment_id =" + "?" // money_source
+                + ";", tableName);
+
+        //TODO Make the values above align with model
+
+        ArrayList<String> updateProject = new ArrayList<>();
+        updateProject.add(model.getName());
+        updateProject.add(model.getExperimentleaders());
+        updateProject.add(model.getDescription());
+        updateProject.add(model.getOrganisations());
+        updateProject.add(model.getBusinessOwners());
+        updateProject.add(String.format("%s", model.getStatussen()));
+        updateProject.add(model.getFasens());
+        updateProject.add(model.getInovationCost());
+        updateProject.add(model.getMoneySource());
+        updateProject.add(String.format("%d", id));
+
+        try {
+            dbUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Update project error occur", e);
+        }
     }
 }
