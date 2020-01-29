@@ -17,7 +17,8 @@ import nl.ipsen3server.models.Response;
 public class AuthenticationController {
 
 	public String getUserRole(String token) {
-		int user_id = tokenToUserId(token);
+		TokenController tokenController = new TokenController();
+		int user_id = Integer.parseInt(tokenController.tokenToUserId(token));
 		UserDAO userDAO = new UserDAO();
  		String data = userDAO.getUserRole(user_id);
 

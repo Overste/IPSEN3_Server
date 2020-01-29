@@ -50,7 +50,8 @@ public class LoggingController {
      */
     public void createLog(LogModel logModel, String token) {
         AuthenticationController authenticationController = new AuthenticationController();
-        int userId = authenticationController.tokenToUserId(token);
+        TokenController tokenController = new TokenController();
+		int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         logModel.setByUserId(userId);
         logModel.setTimestamp();
         if(authenticationController.hasPermission(userId, "WRITE")){
