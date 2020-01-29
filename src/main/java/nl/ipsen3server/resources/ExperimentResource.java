@@ -103,15 +103,13 @@ public class ExperimentResource {
         return experimentcontroller.handleCreateProject(project, token);
     }
 
-//TODO CYRIEL NEEDS TO CLEAN THIS UP
-//    /**
-//     *@author Cyriel van der Raaf
-//     */
-//    @POST
-//    @Path("/{token}/createProject")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public String deleteProject(ExperimentModel2 project, @PathParam("token") String token){
-//        ExperimentController experimentController = new ExperimentController();
-//        return projectsController.deleteCreateProject(project, token);
-//    }
+    /**
+     *@author Jesse Poleij
+     */
+    @POST
+    @Path("/{token}/updateProject")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String deleteProject(ExperimentModel project, @PathParam("token") String token){
+        return experimentcontroller.handleUpdate(project, token);
+    }
 }

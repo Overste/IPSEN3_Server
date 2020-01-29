@@ -74,8 +74,7 @@ public class ExperimentController {
     }
 
 
-
-    /*
+    /**
      * @author Cyriel van der Raaf, Jesse Poleij
      */
     public String handleCreateProject(ExperimentModel project, String token){
@@ -90,6 +89,15 @@ public class ExperimentController {
  */
         experimentDAO.uploadExperiment(project);
 
+
+        return Response.fail.toString();
+    }
+
+    /**
+     * @author Jesse Poleij
+     */
+    public String handleUpdate(ExperimentModel project, String token){
+        experimentDAO.updateExperiment(project);
 
         return Response.fail.toString();
     }
