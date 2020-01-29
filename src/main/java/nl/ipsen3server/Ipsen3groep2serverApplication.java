@@ -92,7 +92,6 @@ class Ipsen3groep2serverApplication extends Application<Configuration> {
 	            //ReflectionToStringBuilder.toString(server,ToStringStyle.MULTI_LINE_STYLE));
 	            ApplicationController i = new ApplicationController();
 	            i.add(server, p);
-	            System.out.print(server);
 	        } catch (Exception e1) {
 	        	 MailController mailController = new MailController();
 	        	ServerModel serverModel = e.createNewServer();
