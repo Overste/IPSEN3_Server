@@ -41,7 +41,6 @@ public class PreparedStatmentDatabaseUtilities {
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
-        System.out.println("Result: " + result);
         return result;
     }
 
