@@ -53,7 +53,7 @@ public class UserResource {
 	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUserModel(UserModel u ) throws Exception  {
+	public String createUserModel(UserModel u )   {
 		return accountController.handleCreateUserModel2(u);
 	}
 

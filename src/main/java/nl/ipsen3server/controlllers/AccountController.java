@@ -123,7 +123,7 @@ String domain = "OM.NL";
      * @author Anthony Scheeres
      * @throws Exception 
      */
-    public String handleCreateUserModel2(UserModel u) throws Exception {
+    public String handleCreateUserModel2(UserModel u)  {
     	String fail = Response.fail.toString();
         if (!checkInputValide(u)) {
             return fail;
@@ -132,7 +132,12 @@ String domain = "OM.NL";
             String token = createUserModel(u);
             
          
-					validateEmail(token, u.getEmail());
+					try {
+						validateEmail(token, u.getEmail());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 		
             
             if (!token.equals(null)) {   
