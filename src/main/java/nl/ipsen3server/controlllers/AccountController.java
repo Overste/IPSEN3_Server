@@ -66,30 +66,6 @@ String domain = "OM.NL";
         permissionDatabase.giveDelete(user);
     }
 
-    /**
-     * @author Anthony Scheeres
-     */
-    private String createUserModel(UserModel userModel) {
-        UserController r = new UserController();
-        HashMap<String, List<String>> hashmap;
-        String result = null;
-        try {
-			hashmap = userDatabase.getUsers();
-		
-        List<String> usernames = hashmap.get("username");
-        
-        if (r.checkIfUsernameExist(usernames, userModel.getUsername()) != true) {
-        	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
-        }
-        
-        
-        } catch (Exception e) {
-			// TODO Auto-generated catch block
-			 LOGGER.log(Level.SEVERE, "Error occur", e);
-		}
-        
-        return result;
-    }
 
 
     /**
@@ -121,30 +97,57 @@ String domain = "OM.NL";
 
     /**
      * @author Anthony Scheeres
-     * @throws Exception 
      */
-    public String handleCreateUserModel2(UserModel u)  {
+    private String createUserModel(UserModel userModel) throws Exception {
+        UserController r = new UserController();
+        HashMap<String, List<String>> hashmap;
+        String result = null;
+        hashmap = userDatabase.getUsers();
+        List<String> usernames = hashmap.get("username");
+        
+        if (r.checkIfUsernameExist(usernames, userModel.getUsername()) != true) {
+        	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
+        }
+        return result;
+    }
+
+
+ 
+
+
+    /**
+     * @author Anthony Scheeres
+     */
+    public String handleCreateUserModel2(UserModel u) {
     	String fail = Response.fail.toString();
-        if (!checkInputValide(u)) {
+    	AccountController credentialController = new AccountController();
+        if (!credentialController.checkInputValide(u)) {
             return fail;
         }
-   
-            String token = createUserModel(u);
-            
-         
-					try {
-						validateEmail(token, u.getEmail());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		
-            
-            if (!token.equals(null)) {   
-                return token;
-            }
-            return fail;
-      
+        
+        return handleFindValideTokenForAccount(u);
+    }
+
+    public String handleFindValideTokenForAccount(UserModel u) {
+    	String response = Response.fail.toString();
+        try {
+        	response = findValideTokenForAccount(u);
+        } catch (Exception e2) {
+			  LOGGER.log(Level.SEVERE, "Exception occur", e2);
+
+        }
+		  return response;
+    }
+    
+    
+    public String findValideTokenForAccount(UserModel u) throws Exception {
+    	String response = Response.fail.toString();
+    	   String token = createUserModel(u);
+           if (!token.equals(null)) {
+               validateEmail(token, u.getEmail());
+               response = token;
+           }
+           return response;
     }
 
 
