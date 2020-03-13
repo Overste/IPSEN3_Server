@@ -26,5 +26,4 @@ public class MailModel {
 		this.password = password;
 	}
 	
-	
 }
