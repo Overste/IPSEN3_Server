@@ -9,7 +9,6 @@ public class ApplicationModel {
 	private List<LogModel> logs;
 	@NotNull
 	private List<ServerModel> servers;
-	private List<OrganisationModel> organisaties;
 	private String name;
 	private UserModel currentUser;
 	public List<UserModel> getUsers() {
@@ -20,13 +19,11 @@ public ApplicationModel() {
 		
 	}
 	
-	public ApplicationModel(List<UserModel> users, List<LogModel> logs, @NotNull List<ServerModel> servers,
-			List<OrganisationModel> organisaties, String name, UserModel currentUser) {
+	public ApplicationModel(List<UserModel> users, List<LogModel> logs, @NotNull List<ServerModel> servers, String name, UserModel currentUser) {
 		super();
 		this.users = users;
 		this.logs = logs;
 		this.servers = servers;
-		this.organisaties = organisaties;
 		this.name = name;
 		this.currentUser = currentUser;
 	}
@@ -47,12 +44,6 @@ public ApplicationModel() {
 	}
 	public void setServers(List<ServerModel> servers) {
 		this.servers = servers;
-	}
-	public List<OrganisationModel> getOrganisaties() {
-		return organisaties;
-	}
-	public void setOrganisaties(List<OrganisationModel> organisaties) {
-		this.organisaties = organisaties;
 	}
 	public String getName() {
 		return name;
