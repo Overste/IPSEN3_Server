@@ -1,6 +1,6 @@
 package nl.ipsen3server.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Anthony Scheeres, Jesse
@@ -19,8 +19,7 @@ public enum Fasen {
 	@JsonProperty("KERKHOF")
 	KERKHOF,
 	@JsonProperty("VASTEDIENSTEN")
-	VASTEDIENSTEN;
-
+	VASTEDIENSTEN
 
 
 }

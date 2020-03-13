@@ -20,13 +20,13 @@ public class AuthenticationController {
 		TokenController tokenController = new TokenController();
 		int user_id = Integer.parseInt(tokenController.tokenToUserId(token));
 		UserDAO userDAO = new UserDAO();
- 		String data = userDAO.getUserRole(user_id);
+		String data = userDAO.getUserRole(user_id);
 
- 		if(data.contains("SUPERUSER")) {
+		if (data.contains("SUPERUSER")) {
 			return "SUPERUSER";
-		} else if(data.contains("EMPLOYEE")) {
+		} else if (data.contains("EMPLOYEE")) {
 			return "EMPLOYEE";
-		} else if(data.contains("USER")) {
+		} else if (data.contains("USER")) {
 			return "USER";
 		} else {
 			return "UNCLASSIFIED";
@@ -34,14 +34,10 @@ public class AuthenticationController {
 
 	}
 
-	 /**
-	  *
-	  * @author Anthony Scheeres
-	 * @throws Exception 
-	  *  
-	  * 
-	  *
-	  */
+	/**
+	 * @throws Exception
+	 * @author Anthony Scheeres
+	 */
 	public String handleGiveRead(String u, String token) throws Exception {
 		AccountController accountController = new AccountController();
 		TokenController tokkenController = new TokenController();
@@ -49,143 +45,52 @@ public class AuthenticationController {
 		if (!hasSuperPermission(employeeId)) {
 			return Response.fail.toString();
 		}
-		
-		
+
+
 		accountController.giveRead2(u);
-		return Response.success.toString();
-		}
-
-
-	 /**
-	  *
-	  * @author Anthony Scheeres
-	 * @return 
-	 * @throws Exception 
-	  *  
-	  * 
-	  *
-	  */
-	public String handleGiveWrite(String u,String token) throws Exception {
-		LoggingController loggingController = new LoggingController();
-		AccountController accountController = new AccountController();
-		TokenController tokkenController = new TokenController();
-		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
-		if (!hasSuperPermission(employeeId)) {
-			return Response.fail.toString();
-		}
-		
-		
-		accountController.giveWrite2(u);
 		return Response.success.toString();
 	}
 
 
-
-
-	 /**
-	  *
-	  * @author Anthony Scheeres 
-	  *
-	  */
+	/**
+	 * @author Anthony Scheeres
+	 */
 	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 		return authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString());
-		
+
 	}
-	 /**
-	  *
-	  * @author Anthony Scheeres 
-	  *
-	  */
+
+	/**
+	 * @author Anthony Scheeres
+	 */
 	public boolean hasReadPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 		return authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString());
-		
+
 	}
 
-
-
-	 /**
-	  *
-	  * @author Anthony Scheeres
-	 * @throws Exception 
-	  *
-	  */
-	public String handleGiveDelete(String u,String token) throws Exception {
-		LoggingController loggingController = new LoggingController();
-		AccountController accountController = new AccountController();
-		TokenController tokkenController = new TokenController();
-		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
-		if (!hasSuperPermission(employeeId)) {
-			return Response.fail.toString();
-		}
-		
-		
-		accountController.giveDelete2(u);
-		return Response.success.toString();
-	}
-
-
-
-/**
-*
-* @author Anthony Scheeres
- *  
-* 
-*
-*/
-public boolean validate(String token, String permission) {
-	TokenController tokenController = new TokenController();
-	AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-	int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
-	return authenticationDAO.checkUserPermission(employeeId, permission);
-}
-
-
-	
 	/**
-	*
-	* @author Jesse Poleij
-	*
-	*
-	*/
-	public void userIDtoUsername(String userID) {
+	 * @author Anthony Scheeres
+	 */
+	public boolean validate(String token, String permission) {
+		TokenController tokenController = new TokenController();
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-
-		String resultset = authenticationDAO.userIDtoUsername(userID);
-
-		//resultset);
-
-
+		int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
+		return authenticationDAO.checkUserPermission(employeeId, permission);
 	}
 
 	/**
 	 * takes in a userId and a permission and checks the database to see if this user has this permission
 	 *
-	 * @author AnthonySchuijlenburg
-	 *
-	 * @param userID The id of the user of which it's permissions need to be checked
+	 * @param userID     The id of the user of which it's permissions need to be checked
 	 * @param permission The permission it need te checked against
 	 * @return true or false depending on the users rights
+	 * @author AnthonySchuijlenburg
 	 */
-	public boolean hasPermission(int userID, String permission) {
+	boolean hasPermission(int userID, String permission) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
-
-
-
-
-	public boolean hasAdmin(String token) {
-		boolean d = validate(token, Permission.DELETE.toString());
-		
-		boolean r = validate(token, Permission.READ.toString());
-		
-		boolean w = validate(token, Permission.WRITE.toString());
-		
-		return d && r && w ;		
-	}
-
-
 
 }

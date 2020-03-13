@@ -239,7 +239,6 @@ public class PreparedStatmentDatabaseUtilities {
                 result= jsonConverter.convertToJSON(r).toString();
                 connection.close();
                 pstmt.close();
-                ;
             }
 
         } catch (SQLException err) {

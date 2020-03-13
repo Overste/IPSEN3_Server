@@ -1,5 +1,6 @@
 package nl.ipsen3server.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import nl.ipsen3server.controlllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
@@ -158,17 +159,7 @@ public class ExperimentDAO{
 
         //TODO Make the values above align with model
 
-        ArrayList<String> createProject = new ArrayList<>();
-        createProject.add(String.format("%d", id));
-        createProject.add(model.getName());
-        createProject.add(model.getExperimentleaders());
-        createProject.add(model.getDescription());
-        createProject.add(model.getOrganisations());
-        createProject.add(model.getBusinessOwners());
-        createProject.add(String.format("%s", model.getStatussen()));
-        createProject.add(model.getFasens());
-        createProject.add(model.getInovationCost());
-        createProject.add(model.getMoneySource());
+        ArrayList<String> createProject = createExperimentList(id, model);
 
         try {
             dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
@@ -221,17 +212,7 @@ public class ExperimentDAO{
 
         //TODO Make the values above align with model
 
-        ArrayList<String> updateProject = new ArrayList<>();
-        updateProject.add(model.getName());
-        updateProject.add(model.getExperimentleaders());
-        updateProject.add(model.getDescription());
-        updateProject.add(model.getOrganisations());
-        updateProject.add(model.getBusinessOwners());
-        updateProject.add(String.format("%s", model.getStatussen()));
-        updateProject.add(model.getFasens());
-        updateProject.add(model.getInovationCost());
-        updateProject.add(model.getMoneySource());
-        updateProject.add(String.format("%d", id));
+        ArrayList<String> updateProject = createExperimentList(id, model);
 
         try {
             dbUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
@@ -239,4 +220,23 @@ public class ExperimentDAO{
             LOGGER.log(Level.SEVERE, "Update project error occur", e);
         }
     }
+
+    private ArrayList<String> createExperimentList(long id, ExperimentModel experimentModel) {
+
+        ArrayList<String> experiment = new ArrayList<>();
+
+        experiment.add(String.format("%d", id));
+        experiment.add(experimentModel.getName());
+        experiment.add(experimentModel.getExperimentleaders());
+        experiment.add(experimentModel.getDescription());
+        experiment.add(experimentModel.getOrganisations());
+        experiment.add(experimentModel.getBusinessOwners());
+        experiment.add(String.format("%s", experimentModel.getStatussen()));
+        experiment.add(experimentModel.getFasens());
+        experiment.add(experimentModel.getInovationCost());
+        experiment.add(experimentModel.getMoneySource());
+
+        return experiment;
+    }
+
 }

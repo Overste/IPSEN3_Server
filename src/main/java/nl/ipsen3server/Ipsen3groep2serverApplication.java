@@ -37,7 +37,7 @@ class Ipsen3groep2serverApplication extends Application<Configuration> {
 	 */ 
 	    public static void main(String[] args) throws Exception {
 
-	        new nl.ipsen3server.Ipsen3groep2serverApplication().run(new String[] { "server" });
+	        new nl.ipsen3server.Ipsen3groep2serverApplication().run("server");
 	        DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0).getPassword();
 	    }
 

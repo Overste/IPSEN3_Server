@@ -20,7 +20,7 @@ import nl.ipsen3server.models.*;
 */
 @Path("/user")
 public class UserResource {
-	private UserController 	userController  = new UserController ();
+	private UserController userController = new UserController();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
 
@@ -42,7 +42,7 @@ public class UserResource {
 	@GET
 	@Path("/{token}/{id}/showSingleUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUser(@PathParam("token") String token, @PathParam("id") int id){
+	public String showUser(@PathParam("token") String token, @PathParam("id") int id) {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}
@@ -53,7 +53,7 @@ public class UserResource {
 	@POST
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUserModel(UserModel u )   {
+	public String createUserModel(UserModel u) {
 		return accountController.handleCreateUserModel2(u);
 	}
 
@@ -75,16 +75,16 @@ public class UserResource {
 	@POST
 	@Path("/{token}/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeUserModel(String u)  {
-		System.out.println("Username " +  u);
+	public Response removeUserModel(String u) {
+		System.out.println("Username " + u);
 		return accountController.handleRemoveUser(u);
 	}
 
 
 	/**
-	 * @author Anthony Scheeres
 	 * @return
 	 * @throws Exception
+	 * @author Anthony Scheeres
 	 */
 	@GET
 	@Path("/{token}/token")
@@ -113,87 +113,4 @@ public class UserResource {
 		return userController.updateUserRole(id, userRole);
 	}
 
-
-//----------------------------------------------------------------------------------------------------------------------
-//	These functions are not used
-//----------------------------------------------------------------------------------------------------------------------
-
-
-	/**
-	 * @author Anthony Scheeres
-	 */
-	@POST
-	@Path("/{token}/giveRead")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveRead(@PathParam("token") String token, AccountModel u) throws Exception  {
-		return authenticationController.handleGiveRead(u.getUsername(), token);
-	}
-
-
-	/**
-	 * @author Anthony Scheeres
-	 */
-	@POST
-	@Path("/{token}/giveWrite")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveWrite(@PathParam("token") String token,AccountModel u) throws Exception  {
-		return authenticationController.handleGiveWrite(u.getUsername(), token);
-	}
-
-
-	/**
-	* @author Anthony Scheeres
-	 * @throws Exception
-	*/
-	@POST
-	@Path("/{token}/giveDelete")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String giveDelete(@PathParam("token") String token,AccountModel u) throws Exception  {
-		TokenController tokenController = new TokenController();
-
-		return authenticationController.handleGiveDelete(u.getUsername(), token);
-	}
-
-
-	/**
-	* @author Anthony Scheeres
-	*/
-	@POST
-	@Path("/{token}/hasRead")
-	public Object hasRead(@PathParam("token") String token)  {
-		return authenticationController.validate(token,Permission.READ.toString());
-	}
-
-
-	/**
-	* @author Anthony Scheeres
-	*/
-	@POST
-	@Path("/{token}/hasWrite")
-	public Object hasWrite(@PathParam("token") String token)  {
-		return authenticationController.validate(token, Permission.WRITE.toString());
-
-	}
-
-
-	/**
-	* @author Anthony Scheeres
-	*/
-	@POST
-	@Path("/{token}/hasDelete")
-	public boolean hasDelete(@PathParam("token") String token) {
-		return authenticationController.validate(token, Permission.DELETE.toString());
-
-	}
-
-
-	/**
-	* @author Anthony Scheeres
-	*/
-	@POST
-	@Path("/{token}/hasAdmin")
-	public boolean hasAdmin(@PathParam("token") String token) {
-		return authenticationController.hasAdmin(token);
-
-	}
-}	
+}
