@@ -1,26 +1,15 @@
 package nl.ipsen3server.dao;
 
-
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import nl.ipsen3server.models.ApplicationModel;
-import nl.ipsen3server.models.RefrigeratorModel;
-import nl.ipsen3server.models.UserModel;
-import nl.ipsen3server.models.DashboardModel;
-
 /**
  * @author Anthony Scheeres
  */
 class JsonConverterUtilities {
-
 
     /**
      * @author Anthony Scheeres
@@ -41,52 +30,4 @@ class JsonConverterUtilities {
         return json;
     }
 
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public RefrigeratorModel convertToRefrigeratorModel(String jsonInString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(jsonInString, RefrigeratorModel.class);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public ApplicationModel convertToAppModel(String jsonInString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(jsonInString, ApplicationModel.class);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public String convertToJson(ApplicationModel applicationModel) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(applicationModel);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public String convertToJson(DashboardModel dashboardModel) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dashboardModel);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public DashboardModel convertToDashboardModel(String jsonInString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(jsonInString, DashboardModel.class);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public UserModel convertToUserModel(String jsonInString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(jsonInString, UserModel.class);
-    }
 }
