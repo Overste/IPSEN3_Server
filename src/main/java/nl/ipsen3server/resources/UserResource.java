@@ -1,15 +1,11 @@
 package nl.ipsen3server.resources;
 
-import java.util.logging.Logger;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
 import nl.ipsen3server.controlllers.AccountController;
 import nl.ipsen3server.controlllers.AuthenticationController;
-import nl.ipsen3server.controlllers.LoggerController;
-import nl.ipsen3server.controlllers.TokenController;
 import nl.ipsen3server.controlllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.*;
@@ -20,6 +16,7 @@ import nl.ipsen3server.models.*;
 */
 @Path("/user")
 public class UserResource {
+
 	private UserController userController = new UserController();
 	private AccountController accountController = new AccountController();
 	private AuthenticationController authenticationController = new AuthenticationController();
@@ -54,9 +51,8 @@ public class UserResource {
 	@Path("/createUser")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUserModel(UserModel u) {
-		return accountController.handleCreateUserModel2(u);
+		return accountController.handleCreateUserModel(u);
 	}
-
 
 	/**
 	 * @author Anthony Scheeres
@@ -79,7 +75,6 @@ public class UserResource {
 		System.out.println("Username " + u);
 		return accountController.handleRemoveUser(u);
 	}
-
 
 	/**
 	 * @return

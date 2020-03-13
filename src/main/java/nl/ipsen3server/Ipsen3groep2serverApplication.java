@@ -1,6 +1,5 @@
 package nl.ipsen3server;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,12 +25,11 @@ import javax.swing.*;
 import java.io.File;
 import java.util.EnumSet;
 
-
-
 /**
  * @author Anthony Scheeres
  */
 class Ipsen3groep2serverApplication extends Application<Configuration> {
+	
 	/**
 	 * @author Anthony Scheeres
 	 */ 

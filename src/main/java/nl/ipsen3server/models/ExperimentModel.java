@@ -34,7 +34,7 @@ public class ExperimentModel {
     @JsonProperty("experimentleaders")
     private String experimentleaders;
     @JsonProperty("fasens")
-    private String fasens;
+    private String fases;
     @JsonProperty("statussen")
     private String statussen;
     @JsonProperty("businessOwners")
@@ -52,11 +52,11 @@ public class ExperimentModel {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Enum getFasen() {
+    public Enum getFases() {
         return fasen;
     }
 
-    public void setFasen(Enum fasen) {
+    public void setFases(Enum fasen) {
         this.fasen = fasen;
     }
 
@@ -118,12 +118,12 @@ public class ExperimentModel {
 
     @JsonProperty("fasens")
     public String getFasens() {
-        return fasens;
+        return fases;
     }
 
     @JsonProperty("fasens")
-    public void setFasens(String fasens) {
-        this.fasens = fasens;
+    public void setFases(String fases) {
+        this.fases = fases;
     }
 
     @JsonProperty("statussen")

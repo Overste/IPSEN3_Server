@@ -15,7 +15,6 @@ import nl.ipsen3server.models.ValidateEmailModel;
 import nl.ipsen3server.dao.PermissionDAO;
 import nl.ipsen3server.dao.PreparedStatmentDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
-import nl.ipsen3server.models.AccountModel;
 
 
 /**
@@ -89,8 +88,7 @@ String domain = "OM.NL";
         if (PreparedStatmentDatabaseUtilities.isNumeric(u.getUsername())){
         	response= false;
         }
-        
-        
+
         return response;
     }
 
@@ -105,20 +103,25 @@ String domain = "OM.NL";
         hashmap = userDatabase.getUsers();
         List<String> usernames = hashmap.get("username");
         
-        if (r.checkIfUsernameExist(usernames, userModel.getUsername()) != true) {
+        if (!this.checkIfUsernameExist(usernames, userModel.getUsername())) {
         	  result =  userDatabase.insertHandlerUser(hashmap, userModel);
         }
         return result;
     }
 
-
- 
-
+    private boolean checkIfUsernameExist(List<String> list, String username) {
+        for (String name : list) {
+            if (name.equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * @author Anthony Scheeres
      */
-    public String handleCreateUserModel2(UserModel u) {
+    public String handleCreateUserModel(UserModel u) {
     	String fail = Response.fail.toString();
     	AccountController credentialController = new AccountController();
         if (!credentialController.checkInputValide(u)) {
@@ -267,7 +270,7 @@ return username.equals(username2) && password.equals(password2);
         	String email = data.get(User.email.toString()).get(i); //get mail from hashmap
         	String tokenFromDatabase = data.get(User.token.toString()).get(i); //get token  from hashmap
         	String username = data.get(User.username.toString()).get(i); //use username to uniquely identify a user 
-        	String yourDomain = getDomeinNameFromMail(email.toUpperCase()); //get domain from email
+        	String yourDomain = getDomainNameFromMail(email.toUpperCase()); //get domain from email
         	
         	ValidateEmailModel validateEmailModel = new ValidateEmailModel(email, tokenFromDatabase, username, yourDomain, token);
         	response = isGivePermissionIfTokenValid(validateEmailModel);
@@ -281,7 +284,7 @@ return username.equals(username2) && password.equals(password2);
      * @author Anthony Scheeres
      * @throws Exception 
      */
-    public String isGivePermissionIfTokenValid(	ValidateEmailModel validateEmailModel) throws Exception {
+    public String isGivePermissionIfTokenValid(ValidateEmailModel validateEmailModel) throws Exception {
     	
     	String email = validateEmailModel.getEmail(); 
     	String tokenFromDatabase = validateEmailModel.getTokenFromDatabase();
@@ -331,7 +334,7 @@ return username.equals(username2) && password.equals(password2);
     /**
      * @author Anthony Scheeres
      */
-    private String getDomeinNameFromMail(String email){
+    private String getDomainNameFromMail(String email){
     	return email.split("@")[1];
     }
     

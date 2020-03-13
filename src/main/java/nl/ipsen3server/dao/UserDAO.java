@@ -34,34 +34,6 @@ public class UserDAO {
         return databaseUtilities.connectThisDatabase(databaseModel, query);
     }
 
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public boolean hasPermission(String permission, String u, String query2) {
-        PreparedStatmentDatabaseUtilities dUtilities = new PreparedStatmentDatabaseUtilities();
-        HashMap<String, List<String>> hashMap;
-        List<String> array = new ArrayList<String>();
-        array.add(u);
-
-        try {
-            hashMap = dUtilities.connectDatabaseHashmap(databaseModel, query2, array);
-            List<String> permission1 = hashMap.get("has_" + permission.toLowerCase());
-            //permission1);
-            if(permission1.contains("t")) {
-               //"return true");
-            	return true;
-            }
-            
-          
-            
-        } catch (Exception e) {
-        	 LOGGER.log(Level.SEVERE, "Error occur", e);
-        }
-        return false;
-    }
-
-
     /**
      * @author Anthony Scheeres
      */
@@ -75,7 +47,6 @@ public class UserDAO {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
-
 
     /**
      * @author Anthony Scheeres
@@ -139,7 +110,7 @@ public class UserDAO {
         PreparedStatmentDatabaseUtilities pUtilites = new PreparedStatmentDatabaseUtilities();
         MailController mailController = new MailController();
         UserController userController = new UserController();
-        long id = userController.createUserId2(e1.get("user_id"));
+        long id = userController.createUserId(e1.get("user_id"));
         String query2 = String.format("INSERT INTO %s (username, password, user_id, email, token) VALUES (" +
                 "?," +
                 "?," +
@@ -157,25 +128,6 @@ public class UserDAO {
         pUtilites.connectDatabaseJson(databaseModel, query2, variables, false);
         return token;
     }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public void removeUserModel2(AccountModel u) {
-        PreparedStatmentDatabaseUtilities f = new PreparedStatmentDatabaseUtilities();
-        String query =
-                "DELETE FROM application_users\r\n" +
-                        "WHERE username = ? ;";
-        List<String> f1 = new ArrayList<String>();
-        f1.add(u.getUsername());
-        try {
-            f.connectDatabaseJson(databaseModel, query, f1, false);
-        } catch (Exception e) {
-
-        }
-    }
-
 
     /**
      * @author Anthony Scheeres
