@@ -11,15 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-
 /**
  * @author Jesse Poleij, Anthony Schuijlenburg, Cyriel van der Raaf
  */
 public class ExperimentDAO{
     private String tableName = "experiments";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-
-
 
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
@@ -43,7 +40,6 @@ public class ExperimentDAO{
         }
     }
 
-
     /**
      * Requests all experiments from the database, is only called after permission checks!
      *
@@ -56,11 +52,10 @@ public class ExperimentDAO{
         return connectToDatabase(query, "SELECT");
     }
 
-
     /**
      * Requests a single specific experiment from the database, is only called after permission checks!
      *
-     * @author AnthonySchuijlenburg
+     * @author Anthony Schuijlenburg
      *
      * @param id the id of the experiment that needs to be showed
      * @return the
@@ -71,11 +66,10 @@ public class ExperimentDAO{
         return connectToDatabase(query, "SELECT", data);
     }
 
-
     /**
      * Updates a single experiment phase value from the database.
      *
-     * @author CyrielvdRaaf
+     * @author Cyriel vd Raaf
      *
      * @param phaseChange
      * @return a query statement that updates the database.
@@ -89,7 +83,7 @@ public class ExperimentDAO{
     /**
      * Makes a local reference point for talking with PreparedStatementDatabaseUtilities.
      *
-     * @author AnthonySchuijlenburg
+     * @author Anthony Schuijlenburg
      *
      * @param query the query that needs to be executes
      * @param queryType the type of that Query (SELECT, INSERT, UPDATE, DELETE)
@@ -107,16 +101,16 @@ public class ExperimentDAO{
         return returnQuery;
     }
 
-
     /**
      * Makes a local reference point for talking with DatabaseUtilities.
      *
-     * @author AnthonySchuijlenburg
+     * @author Anthony Schuijlenburg
      *
      * @param query the query that needs to be executes
      * @param queryType the type of that Query (SELECT, INSERT, UPDATE, DELETE)
      * @return the resultSet of the query. Returns an empty string if the query type is not SELECT
      */
+
     private String connectToDatabase(String query, String queryType) {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String returnQuery = null;
@@ -127,7 +121,6 @@ public class ExperimentDAO{
         }
         return returnQuery;
     }
-
 
     /**
      * Uses a prepared statement to upload an experiment to the database
@@ -165,26 +158,6 @@ public class ExperimentDAO{
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
         }
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public String showAllExperimentHashmap() throws Exception {
-        String query = String.format("SELECT * FROM %s;", tableName);
-        DatabaseUtilities d = new DatabaseUtilities();
-        return d.connectThisDatabase(databaseModel, query).toString();
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    public String showAllExperimentJson() throws Exception {
-        String query = String.format("SELECT * FROM %s;", tableName);
-        DatabaseUtilities d = new DatabaseUtilities();
-        return d.connectThisDatabase2(databaseModel, query);
     }
 
     /**

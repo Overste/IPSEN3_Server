@@ -17,11 +17,10 @@ public class ExperimentResource {
 
     private ExperimentController experimentcontroller = new ExperimentController();
 
-
     /**
      * Catches the URL and tries to delete an experiment. Returns the status of this attempt.
      *
-     * @author Jesse Poleij, AnthonySchuijlenburg
+     * @author Jesse Poleij, Anthony Schuijlenburg
      *
      * @param id The id of the project that needs to be deleted
      * @param token The token of the user trying to delete a experiment
@@ -33,11 +32,10 @@ public class ExperimentResource {
         return experimentcontroller.deleteExperiment(id, token);
     }
 
-
     /**
      * Shows all experiments to a user requesting it
      *
-     * @author AnthonySchuijlenburg
+     * @author Anthony Schuijlenburg
      *
      * @param token the token of the user trying to access the experiments
      * @return a JSON of all experiments from the database
@@ -49,7 +47,6 @@ public class ExperimentResource {
         ExperimentController experimentController = new ExperimentController();
         return experimentController.showExperiments(token);
     }
-
 
     /**
      * gets values of boxModel.
@@ -86,31 +83,6 @@ public class ExperimentResource {
         return experimentController.showSingleExperiment(token, id);
     }
 
-
-    /**
-     * @author Anthony Scheeres
-     */
-    @GET
-    @Path("/showAllHashmap")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String showAllExperiments() throws Exception {
-        ExperimentDAO experimentDAO = new ExperimentDAO();
-        return experimentDAO.showAllExperimentHashmap();
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    @GET
-    @Path("/showAllJson")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String showAllExperimentsJson() throws Exception {
-        ExperimentDAO experimentDAO = new ExperimentDAO();
-        return experimentDAO.showAllExperimentJson();
-    }
-
-
     /**
      *@author Cyriel van der Raaf, Jesse Poleij
      */
@@ -118,7 +90,6 @@ public class ExperimentResource {
     @Path("/{token}/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
     public String createProject(ExperimentModel project, @PathParam("token") String token){
-        System.out.println(project);
         return experimentcontroller.handleCreateProject(project, token);
     }
 

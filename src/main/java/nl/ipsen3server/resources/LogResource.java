@@ -6,7 +6,6 @@ import javax.ws.rs.core.MediaType;
 import nl.ipsen3server.controllers.LoggingController;
 import nl.ipsen3server.models.LogModel;
 
-
 /**
  * @author Anthony Schuijlenburg
  */

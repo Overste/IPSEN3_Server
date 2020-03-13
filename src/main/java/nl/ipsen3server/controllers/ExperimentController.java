@@ -1,12 +1,10 @@
 package nl.ipsen3server.controllers;
 
-import nl.ipsen3server.dao.AuthenticationDAO;
 import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
-
 
 /**
  * @author Anthony Schuijlenburg, Jesse Poleij
@@ -14,7 +12,6 @@ import nl.ipsen3server.models.Response;
 public class ExperimentController {
     private AuthenticationController authenticationController = new AuthenticationController();
     private ExperimentDAO experimentDAO = new ExperimentDAO();
-    private AuthenticationDAO authenticationDAO = new AuthenticationDAO();
     private TokenController tokenController = new TokenController();
 
     /**
@@ -24,7 +21,7 @@ public class ExperimentController {
      * @param projectId The id of the project that needs to be deleted
      * @param token     The token of the user trying to delete a experiment
      * @return The status of the deleting attempt
-     * @author Jesse Poleij, AnthonySchuijlenburg
+     * @author Jesse Poleij, Anthony Schuijlenburg
      */
     public String deleteExperiment(int projectId, String token) {
         String userID = tokenController.tokenToUserId(token);
@@ -49,33 +46,29 @@ public class ExperimentController {
      * @return
      */
     public String showPhases(BoxModel phaseChange, String token){
-        String userID = tokenController.tokenToUserId(token);
+        String userID = this.tokenController.tokenToUserId(token);
         if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
-            ExperimentDAO experimentDAO = new ExperimentDAO();
-            return experimentDAO.showExperimentPhase(phaseChange);
+            return this.experimentDAO.showExperimentPhase(phaseChange);
         }
 
         return "Not sufficient rights to change this experiment";
     }
-
 
     /**
      * Checks whether or not a user has_read rights to view experiments
      *
      * @param token the token of the user trying to access the experiments
      * @return all experiments in JSON format
-     * @author AnthonySchuijlenburg
+     * @author Anthony Schuijlenburg
      */
     public String showExperiments(String token) {
-        String userID = tokenController.tokenToUserId(token);
-        if (authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
-            ExperimentDAO experimentDAO = new ExperimentDAO();
-            return experimentDAO.showExperiments();
+        String userID = this.tokenController.tokenToUserId(token);
+        if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
+            return this.experimentDAO.showExperiments();
         } else {
             return "Not sufficient rights to delete this experiment";
         }
     }
-
 
     /**
      * Checks whether or not a user has_read rights to view experiments
@@ -94,20 +87,11 @@ public class ExperimentController {
         }
     }
 
-
     /**
      * @author Cyriel van der Raaf, Jesse Poleij
      */
     public String handleCreateProject(ExperimentModel project, String token){
-        //validate user
-/*        int employeeId = tokenController.tokenToUserId(token));
 
-        if (!authenticationController.hasSuperPermission(employeeId)) {
-            return Response.fail.toString();
-        }
-        //write model to db
-
- */
         experimentDAO.uploadExperiment(project);
 
 
