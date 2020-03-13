@@ -1,4 +1,4 @@
-package nl.ipsen3server.controlllers;
+package nl.ipsen3server.controllers;
 
 import nl.ipsen3server.dao.AuthenticationDAO;
 import nl.ipsen3server.dao.ExperimentDAO;

@@ -3,12 +3,12 @@ package nl.ipsen3server.resources;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import nl.ipsen3server.controlllers.LoggingController;
+import nl.ipsen3server.controllers.LoggingController;
 import nl.ipsen3server.models.LogModel;
 
 
 /**
- * @author Anthony Scheeres, Anthony Schuijlenburg
+ * @author Anthony Schuijlenburg
  */
 @Path("/log")
 public class LogResource {

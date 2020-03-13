@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import nl.ipsen3server.controlllers.LoggerController;
+import nl.ipsen3server.controllers.LoggerController;
 import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {

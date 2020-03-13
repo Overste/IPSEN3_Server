@@ -1,5 +1,5 @@
 
-package nl.ipsen3server.controlllers;
+package nl.ipsen3server.controllers;
 
 import java.util.logging.Level;
 import java.util.HashMap;

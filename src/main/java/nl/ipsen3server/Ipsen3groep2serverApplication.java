@@ -8,15 +8,13 @@ import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import nl.ipsen3server.controlllers.*;
+import nl.ipsen3server.controllers.*;
 import nl.ipsen3server.models.ApplicationModel;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.ServerModel;
 import nl.ipsen3server.resources.ExperimentResource;
 import nl.ipsen3server.resources.LogResource;
 import nl.ipsen3server.resources.UserResource;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import javax.servlet.DispatcherType;
@@ -29,7 +27,7 @@ import java.util.EnumSet;
  * @author Anthony Scheeres
  */
 class Ipsen3groep2serverApplication extends Application<Configuration> {
-	
+
 	/**
 	 * @author Anthony Scheeres
 	 */ 

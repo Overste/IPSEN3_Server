@@ -3,7 +3,7 @@ package nl.iipsen2server.junit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-import nl.ipsen3server.controlllers.AccountController;
+import nl.ipsen3server.controllers.AccountController;
 import org.junit.jupiter.api.Test;
 
 class Login {

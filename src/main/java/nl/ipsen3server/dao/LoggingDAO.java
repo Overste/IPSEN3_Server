@@ -13,7 +13,6 @@ public class LoggingDAO {
     private String tableName = "experiment_log";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 
-
     /**
      * @author Anthony Schuijlenburg
      * @param experimentId The id of the experiment from which the logs need to be retrieved
@@ -24,7 +23,6 @@ public class LoggingDAO {
         ArrayList<String> data = new ArrayList<>(Arrays.asList(Integer.toString(experimentId)));
         return connectToDatabase (query, "SELECT", data);
     }
-
 
     /**
      * @author Anthony Schuijlenburg
@@ -45,7 +43,6 @@ public class LoggingDAO {
 
         connectToDatabase(query, "INSERT", data);
     }
-
 
     /**
      * @author Anthony Schuijlenburg

@@ -4,9 +4,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
-import nl.ipsen3server.controlllers.AccountController;
-import nl.ipsen3server.controlllers.AuthenticationController;
-import nl.ipsen3server.controlllers.UserController;
+import nl.ipsen3server.controllers.AccountController;
+import nl.ipsen3server.controllers.AuthenticationController;
+import nl.ipsen3server.controllers.UserController;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.*;
 

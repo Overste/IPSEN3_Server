@@ -1,9 +1,8 @@
 package nl.ipsen3server.dao;
 
-import nl.ipsen3server.controlllers.LoggerController;
-import nl.ipsen3server.controlllers.MailController;
-import nl.ipsen3server.controlllers.UserController;
-import nl.ipsen3server.models.AccountModel;
+import nl.ipsen3server.controllers.LoggerController;
+import nl.ipsen3server.controllers.MailController;
+import nl.ipsen3server.controllers.UserController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.UserModel;

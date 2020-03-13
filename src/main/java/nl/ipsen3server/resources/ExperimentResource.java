@@ -1,7 +1,7 @@
 
 package nl.ipsen3server.resources;
 
-import nl.ipsen3server.controlllers.ExperimentController;
+import nl.ipsen3server.controllers.ExperimentController;
 import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.BoxModel;
