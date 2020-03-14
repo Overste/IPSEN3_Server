@@ -27,8 +27,8 @@ public class ExperimentResource {
      * @return a string with the status of the DELETE REQUEST
      */
     @DELETE
-    @Path("/{token}/remove/{id}")
-    public String deleteExperiment(@PathParam("token") String token, @PathParam("id") int id) {
+    @Path("/remove/{id}")
+    public String deleteExperiment(@HeaderParam("token") String token, @PathParam("id") int id) {
         return experimentcontroller.deleteExperiment(id, token);
     }
 
@@ -41,9 +41,9 @@ public class ExperimentResource {
      * @return a JSON of all experiments from the database
      */
     @GET
-    @Path("/{token}/showAllExperiments")
+    @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showExperiments(@PathParam("token") String token){
+    public String showExperiments(@HeaderParam("token") String token){
         ExperimentController experimentController = new ExperimentController();
         return experimentController.showExperiments(token);
     }
@@ -58,10 +58,10 @@ public class ExperimentResource {
      * @return a JSON of experiment phase and id from the database
      */
     @POST
-    @Path("/{token}/showPhaseOfExperiments")
+    @Path("/showPhaseOfExperiments")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String showPhases(BoxModel phaseChange, @PathParam("token") String token){
+    public String showPhases(BoxModel phaseChange, @HeaderParam("token") String token){
         ExperimentController experimentController = new ExperimentController();
         return experimentController.showPhases(phaseChange, token);
     }
@@ -76,9 +76,9 @@ public class ExperimentResource {
      * @return a JSON of a single experiment from the database
      */
     @GET
-    @Path("/{token}/showSingleExperiment/{id}")
+    @Path("/showSingleExperiment/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showSingleExperiment(@PathParam("token") String token, @PathParam("id") int id){
+    public String showSingleExperiment(@HeaderParam("token") String token, @PathParam("id") int id){
         ExperimentController experimentController = new ExperimentController();
         return experimentController.showSingleExperiment(token, id);
     }
@@ -87,9 +87,9 @@ public class ExperimentResource {
      *@author Cyriel van der Raaf, Jesse Poleij
      */
     @POST
-    @Path("/{token}/createProject")
+    @Path("/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createProject(ExperimentModel project, @PathParam("token") String token){
+    public String createProject(ExperimentModel project, @HeaderParam("token") String token){
         return experimentcontroller.handleCreateProject(project, token);
     }
 
@@ -97,9 +97,9 @@ public class ExperimentResource {
      *@author Jesse Poleij
      */
     @POST
-    @Path("/{token}/updateProject")
+    @Path("/updateProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String deleteProject(ExperimentModel project, @PathParam("token") String token){
+    public String deleteProject(ExperimentModel project, @HeaderParam("token") String token){
         return experimentcontroller.handleUpdate(project, token);
     }
 }

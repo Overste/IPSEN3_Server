@@ -26,9 +26,9 @@ public class UserResource {
 	 * @author Anthony Scheeres
 	 */
 	@GET
-	@Path("/{token}/showAllUsers")
+	@Path("/showAllUsers")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUsers(@PathParam("token") String token) throws Exception {
+	public String showUsers(@HeaderParam("token") String token) throws Exception {
 		return userController.handleShowUsers(token);
 	}
 
@@ -37,9 +37,9 @@ public class UserResource {
 	 * @author Anthony Scheeres
 	 */
 	@GET
-	@Path("/{token}/{id}/showSingleUser")
+	@Path("/{id}/showSingleUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUser(@PathParam("token") String token, @PathParam("id") int id) {
+	public String showUser(@HeaderParam("token") String token, @PathParam("id") int id) {
 		UserDAO userDatabase = new UserDAO();
 		return userDatabase.showOneUserPermission(id);
 	}
@@ -69,7 +69,7 @@ public class UserResource {
 	 * @author Jesse Poleij
 	 */
 	@POST
-	@Path("/{token}/removeUser")
+	@Path("/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeUserModel(String u) {
 		System.out.println("Username " + u);
@@ -82,8 +82,8 @@ public class UserResource {
 	 * @author Anthony Scheeres
 	 */
 	@GET
-	@Path("/{token}/token")
-	public String validateToken(@PathParam("token") String token) {
+	@Path("/token")
+	public String validateToken(@HeaderParam("token") String token) {
 		return accountController.handleValidateToken(token);
 	}
 
@@ -92,9 +92,9 @@ public class UserResource {
 	 * Gets a users role in the application.
 	 */
 	@GET
-	@Path("/{token}/getRole")
+	@Path("/getRole")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getUserRole(@PathParam("token") String token) {
+	public String getUserRole(@HeaderParam("token") String token) {
 		return authenticationController.getUserRole(token);
 	}
 
@@ -102,7 +102,7 @@ public class UserResource {
 	 * @author Valerie Timmerman
 	 */
 	@PUT
-	@Path("/{token}/{id}/{user_role}/updateUserRole")
+	@Path("/{id}/{user_role}/updateUserRole")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseModel updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
 		return userController.updateUserRole(id, userRole);
