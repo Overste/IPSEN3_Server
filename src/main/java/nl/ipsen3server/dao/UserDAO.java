@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class UserDAO {
     private String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
@@ -24,7 +23,7 @@ public class UserDAO {
      * @author Anthony Scheeres
      * get tokens from database
      */
-    public HashMap<String, List<String>> getTokens() throws Exception {
+    public HashMap<String, List<String>> getTokens() {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String query = String.format("SELECT user_id, token FROM %s;", tableName);
         return databaseUtilities.connectThisDatabase(databaseModel, query);
@@ -53,7 +52,6 @@ public class UserDAO {
         return databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
     }
 
-
     /**
      * @author Anthony Scheeres
      */
@@ -78,7 +76,7 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public HashMap<String, List<String>> getUserInfo() throws Exception {
+    public HashMap<String, List<String>> getUserInfo() {
         DatabaseUtilities d = new DatabaseUtilities();
         String query = String.format(
             "SELECT " +
@@ -99,7 +97,7 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public HashMap<String, List<String>> getUsers() throws Exception {
+    public HashMap<String, List<String>> getUsers() {
         DatabaseUtilities d = new DatabaseUtilities();
         String query = String.format("select user_id, username from %s;", tableName);
         return d.connectThisDatabase(databaseModel, query);

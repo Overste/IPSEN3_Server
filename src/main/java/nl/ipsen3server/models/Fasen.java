@@ -20,6 +20,4 @@ public enum Fasen {
 	KERKHOF,
 	@JsonProperty("VASTEDIENSTEN")
 	VASTEDIENSTEN
-
-
 }

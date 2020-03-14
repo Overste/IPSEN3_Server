@@ -1,6 +1,5 @@
 package nl.ipsen3server.controllers;
 
-
 import nl.ipsen3server.dao.AuthenticationDAO;
 
 import nl.ipsen3server.dao.UserDAO;
@@ -8,11 +7,8 @@ import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.Response;
 
 /**
-*
+
 * @author Anthony Scheeres
-*  
-* 
-*
 */
 public class AuthenticationController {
 
@@ -35,7 +31,6 @@ public class AuthenticationController {
 	}
 
 	/**
-	 * @throws Exception
 	 * @author Anthony Scheeres
 	 */
 	public String handleGiveRead(String u, String token) throws Exception {
@@ -46,19 +41,20 @@ public class AuthenticationController {
 			return Response.fail.toString();
 		}
 
-
 		accountController.giveRead2(u);
 		return Response.success.toString();
 	}
-
 
 	/**
 	 * @author Anthony Scheeres
 	 */
 	public boolean hasSuperPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
-		return authenticationDAO.checkUserPermission(employeeId, Permission.WRITE.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString()) && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString());
-
+		return authenticationDAO.checkUserPermission(
+			employeeId,
+			Permission.WRITE.toString()
+		) && authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString())
+		  && authenticationDAO.checkUserPermission(employeeId, Permission.DELETE.toString());
 	}
 
 	/**
@@ -67,7 +63,6 @@ public class AuthenticationController {
 	public boolean hasReadPermission(int employeeId) {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 		return authenticationDAO.checkUserPermission(employeeId, Permission.READ.toString());
-
 	}
 
 	/**
@@ -92,5 +87,4 @@ public class AuthenticationController {
 		AuthenticationDAO authenticationDAO = new AuthenticationDAO();
 		return authenticationDAO.checkUserPermission(userID, permission);
 	}
-
 }

@@ -28,11 +28,7 @@ public class DatabaseModel  {
 		this.id = id;
 	}
 	
-	public DatabaseModel() {
-		
-	}
-	
-	
+	public DatabaseModel() { }
 	
 	public String getUsername() {
 		return username;
@@ -70,11 +66,4 @@ public class DatabaseModel  {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
-
-	
-	
-
-
 }

@@ -12,9 +12,8 @@ import nl.ipsen3server.controllers.LoggerController;
 import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {
-
-
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
+
     /**
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
      *
@@ -41,7 +40,6 @@ public class DatabaseUtilities {
         }
         return result;
     }
-
 
     /**
      * Executes a SELECT statement and returns the result in a String format
@@ -70,12 +68,8 @@ public class DatabaseUtilities {
             JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
 
-        } catch (SQLException e) {
-            //query);
-             LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            //query);
-             LOGGER.log(Level.SEVERE, "Error occur", e);
+            e.printStackTrace();
         }
         return resultsInJson;
     }
@@ -88,7 +82,6 @@ public class DatabaseUtilities {
      *
      * @param databaseModel DatabaseModel
      * @param query STRING query ("SELECT * FROM tablename")
-     * @return Nothing
      */
     public void executeUpdate(DatabaseModel databaseModel, String query){
         String username = databaseModel.getUsername();
@@ -106,26 +99,22 @@ public class DatabaseUtilities {
         } catch (SQLException e) {
             //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
-        } catch (Exception e) {
-            //query);
-             LOGGER.log(Level.SEVERE, "Error occur", e);
         }
     }
-
 
     /**
      * @author Anthony Scheeres
      */
     // potenially returns all data from an table added an methode that returns all column values in an 2d array!!
     public HashMap < String, List < String >> getTableContents(ResultSet resultSet) {
-        HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
-        List < List < String >> array = new ArrayList < List < String >> ();
-        List < String > singleArray = new ArrayList < String > ();
+        HashMap < String, List < String >> hashmap = new HashMap<>();
+        List < List < String >> array = new ArrayList<>();
+        List < String > singleArray;
         singleArray = getColumnNames(resultSet);
         //trying to fit a table in a variable using 2d array lists
         try {
             for (int i = 0; i < singleArray.size(); i++) {
-                array.add(new ArrayList < String > ());
+                array.add(new ArrayList<>());
             }
             while (resultSet.next()) {
                 for (int index = 0; index < singleArray.size(); index++) {
@@ -141,16 +130,13 @@ public class DatabaseUtilities {
         return hashmap;
     }
 
-
     /**
      * @author Anthony Scheeres
-     * @return 
-     * @throws Exception
+     * @return DatabaseConnector
      */
     //use a database object to connect to database and perform a query
-    public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) throws Exception {
-
-        HashMap < String, List < String >> hashmap = connectToDatabase2(
+    public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) {
+        return connectToDatabase2(
             databaseModel.getUsername(),
             databaseModel.getPassword(),
             databaseModel.getPortNumber(),
@@ -158,59 +144,55 @@ public class DatabaseUtilities {
             databaseModel.getHostName(),
             query
         );
-        return hashmap;
     }
-
 
     /**
      * @author Anthony Scheeres
-     * @return 
-     * @throws Exception
+     * @return Databaseconnection
+     * @throws Exception SQLException
      */
     //use a database object to connect to database and perform a query
     public String connectThisDatabase2(DatabaseModel databaseModel, String query) throws Exception {
         return connectToDatabaseOld(
-        		databaseModel.getUsername(),
-        		databaseModel.getPassword(),
-        		databaseModel.getPortNumber(),
-        		databaseModel.getDatabaseName(),
-        		databaseModel.getHostName(),
-        		query
-        		);
+            databaseModel.getUsername(),
+            databaseModel.getPassword(),
+            databaseModel.getPortNumber(),
+            databaseModel.getDatabaseName(),
+            databaseModel.getHostName(),
+            query
+        );
     }
-
 
     public String createUrl(int portNumber, String databaseName, String hostName) {
         return String.format("jdbc:postgresql://%s:%s/%s", hostName, portNumber, databaseName);
     }
 
-
     /**
      * @author Anthony Scheeres
-     * @throws Exception
+     * @throws Exception SQLException
      */
     public String connectToDatabaseOld(
-            String username,
-            String password,
-            int portNumber,
-            String databaseName,
-            String hostName,
-            String query
-        ) throws Exception {
-    	  String result = null;
+        String username,
+        String password,
+        int portNumber,
+        String databaseName,
+        String hostName,
+        String query
+    ) throws Exception {
+        String result = null;
         String url = createUrl(portNumber, databaseName, hostName);
-        HashMap < String, List < String >> hashmap = new HashMap < String, List < String >> ();
-        // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
+        HashMap < String, List < String >> hashmap = new HashMap<>();
+        // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
-        //     Class.forName("org.postgresql.Driver"); 
+        //     Class.forName("org.postgresql.Driver");
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             //"Java JDBC PostgreSQL: " + databaseName);
-
             ResultSet resultSet = this.enterQuery(connection, query);
             JsonConverterUtilities jsonConverer = new JsonConverterUtilities();
             String json = jsonConverer.convertToJSON(resultSet).toString();
             connection.close();
             result = json;
+
         } catch (SQLException err) {
             //"Connection failure.");
             err.printStackTrace();
@@ -218,25 +200,24 @@ public class DatabaseUtilities {
         return result;
     }
 
-
     /**
      * @author Anthony Scheeres
-     * @throws Exception
      */
     private HashMap < String, List < String >> connectToDatabase2(
-            String username,
-            String password,
-            int portNumber,
-            String databaseName,
-            String hostName,
-            String query
-    ) throws Exception {
-    	  HashMap<String, List<String>> result = null;
+        String username,
+        String password,
+        int portNumber,
+        String databaseName,
+        String hostName,
+        String query
+    ) {
+        HashMap<String, List<String>> result = null;
         String url = createUrl(portNumber, databaseName, hostName);
-        HashMap < String, List < String >> e = new HashMap < String, List < String >> ();
+        HashMap < String, List < String >> e = new HashMap<>();
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
-        //     Class.forName("org.postgresql.Driver"); 
+        //     Class.forName("org.postgresql.Driver");
+
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             //"Java JDBC PostgreSQL: " + databaseName);
             ResultSet resultSet = this.enterQuery(connection, query);
@@ -244,19 +225,17 @@ public class DatabaseUtilities {
             connection.close();
             result =  hashmap;
         } catch (SQLException err) {
-            //"Connection failure.");
             err.printStackTrace();
         }
         return result;
     }
-
 
     /**
      * @author Anthony Scheeres
      */
     //connect to postgres database 
     private List < String > getColumnNames(ResultSet resultSet) {
-        List < String > columnNames = new ArrayList < String > ();
+        List < String > columnNames = new ArrayList<>();
         try {
             ResultSetMetaData rsMetaData = resultSet.getMetaData();
             int numberOfColumns = rsMetaData.getColumnCount();
@@ -271,7 +250,6 @@ public class DatabaseUtilities {
         }
         return columnNames;
     }
-
 
     /**
      * @author Anthony Scheeres
@@ -290,7 +268,6 @@ public class DatabaseUtilities {
         }
             return result;
     }
-
 
     /**
      * @author Anthony Scheeres

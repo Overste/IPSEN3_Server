@@ -1,15 +1,20 @@
 package nl.ipsen3server.dao;
 
+import nl.ipsen3server.controllers.LoggerController;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.LogModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoggingDAO {
     private String tableName = "experiment_log";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
+
 
     /**
      * @author Anthony Schuijlenburg
@@ -30,13 +35,13 @@ public class LoggingDAO {
         int latestLogId = getLatestLogId();
         logModel.setLogId(latestLogId + 1);
         String query = String.format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?)", tableName);
-        ArrayList<String> data = new ArrayList<String>(Arrays.asList(
-                String.valueOf(logModel.getLogId()),
-                logModel.getTimestamp(),
-                logModel.getTitle(),
-                logModel.getDescription(),
-                String.valueOf(logModel.getByUserId()),
-                String.valueOf(logModel.getExperimentId())
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(
+            String.valueOf(logModel.getLogId()),
+            logModel.getTimestamp(),
+            logModel.getTitle(),
+            logModel.getDescription(),
+            String.valueOf(logModel.getByUserId()),
+            String.valueOf(logModel.getExperimentId())
         ));
 
         connectToDatabase(query, "INSERT", data);
@@ -51,7 +56,6 @@ public class LoggingDAO {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String result = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
         String[] results = result.split("");
-
         int logId = 0;
 
         for(int i=0; i < results.length; i++){
@@ -60,7 +64,9 @@ public class LoggingDAO {
                 if(currentLog > logId){
                     logId = currentLog;
                 }
-            }catch (Exception e){}
+            } catch (Exception e){
+                LOGGER.log(Level.SEVERE, "Error occur", e);
+            }
         }
         return logId;
     }
@@ -71,6 +77,7 @@ public class LoggingDAO {
         try {
             returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return returnQuery;
     }

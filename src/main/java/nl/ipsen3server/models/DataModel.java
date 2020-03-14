@@ -3,8 +3,7 @@ package nl.ipsen3server.models;
 public class DataModel {
 	private static ApplicationModel applicationModel;
 	
-	DataModel(){
-	}
+	DataModel(){ }
 
 	public static ApplicationModel getApplicationModel() {
 		
@@ -13,5 +12,4 @@ public class DataModel {
 	public static void setApplicationModel(ApplicationModel applicationModel) {
 		DataModel.applicationModel = applicationModel;
 	}
-
 }

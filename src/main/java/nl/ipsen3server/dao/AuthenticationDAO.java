@@ -12,18 +12,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 /**
  * Class made specificly for checking user permissions
  */
 public class AuthenticationDAO {
-
-    String tableName = "application_users";
+    private String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
+    private PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
+    private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
-
-	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * @author Anthony Scheeres
      */
@@ -34,7 +31,6 @@ public class AuthenticationDAO {
         list.add(u.getUsername());
         databaseController.connectDatabaseJson(databaseModel, query2, list, false);
     }
-
 
     /**
      * takes in a userId and a permission and checks the database to see if this user has this permission
@@ -51,8 +47,6 @@ public class AuthenticationDAO {
         return preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("true");
     }
 
-
-
     /**
      * @author Anthony Scheeres
      */
@@ -62,7 +56,6 @@ public class AuthenticationDAO {
 
         return preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("SUPERUSER");
     }
-
 
     /**
      * @author Anthony Scheeres

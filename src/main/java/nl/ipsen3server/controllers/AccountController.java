@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.User;
 import nl.ipsen3server.models.UserModel;
@@ -14,12 +13,9 @@ import nl.ipsen3server.dao.PermissionDAO;
 import nl.ipsen3server.dao.PreparedStatementDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
 
-
 /**
  * @author Anthony Scheeres
  */
-
-
 public class AccountController {
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     private UserDAO userDatabase = new UserDAO();
@@ -28,9 +24,8 @@ public class AccountController {
 
     /**
      * @author Anthony Scheeres
-     * @throws Exception
      */
-    public void giveRead2(String username) throws Exception {
+    public void giveRead2(String username) {
         permissionDatabase.giveRead(username);
     }
 
@@ -46,17 +41,15 @@ public class AccountController {
 
     /**
      * @author Anthony Scheeres
-     * @throws Exception 
      */
-    public void giveWrite2(String user) throws Exception {
+    public void giveWrite2(String user) {
         permissionDatabase.giveWrite(user);
     }
 
     /**
      * @author Anthony Scheeres
-     * @throws Exception 
      */
-    public void giveDelete2(String user) throws Exception {
+    public void giveDelete2(String user) {
         permissionDatabase.giveDelete(user);
     }
 
@@ -196,7 +189,7 @@ public class AccountController {
                 return token;
             }
 
-            if (permission.contains("t") || token.equals(null)) {
+            if (permission.contains("t") || token == null) {
                 return askNewTokenForAccount(Integer.parseInt(UserId));
             }
             return token;
@@ -252,9 +245,8 @@ public class AccountController {
     
     /**
      * @author Anthony Scheeres
-     * @throws Exception 
      */
-    public String isGivePermissionIfTokenValid(ValidateEmailModel validateEmailModel) throws Exception {
+    public String isGivePermissionIfTokenValid(ValidateEmailModel validateEmailModel) {
     	String email = validateEmailModel.getEmail(); 
     	String tokenFromDatabase = validateEmailModel.getTokenFromDatabase();
     	String username = validateEmailModel.getUsername(); 

@@ -3,15 +3,14 @@ package nl.ipsen3server.models;
 public class MailModel {
 	private String username;
 	private String password;
+
 	public MailModel(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
 	
-	public MailModel() {
-		
-	}
+	public MailModel() { }
 	
 	public String getUsername() {
 		return username;

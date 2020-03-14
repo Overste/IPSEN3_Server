@@ -13,6 +13,4 @@ public enum Status {
 	PAUSED,
 	@JsonProperty("SAVED")
 	SAVED
-
-
 }

@@ -1,6 +1,5 @@
 package nl.ipsen3server.controllers;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +11,12 @@ import nl.ipsen3server.models.MailModel;
 import nl.ipsen3server.models.RestApiModel;
 import nl.ipsen3server.models.ServerModel;
 
-
-
-
-
 /**
 *
 * @author Anthony Scheeres
 *
 */
 public class ServerController {
-	
 	/**
 	 *
 	 * @author Anthony Scheeres
@@ -31,7 +25,6 @@ public class ServerController {
 	private ServerModel createServer(List<RestApiModel> api, List<DatabaseModel> databases, @NotNull long id){
 		return new ServerModel(api, databases, null, id);
 	}
-	
 
 	/**
 	 *
@@ -40,7 +33,7 @@ public class ServerController {
 	 */
 	public ServerModel createNewServer() {
 		ApplicationController applicationController = new ApplicationController();
-		ServerModel server = createServer( new ArrayList<RestApiModel>(), new ArrayList<DatabaseModel>(),createServerId(new ArrayList<ServerModel>()));
+		ServerModel server = createServer(new ArrayList<>(), new ArrayList<>(),createServerId(new ArrayList<>()));
 		applicationController.add(server, DataModel.getApplicationModel());
 		return server;
 	}
@@ -52,10 +45,7 @@ public class ServerController {
 	 */
 	 public void addDatabase(DatabaseModel database , ServerModel server) {
 		server.getDatabase().add(database);
-	
 	 }
-	 
-	 
 	 
 	 /**
 	 *
@@ -76,18 +66,17 @@ public class ServerController {
 		 server.setMail(mail);
 	 }
 	 
-	 
-	 /**
-	  * @author Anthony Scheeres
-	  */
-	 public int getServerById(List<ServerModel> list, long id) {
-			  for(int index=0; index< list.size(); index++){
-				if (list.get(index).getId() == id) {
-					return index;
-				}
+	/**
+	* @author Anthony Scheeres
+	*/
+	public int getServerById(List<ServerModel> list, long id) {
+		for(int index=0; index< list.size(); index++){
+			if (list.get(index).getId() == id) {
+				return index;
 			}
-			  return 0;
-	 }
+		}
+		return 0;
+	}
 
 	 /**
 	  * @author Anthony Scheeres
@@ -95,5 +84,4 @@ public class ServerController {
 	 public void addRestApi(RestApiModel raoi , ServerModel serverModel) {
 			serverModel.getRestApi().add(raoi);
 	 }
-	 
 }

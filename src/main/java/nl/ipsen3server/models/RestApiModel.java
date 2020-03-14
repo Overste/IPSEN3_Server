@@ -11,9 +11,7 @@ public class RestApiModel {
 	@Pattern(regexp="^[0-9]*$")
 	private long id;
 	
-	RestApiModel(){
-		
-	}
+	RestApiModel(){ }
 	
 	public RestApiModel(@Pattern(regexp = "^[0-9]*$") int portNumber, @NotNull String hostName,
 			@Pattern(regexp = "^[0-9]*$") long id) {
@@ -22,6 +20,7 @@ public class RestApiModel {
 		this.hostName = hostName;
 		this.id = id;
 	}
+
 	public int getPortNumber() {
 		return portNumber;
 	}
@@ -40,6 +39,4 @@ public class RestApiModel {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
 }

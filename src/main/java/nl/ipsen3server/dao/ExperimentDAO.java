@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 public class ExperimentDAO{
     private String tableName = "experiments";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
-	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Deletes the experiment, is only called after permission checks!
      *
@@ -35,7 +35,7 @@ public class ExperimentDAO{
             connectToDatabase(query, "DELETE", data);
             return "succes";
         } catch (Exception e) {
-             LOGGER.log(Level.SEVERE, "Error occur", e);
+            LOGGER.log(Level.SEVERE, "Error occur", e);
             return "Was not able to connect to database";
         }
     }
@@ -71,7 +71,7 @@ public class ExperimentDAO{
      *
      * @author Cyriel vd Raaf
      *
-     * @param phaseChange
+     * @param phaseChange phase
      * @return a query statement that updates the database.
      */
     public String showExperimentPhase(BoxModel phaseChange){
@@ -130,7 +130,7 @@ public class ExperimentDAO{
 
     /**
      * Uses a prepared statement to upload an experiment to the database
-     * @param model
+     * @param model ExperimentModel Object
      */
     public void uploadExperiment(ExperimentModel model) {
         PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
@@ -160,7 +160,7 @@ public class ExperimentDAO{
 
     /**
      * @author Jesse poleij
-     * @param model
+     * @param model ExperimentModel Object
      */
     public void updateExperiment(ExperimentModel model) {
         PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();

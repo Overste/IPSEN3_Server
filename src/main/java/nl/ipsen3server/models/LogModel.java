@@ -108,8 +108,6 @@ public class LogModel {
     }
 
     private String getCurrentTime(){
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
-        return timestamp;
+        return new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
     }
-
 }

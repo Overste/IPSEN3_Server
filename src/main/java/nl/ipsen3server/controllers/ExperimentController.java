@@ -24,12 +24,12 @@ public class ExperimentController {
      * @author Jesse Poleij, Anthony Schuijlenburg
      */
     public String deleteExperiment(int projectId, String token) {
-        String userID = tokenController.tokenToUserId(token);
+        String userID = this.tokenController.tokenToUserId(token);
         if (userID == null) {
             return "Token is invalid";
         }
-        if (authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
-            return experimentDAO.deleteExperiment(projectId);
+        if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
+            return this.experimentDAO.deleteExperiment(projectId);
         } else {
             return "Not sufficient rights to delete this experiment";
         }
@@ -45,7 +45,7 @@ public class ExperimentController {
      */
     public String showPhases(BoxModel phaseChange, String token){
         String userID = this.tokenController.tokenToUserId(token);
-        if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
+        if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
             return this.experimentDAO.showExperimentPhase(phaseChange);
         }
         return "Not sufficient rights to change this experiment";
@@ -75,10 +75,9 @@ public class ExperimentController {
      * @author AnthonySchuijlenburg
      */
     public String showSingleExperiment(String token, int id) {
-        String userID = tokenController.tokenToUserId(token);
-        if (authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
-            ExperimentDAO experimentDAO = new ExperimentDAO();
-            return experimentDAO.showExperiment(id);
+        String userID = this.tokenController.tokenToUserId(token);
+        if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
+            return this.experimentDAO.showExperiment(id);
         } else {
             return "Not sufficient rights to delete this experiment";
         }
@@ -88,7 +87,7 @@ public class ExperimentController {
      * @author Cyriel van der Raaf, Jesse Poleij
      */
     public String handleCreateProject(ExperimentModel project, String token){
-        experimentDAO.uploadExperiment(project);
+        this.experimentDAO.uploadExperiment(project);
         return Response.fail.toString();
     }
 
@@ -96,9 +95,7 @@ public class ExperimentController {
      * @author Jesse Poleij
      */
     public String handleUpdate(ExperimentModel project, String token){
-        experimentDAO.updateExperiment(project);
-
+        this.experimentDAO.updateExperiment(project);
         return Response.fail.toString();
     }
-
 }

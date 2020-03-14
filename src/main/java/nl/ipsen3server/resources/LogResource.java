@@ -11,7 +11,6 @@ import nl.ipsen3server.models.LogModel;
  */
 @Path("/log")
 public class LogResource {
-
     private LoggingController loggingController = new LoggingController();
 
     //TODO logmodel needs to be send over and not created on the spot
@@ -23,7 +22,7 @@ public class LogResource {
     @Path("/{token}/upload/")
     @Consumes(MediaType.APPLICATION_JSON)
     public void createLog(LogModel logModel, @PathParam("token") String token) {
-        loggingController.createLog(logModel, token);
+        this.loggingController.createLog(logModel, token);
     }
 
 
@@ -36,7 +35,7 @@ public class LogResource {
     @GET
     @Path("/{token}/download/{experimentId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showlogs(@PathParam("experimentId") int id, @PathParam("token") String token){
-        return loggingController.showlogs(id, token);
+    public String showLogs(@PathParam("experimentId") int id, @PathParam("token") String token){
+        return this.loggingController.showlogs(id, token);
     }
 }

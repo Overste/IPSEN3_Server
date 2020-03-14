@@ -13,29 +13,27 @@ import nl.ipsen3server.models.ServerModel;
  * @author Anthony Scheeres
  */
 public class RestApiController {
-  private RestApiModel createRestApi(@Pattern(regexp = "^[0-9]*$") int portNumber, @NotNull String hostName,
-									 @Pattern(regexp = "^[0-9]*$") long id) {
-	  return new RestApiModel( portNumber,  hostName, id);
-  }
+	private RestApiModel createRestApi(
+		@Pattern(regexp = "^[0-9]*$") int portNumber,
+		@NotNull String hostName,
+		@Pattern(regexp = "^[0-9]*$") long id
+	) {
+		return new RestApiModel( portNumber,  hostName, id);
+	}
   
-  
-  /**
-  *
-  * @author Anthony Scheeres
-  *
-  */
-  public RestApiModel createNewRest(@Pattern(regexp = "^[0-9]*$") int portNumber, @NotNull String hostName, ServerModel serverModel) {
-  	ServerController s = new ServerController();
-  	long id = createRestId(serverModel.getRestApi());
-  	RestApiModel u = createRestApi(portNumber,  hostName, id);
-  	
-  	s.addRestApi(u, DataModel.getApplicationModel().getServers().get(s.getServerById(DataModel.getApplicationModel().getServers(), serverModel.getId())));
-  	return u;
-  }
+	/**
+	*
+	* @author Anthony Scheeres
+	*
+	*/
+	public RestApiModel createNewRest(@Pattern(regexp = "^[0-9]*$") int portNumber, @NotNull String hostName, ServerModel serverModel) {
+	ServerController s = new ServerController();
+	long id = createRestId(serverModel.getRestApi());
+	RestApiModel u = createRestApi(portNumber,  hostName, id);
 
-  
-  
-  
+	s.addRestApi(u, DataModel.getApplicationModel().getServers().get(s.getServerById(DataModel.getApplicationModel().getServers(), serverModel.getId())));
+	return u;
+	}
   
   /**
   *
@@ -51,5 +49,5 @@ public class RestApiController {
   	 }
   	 return id;
   }
-  	
+
 }

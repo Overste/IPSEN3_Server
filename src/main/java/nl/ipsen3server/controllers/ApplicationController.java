@@ -16,33 +16,36 @@ public class ApplicationController {
 	
 	/**
 	 * @author Anthony Scheeres
-	 * @return 
+	 * @return ApplicationModel
 	 */	
 	public ApplicationModel createNewApplicationModel(String name) {
 		ApplicationModel applicationModel= createApplication(
-				new ArrayList<UserModel>(), 
-				new ArrayList<LogModel>(),
-				new ArrayList<ServerModel>(),
-				name, 
-				null
-				);
-	DataModel.setApplicationModel(applicationModel); 
-	return applicationModel;
+			new ArrayList<>(),
+			new ArrayList<>(),
+			new ArrayList<>(),
+			name,
+			null
+		);
+		DataModel.setApplicationModel(applicationModel);
+		return applicationModel;
 	}
 
 	/**
 	 * @author Anthony Scheeres
-	 * @param currentUser 
+	 * @param currentUser current active user
 	 */
-	private ApplicationModel createApplication(List<UserModel> users, List<LogModel> logs, @NotNull List<ServerModel> servers,
-											   String name, UserModel currentUser){
+	private ApplicationModel createApplication(
+		List<UserModel> users,
+		List<LogModel> logs,
+		@NotNull List<ServerModel> servers,
+		String name,
+		UserModel currentUser
+	){
 		return new  ApplicationModel(users, logs, servers, name, currentUser);
 	}
 	 
 	 /**
-	 *
 	 * @author Anthony Scheeres
-	 *
 	 */
 	public void addUser(UserModel u2, ApplicationModel app){
 		app.getUsers().add(u2);
@@ -52,8 +55,6 @@ public class ApplicationController {
 	 * @author Anthony Scheeres
 	 */
 	public void add(ServerModel s , ApplicationModel a){
-
 		a.getServers().add(s);
-		
 	}	
 }

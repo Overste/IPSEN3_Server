@@ -1,4 +1,3 @@
-
 package nl.ipsen3server.controllers;
 
 import java.util.List;
@@ -11,30 +10,25 @@ import nl.ipsen3server.models.ResponseModel;
  * @author Anthony Scheeres
  */
 public class UserController {
-
     private TokenController tokenController = new TokenController();
     private UserDAO userDAO = new UserDAO();
     private AuthenticationController authenticationController = new AuthenticationController();
 
     /**
-     * @throws Exception
      * @author Anthony Scheeres
      */
-    public String handleShowUsers(String token) throws Exception {
+    public String handleShowUsers(String token) {
         int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
         if (!this.authenticationController.hasReadPermission(employeeId)) {
             return Response.fail.toString();
         }
-
         return this.userDAO.showUsers();
-
     }
 
     /**
      * @author Anthony Scheeres
      */
     public long createUserId(List<String> list) {
-
         if (list == null) {
             return 1;
         }
@@ -48,9 +42,9 @@ public class UserController {
     }
 
     /**
-     * @param id
-     * @param userRole
-     * @return
+     * @param id user id
+     * @param userRole role type
+     * @return ResponseModel
      * @author Valerie Timmerman
      */
     public ResponseModel updateUserRole(long id, String userRole) {
@@ -61,4 +55,11 @@ public class UserController {
         }
     }
 
+    /**
+     * @param id user
+     * @author Thomas Warbout
+     */
+    public String showOneUserPermission(int id) {
+        return this.userDAO.showOneUserPermission(id);
+    }
 }

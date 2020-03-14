@@ -6,13 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 
 public class ResponseModel {
-
     private String response;
 
     @JsonCreator
-    public ResponseModel(
-            @JsonProperty("response") String response
-    ) {
+    public ResponseModel(@JsonProperty("response") String response) {
         this.response = response;
     }
 
@@ -21,5 +18,4 @@ public class ResponseModel {
     public String getResponse() {
         return this.response;
     }
-
 }

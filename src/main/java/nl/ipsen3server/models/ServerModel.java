@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-
-
 public class ServerModel {
 	private List<RestApiModel> restApi;
 	private List<DatabaseModel> database;
@@ -56,8 +54,4 @@ public class ServerModel {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
-	
-	
 }

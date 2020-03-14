@@ -15,9 +15,7 @@ public class ApplicationModel {
 		return users;
 	}
 	
-public ApplicationModel() {
-		
-	}
+	public ApplicationModel() { }
 	
 	public ApplicationModel(List<UserModel> users, List<LogModel> logs, @NotNull List<ServerModel> servers, String name, UserModel currentUser) {
 		super();
@@ -27,8 +25,6 @@ public ApplicationModel() {
 		this.name = name;
 		this.currentUser = currentUser;
 	}
-
-
 
 	public void setUsers(List<UserModel> users) {
 		this.users = users;
@@ -57,10 +53,5 @@ public ApplicationModel() {
 	public void setCurrentUser(UserModel currentUser) {
 		this.currentUser = currentUser;
 	}
-	
-	
-	
 
-	
-	
 }
