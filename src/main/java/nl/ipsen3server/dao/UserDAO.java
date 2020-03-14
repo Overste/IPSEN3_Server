@@ -50,11 +50,10 @@ public class UserDAO {
     /**
      * @author Anthony Scheeres
      */
-    public String showUsers() throws Exception {
+    public String showUsers() {
         String query = String.format("SELECT * FROM %s ORDER BY username;", tableName);
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        String json = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
-        return json;
+        return databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
     }
 
 
@@ -124,7 +123,7 @@ public class UserDAO {
         variables.add(String.format("%d", id));
         variables.add(userModel.getEmail());
         variables.add(token);
-        pUtilites.connectDatabaseJson(databaseModel, query2, variables, false);
+        pUtilites.connectDatabaseJson(databaseModel, query2, variables, true);
         return token;
     }
 
@@ -132,20 +131,23 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public boolean removeUserModel(String u) {
-
         boolean succes = false;
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
-        String deletequery =
-                String.format("DELETE FROM %s WHERE username = ?;", tableName);
+        String deletequery = String.format("DELETE FROM %s WHERE username = ?;", tableName);
         ArrayList<String> usernameArray = new ArrayList<>(Arrays.asList(u));
 
         try {
-            String result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, deletequery, "DELETE", usernameArray);
+            String result = preparedStatmentDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                deletequery,
+                "DELETE",
+                usernameArray
+            );
             if(result != null) {
                 succes = true;
             }
         } catch (Exception e) {
-            e.getMessage();
+            LOGGER.log(Level.SEVERE, "Error occur", e.getMessage());
         }
         return succes;
     }
@@ -154,10 +156,8 @@ public class UserDAO {
         boolean succes = false;
 
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
-        String updateQuery =
-                String.format("UPDATE %s\r\n" +
-                        "SET user_role=?::user_role WHERE user_id=?",
-                        tableName);
+        String updateQuery = String.format("UPDATE %s\r\n" +
+                        "SET user_role=?::user_role WHERE user_id=?", tableName);
 
         List<String> variables = new ArrayList<>();
         variables.add(role);
@@ -167,29 +167,29 @@ public class UserDAO {
             preparedStatmentDatabaseUtilities.connectDatabaseJson(databaseModel, updateQuery, variables, true);
             succes = true;
         } catch (Exception e) {
-            e.getMessage();
+            LOGGER.log(Level.SEVERE, "Error occur", e.getMessage());
         }
         return succes;
     }
 
     public String getUserRole(int id) {
         String result = null;
-
         PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
-        String getQuery =
-                String.format("SELECT user_role FROM %s WHERE user_id=?", tableName);
+        String getQuery = String.format("SELECT user_role FROM %s WHERE user_id=?", tableName);
 
         ArrayList<String> variables = new ArrayList<>();
         variables.add(String.valueOf(id));
 
         try {
-            result = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, getQuery, "SELECT", variables);
+            result = preparedStatmentDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                getQuery,
+                "SELECT", variables
+            );
         } catch (Exception e) {
-            e.getMessage();
+            LOGGER.log(Level.SEVERE, "Error occur", e.getMessage());
         }
-
         return result;
-
     }
 
 }

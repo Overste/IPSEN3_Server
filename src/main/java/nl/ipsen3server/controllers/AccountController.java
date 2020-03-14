@@ -32,7 +32,6 @@ String domain = "OM.NL";
 
 
 /**
- * @return
  * @author Anthony Scheeres
  * @throws Exception 
  */
@@ -146,32 +145,10 @@ String domain = "OM.NL";
     public String findValideTokenForAccount(UserModel u) throws Exception {
     	String response = Response.fail.toString();
     	   String token = createUserModel(u);
-           if (!token.equals(null)) {
-               validateEmail(token, u.getEmail());
+           if (token != null) {
                response = token;
            }
            return response;
-    }
-
-
-    /**
-     * @author Anthony Scheeres
-     */
-    private void validateEmail(String token, String email) throws Exception {
-    	String linkToServer = "http://%s:%s/user/%s/token";
-    	String message = "Open de volgende link om uw email te valideren: ";
-    	String link = message + linkToServer;
-    	RestApiModel database =   DataModel.getApplicationModel().getServers().get(0).getRestApi().get(0);
-    	String title = "Valideer u email!";
-        MailController.sendMailOnDifferentThread(String.format(
-               link,
-                database.getHostName(),
-                database.getPortNumber(),
-                token
-                ),
-                "testlab",
-                email,
-                title);
     }
 
  /**
@@ -208,25 +185,21 @@ String domain = "OM.NL";
   * @author Anthony Scheeres
   */
  private String GetLoginInformation(String username, String username2, String passwordFromDatabase,  String passwordFromClient, String permission, String UserId, String token){
-	 String failtResponse = Response.fail.toString();
-	 //"token : "+token + "permission :"+permission );
-	  if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
-	    	boolean hasPermission = permission.length() ==0;
-	    	if(hasPermission) {
-	    
-	    		return token;
-	    	}
-	    	
-	   
-	    	
-	    	if (permission.contains("t") || token.equals(null)) {
-	    		 String newToken =  askNewTokenForAccount(Integer.parseInt(UserId));		 
-	    		 //"token : "+token + "new token :"+newToken );
-	    		  return newToken;
-	    	}
-	     return token;
-	    }
-	  return failtResponse;
+    String failtResponse = Response.fail.toString();
+    //"token : "+token + "permission :"+permission );
+    if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
+        boolean hasPermission = permission.length() ==0;
+
+        if(hasPermission) {
+            return token;
+        }
+
+        if (permission.contains("t") || token.equals(null)) {
+            return askNewTokenForAccount(Integer.parseInt(UserId));
+        }
+        return token;
+    }
+    return failtResponse;
  }
  
  /**

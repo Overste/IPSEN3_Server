@@ -8,7 +8,6 @@ import java.util.List;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 
 import nl.ipsen3server.dao.DatabaseUtilities;
-import nl.ipsen3server.dao.SendEmailSMTP;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.MailModel;
@@ -57,8 +56,11 @@ public class MailController {
 		  try {
 			  DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
 		   result = databaseUtilites.connectThisDatabase(databaseModel, query);
-		  } catch (Exception e2) {
-		  }return result;
+		  }
+		  catch (Exception e2) {
+			  LOGGER.log(Level.SEVERE, "Error occur", e2.getMessage());
+		  }
+		  return result;
 	 }
 	 
 	 
@@ -119,26 +121,7 @@ public class MailController {
 	     } 
 
 	     return sb.toString();
-}
-	 
-	 
-	 public static void sendMailOnDifferentThread(String text, String mailFrom, String mailTo, String subject) {
-		 new Thread(() -> {
-     		try {
-					sendMail(text, mailFrom, mailTo, subject);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					 LOGGER.log(Level.SEVERE, "Error occur", e);
-				}
-     	}).start();
-	 }
-	 
-	 
-	 
-	 public static void sendMail(String text, String mailFrom, String mailTo, String subject) throws Exception {
-		 SendEmailSMTP f = new SendEmailSMTP();
-		 f.sendMail(text, mailFrom, mailTo, subject);
-	 }
+	}
 
 
 
@@ -147,15 +130,5 @@ public class MailController {
 		s2.addMail(createMailModel(username, password), s);
 		
 	}
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+
 }
