@@ -25,42 +25,42 @@ public class MailController {
 		 return new MailModel(username, password);
 	 }
 	 
-	 
-	 
+
 	 /**
 	  * @author Anthony Scheeres
 	  */
 	 public boolean isValidEmailAddress(String email) {
-			EmailValidator emailValidator = new EmailValidator();
-			return emailValidator.isValid(email, null);
+		EmailValidator emailValidator = new EmailValidator();
+		return emailValidator.isValid(email, null);
 	 }
 	 
-	 private String findValideToken(HashMap<String, List<String>> e1) {
-		 String token = null;
-		   boolean tokenConfirmed = false;
-		   
-		   while (!tokenConfirmed) {
-		   token = getAlphaNumericString1(tokenLength);
-		   tokenConfirmed = !tokenExist(e1, token);
-		   }
-		   return token;
-	 }
+	private String findValideToken(HashMap<String, List<String>> e1) {
+		String token = null;
+		boolean tokenConfirmed = false;
+
+		while (!tokenConfirmed) {
+			token = getAlphaNumericString1(tokenLength);
+			tokenConfirmed = !tokenExist(e1, token);
+		}
+		return token;
+	}
 	 
 	 /**
 	  * @author Anthony Scheeres
 	  */
 	 public HashMap<String, List<String>> getTokens() {
-		 String query = String.format("select username, token, email from %s;", tableName);
-		  DatabaseUtilities databaseUtilites = new DatabaseUtilities();
-		  HashMap<String, List<String>> result = null;
-		  try {
-			  DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-		   result = databaseUtilites.connectThisDatabase(databaseModel, query);
-		  }
-		  catch (Exception e2) {
-			  LOGGER.log(Level.SEVERE, "Error occur", e2.getMessage());
-		  }
-		  return result;
+		String query = String.format("select username, token, email from %s;", tableName);
+		DatabaseUtilities databaseUtilities = new DatabaseUtilities();
+		HashMap<String, List<String>> result = null;
+
+		try {
+			DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+			result = databaseUtilities.connectThisDatabase(databaseModel, query);
+		}
+		catch (Exception e2) {
+			LOGGER.log(Level.SEVERE, "Error occur", e2.getMessage());
+		}
+		return result;
 	 }
 	 
 	 
@@ -68,67 +68,51 @@ public class MailController {
 	  * @author Anthony Scheeres
 	  */
 	 public String generateToken() {
-		 HashMap<String, List<String>> hashmap = getTokens();
-		   return findValideToken(hashmap);
+		HashMap<String, List<String>> hashmap = getTokens();
+		return findValideToken(hashmap);
 	 }
+
 	 /**
 	  * @author Anthony Scheeres
 	  */
 	 private boolean tokenExist(HashMap<String, List<String>> e1, String token) {
-		 
-		 
-		 List<String> oldToken = e1.get("token");
-		
+	 	List<String> oldToken = e1.get("token");
+
 		for(String token2: oldToken) {
-			
-			
-		
-			
 			if (token.equals(token2)) {
 				return true;
 			}
-		}return false;
-		
+		}
+		return false;
 	}
 
 	 /**
 	  * @author Anthony Scheeres
 	  */
-
 	// function to generate a random string of length n 
-	 private static String getAlphaNumericString1(int n)
-	 { 
-
+	 private static String getAlphaNumericString1(int n) {
 	     // chose a Character random from this String 
-	     String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	                                 + "0123456789"
-	                                 + "abcdefghijklmnopqrstuvxyz"; 
+	     String AlphaNumericString =
+			 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+			 "0123456789" +
+			 "abcdefghijklmnopqrstuvxyz";
 
 	     // create StringBuffer size of AlphaNumericString 
 	     StringBuilder sb = new StringBuilder(n); 
 
-	     for (int i = 0; i < n; i++) { 
-
+	     for (int i = 0; i < n; i++) {
 	         // generate a random number between 
 	         // 0 to AlphaNumericString variable length 
-	         int index 
-	             = (int)(AlphaNumericString.length() 
-	                     * Math.random()); 
+	         int index = (int)(AlphaNumericString.length() * Math.random());
 
 	         // add Character one by one in end of sb 
-	         sb.append(AlphaNumericString 
-	                       .charAt(index)); 
-	     } 
-
+	         sb.append(AlphaNumericString.charAt(index));
+	     }
 	     return sb.toString();
 	}
-
-
 
 	public void createNewMailModel(String username, String password, ServerModel s) {
 		ServerController s2 = new ServerController();
 		s2.addMail(createMailModel(username, password), s);
-		
 	}
-
 }

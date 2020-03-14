@@ -75,7 +75,13 @@ public class ExperimentDAO{
      * @return a query statement that updates the database.
      */
     public String showExperimentPhase(BoxModel phaseChange){
-        String query = String.format("UPDATE %s SET experiment_phase = '%s' WHERE experiment_id = %s;", tableName, phaseChange.getPhase(), phaseChange.getId());
+        String query = String.format(
+            "UPDATE %s SET experiment_phase = '%s' " +
+            "WHERE experiment_id = %s;",
+            tableName,
+            phaseChange.getPhase(),
+            phaseChange.getId()
+        );
 
         return  connectToDatabase(query, "UPDATE");
     }
@@ -91,10 +97,10 @@ public class ExperimentDAO{
      * @return the resultSet of the query. Returns an empty string if the query type is not SELECT
      */
     private String connectToDatabase(String query, String queryType, ArrayList<String> data) {
-        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
+            returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
@@ -124,18 +130,13 @@ public class ExperimentDAO{
 
     /**
      * Uses a prepared statement to upload an experiment to the database
-     *
-     *
-     *
      * @param model
      */
     public void uploadExperiment(ExperimentModel model) {
-        PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
-
+        PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
         long id = model.getId();
-
-        String query = String.format("INSERT INTO %s VALUES (" +
-                "" + "?,"               // experiment_id
+        String query = String.format("INSERT INTO %s VALUES ("
+                + "?,"               // experiment_id
                 + "?,"                  // experiment_name
                 + "?,"                  // experiment_leader
                 + "?,"                  // experiment_description
@@ -147,10 +148,7 @@ public class ExperimentDAO{
                 + "?"                   // money_source
                 + ");", tableName);
 
-        System.out.println(query);
-
         //TODO Make the values above align with model
-
         ArrayList<String> createProject = createExperimentList(id, model);
 
         try {
@@ -165,25 +163,26 @@ public class ExperimentDAO{
      * @param model
      */
     public void updateExperiment(ExperimentModel model) {
-        PreparedStatmentDatabaseUtilities dbUtilities = new PreparedStatmentDatabaseUtilities();
-
+        PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
         long id = model.getId();
 
         String query = String.format("UPDATE %s set " +
-                "experiment_name =" + "?," +
-                "experiment_leader =" + "?," +
-                "experiment_description =" + "?," +
-                "organisation =" + "?," +
-                "business_owner =" + "?," +
-                "experiment_status =" + "?" + "::experiment_status, " +
-                "experiment_phase =" + "?" + "::experiment_phase, " +
-                "inovation_cost =" + "?," +
-                "money_source =" + "?" +
-                "WHERE experiment_id =" + "?" // money_source
-                + ";", tableName);
+            "experiment_name =" + "?," +
+            "experiment_leader =" + "?," +
+            "experiment_description =" + "?," +
+            "organisation =" + "?," +
+            "business_owner =" + "?," +
+            "experiment_status =" + "?" + "::experiment_status, " +
+            "experiment_phase =" + "?" + "::experiment_phase, " +
+            "inovation_cost =" + "?," +
+            "money_source =" + "?" +
+            "WHERE experiment_id =" + "?" +
+            // money_source
+            ";",
+            tableName
+        );
 
         //TODO Make the values above align with model
-
         ArrayList<String> updateProject = createExperimentList(id, model);
 
         try {
@@ -194,9 +193,7 @@ public class ExperimentDAO{
     }
 
     private ArrayList<String> createExperimentList(long id, ExperimentModel experimentModel) {
-
         ArrayList<String> experiment = new ArrayList<>();
-
         experiment.add(String.format("%d", id));
         experiment.add(experimentModel.getName());
         experiment.add(experimentModel.getExperimentleaders());
@@ -210,5 +207,4 @@ public class ExperimentDAO{
 
         return experiment;
     }
-
 }

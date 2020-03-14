@@ -41,16 +41,13 @@ public class ExperimentController {
      *
      * @author CyrielvdRaaf
      *
-     * @param phaseChange
      * @param token the token of the user trying to update an experiment.
-     * @return
      */
     public String showPhases(BoxModel phaseChange, String token){
         String userID = this.tokenController.tokenToUserId(token);
         if(authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
             return this.experimentDAO.showExperimentPhase(phaseChange);
         }
-
         return "Not sufficient rights to change this experiment";
     }
 
@@ -91,10 +88,7 @@ public class ExperimentController {
      * @author Cyriel van der Raaf, Jesse Poleij
      */
     public String handleCreateProject(ExperimentModel project, String token){
-
         experimentDAO.uploadExperiment(project);
-
-
         return Response.fail.toString();
     }
 

@@ -1,7 +1,6 @@
 
 package nl.ipsen3server.dao;
 
-import java.util.logging.Level;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.Permission;
@@ -15,12 +14,11 @@ import java.util.Arrays;
 public class PermissionDAO {
     String tableName = "application_users";
     DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+    PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
 
 
     /**
      * @author Anthony Scheeres
-     * @throws Exception 
      */
     public void giveRead(String username) throws Exception {
     	   Enum permission = Permission.READ;
@@ -52,9 +50,9 @@ public class PermissionDAO {
      * @author Anthony Scheeres
      */
     private void givePermission(String username, Enum e) throws Exception {
-        PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
+        PreparedStatementDatabaseUtilities databaseController = new PreparedStatementDatabaseUtilities();
         ArrayList data = new ArrayList(Arrays.asList(username));
         String query = String.format("UPDATE %s SET %s = true WHERE username = ?;", tableName, "has_"+e.toString().toLowerCase(),e);
-        preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
+        preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
     }
 }

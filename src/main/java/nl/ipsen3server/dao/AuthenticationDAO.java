@@ -20,7 +20,7 @@ public class AuthenticationDAO {
 
     String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+    PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
 
 
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
@@ -28,7 +28,7 @@ public class AuthenticationDAO {
      * @author Anthony Scheeres
      */
     private void givePermission(AccountModel u, Enum e) throws Exception {
-        PreparedStatmentDatabaseUtilities databaseController = new PreparedStatmentDatabaseUtilities();
+        PreparedStatementDatabaseUtilities databaseController = new PreparedStatementDatabaseUtilities();
         List<String> list = new ArrayList<String>();
         String query2 = String.format("UPDATE application_users SET permission = array_append(permission,'%s') WHERE username = ?;", e);
         list.add(u.getUsername());
@@ -48,7 +48,7 @@ public class AuthenticationDAO {
         permission = permission.toLowerCase();
         String query = String.format("SELECT has_%s FROM %s WHERE user_id =?;", permission, tableName);
         ArrayList data = new ArrayList(Arrays.asList(Integer.toString(userId)));
-        return preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("true");
+        return preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("true");
     }
 
 
@@ -60,7 +60,7 @@ public class AuthenticationDAO {
         String query = String.format("SELECT user_role FROM %s WHERE user_id = ?", tableName);
         ArrayList data = new ArrayList(Arrays.asList(Integer.toString(userId)));
 
-        return preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("SUPERUSER");
+        return preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT", data).contains("SUPERUSER");
     }
 
 
@@ -68,11 +68,11 @@ public class AuthenticationDAO {
      * @author Anthony Scheeres
      */
     public String userIDtoUsername(String userID) {
-        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         ArrayList data = new ArrayList(Arrays.asList(userID));
         String query = String.format("SELECT username, user_id FROM %s WHERE user_id = ?", tableName);
         try {
-            return preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT" ,data);
+            return preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "SELECT" ,data);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }

@@ -4,8 +4,6 @@ import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.LogModel;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -68,10 +66,10 @@ public class LoggingDAO {
     }
 
     private String connectToDatabase(String query, String queryType, ArrayList<String> data) {
-        PreparedStatmentDatabaseUtilities preparedStatmentDatabaseUtilities = new PreparedStatmentDatabaseUtilities();
+        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = preparedStatmentDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
+            returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
         }
         return returnQuery;

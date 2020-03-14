@@ -18,7 +18,6 @@ public class LoggerController {
     	
     	
     public void logger() {
-    	
         Handler consoleHandler = null;
         Handler fileHandler  = null;
         try{
@@ -46,9 +45,5 @@ public class LoggerController {
             LOGGER.log(Level.SEVERE, "Error occur", exception);
         }
         fileHandler.close();
-      //  LOGGER.finer("Finest example on LOGGER handler completed.");
-         
-    	
     }
- 
 }

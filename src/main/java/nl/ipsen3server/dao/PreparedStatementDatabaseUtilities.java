@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PreparedStatmentDatabaseUtilities {
-
-
+public class PreparedStatementDatabaseUtilities {
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     /**
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
@@ -40,7 +38,6 @@ public class PreparedStatmentDatabaseUtilities {
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
-        System.out.println("Result: " + result);
         return result;
     }
 
@@ -82,15 +79,12 @@ public class PreparedStatmentDatabaseUtilities {
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
 
         } catch (SQLException e) {
-            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         } catch (Exception e) {
-            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return resultsInJson;
     }
-
 
     /**
      * Executes and update request (DELETE, UPDATE, INSERT), inserts it into the database
@@ -103,7 +97,6 @@ public class PreparedStatmentDatabaseUtilities {
      * @return Nothing
      */
     private String executeUpdate(DatabaseModel databaseModel, String query, ArrayList<String> data){
-
         String result = null;
         String username = databaseModel.getUsername();
         String password = databaseModel.getPassword();
@@ -130,10 +123,6 @@ public class PreparedStatmentDatabaseUtilities {
             }
 
         } catch (SQLException e) {
-            //query);
-             LOGGER.log(Level.SEVERE, "Error occur", e);
-        } catch (Exception e) {
-            //query);
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return result;
@@ -143,76 +132,66 @@ public class PreparedStatmentDatabaseUtilities {
         return String.format("jdbc:postgresql://%s:%s/%s", hostName, portNumber, databaseName);
     }
 
-
     /**
      * @author Anthony Scheeres
      * @return
      */
     //use a database object to connect to database and perform a query
     public String connectDatabaseJson(
-    		DatabaseModel databaseModel, 
-    		String query, 
-    		List < String > values,
-            boolean isUpdate 
-    		) throws Exception {
-    	
+        DatabaseModel databaseModel,
+        String query,
+        List < String > values,
+        boolean isUpdate
+    ) throws Exception {
         return connectToDatabaseJson(
-        		databaseModel.getUsername(),
-        		databaseModel.getPassword(),
-        		databaseModel.getPortNumber(),
-        		databaseModel.getDatabaseName(),
-        		databaseModel.getHostName(),
-        		query,
-        		values,
-                isUpdate
-        		);
+            databaseModel.getUsername(),
+            databaseModel.getPassword(),
+            databaseModel.getPortNumber(),
+            databaseModel.getDatabaseName(),
+            databaseModel.getHostName(),
+            query,
+            values,
+            isUpdate
+        );
     }
-
 
     /**
      * @author Anthony Scheeres
-     * @return
      */
     //use a database object to connect to database and perform a query
     public HashMap < String, List < String >> connectDatabaseHashmap(
-    		DatabaseModel databaseModel, 
-    		String query, 
-    		List < String > values) 
-    				throws Exception {
-
+        DatabaseModel databaseModel,
+        String query,
+        List < String > values
+    ) {
         return connectToDatabaseHashmap(
-        		databaseModel.getUsername(),
-        		databaseModel.getPassword(),
-        		databaseModel.getPortNumber(),
-        		databaseModel.getDatabaseName(),
-        		databaseModel.getHostName(),
-        		query,
-        		values
-        		);
+            databaseModel.getUsername(),
+            databaseModel.getPassword(),
+            databaseModel.getPortNumber(),
+            databaseModel.getDatabaseName(),
+            databaseModel.getHostName(),
+            query,
+            values
+        );
     }
-
 
     /**
      * @author Anthony Scheeres
-     * @return 
-     * @throws Exception
      */
     private String connectToDatabaseJson(
-            String username,
-            String password, int portNumber,
-            String databaseName,
-            String hostName,
-            String query,
-            List<String> values,
-            boolean isUpdate
+        String username,
+        String password, int portNumber,
+        String databaseName,
+        String hostName,
+        String query,
+        List<String> values,
+        boolean isUpdate
     ) throws Exception {
-    	  String result = null;
+        String result = null;
         DatabaseUtilities dataUtilities = new DatabaseUtilities();
         String url = dataUtilities.createUrl(portNumber, databaseName, hostName);
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
-        //     Class.forName("org.postgresql.Driver"); 
-
         try  {
             //"Java JDBC PostgreSQL: " + databaseName);
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -223,14 +202,12 @@ public class PreparedStatmentDatabaseUtilities {
                 if (isNumeric(values.get(index))) {
                     pstmt.setInt(counter, Integer.parseInt(values.get(index)));
                 } else {
-
                     pstmt.setString(counter, values.get(index));
                 }
             }
 
             if(isUpdate){
                 pstmt.executeUpdate();
-                
                 result = "Update was succecfull";
             }else{
                 ResultSet r = pstmt.executeQuery();
@@ -250,37 +227,32 @@ public class PreparedStatmentDatabaseUtilities {
 
     /**
      * @author Anthony Scheeres
-     * @return 
-     * @throws Exception
      */
     private HashMap < String, List < String >> connectToDatabaseHashmap(
-            String username,
-            String password, int portNumber,
-            String databaseName,
-            String hostName,
-            String query,
-            List<String> values
-    ) throws Exception {
-    	  HashMap<String, List<String>> result = null;
+        String username,
+        String password, int portNumber,
+        String databaseName,
+        String hostName,
+        String query,
+        List<String> values
+    ) {
+        HashMap<String, List<String>> result = null;
         DatabaseUtilities dUtilities = new DatabaseUtilities();
         String url = dUtilities.createUrl(portNumber, databaseName, hostName);
         // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
-        //     Class.forName("org.postgresql.Driver"); 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             //"Java JDBC PostgreSQL: " + databaseName);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
             for (int index = 0; index < values.size(); index++) {
                 counter = index + 1;
-                //values.get(index));
                 if (isNumeric(values.get(index))) {
                     pstmt.setInt(counter, Integer.parseInt(values.get(index)));
                 } else {
                     pstmt.setString(counter, values.get(index));
                 }
             }
-            //pstmt);
             ResultSet r = pstmt.executeQuery();
             DatabaseUtilities g = new DatabaseUtilities();
             HashMap < String, List < String >> hashmap = g.getTableContents(r);
@@ -296,8 +268,6 @@ public class PreparedStatmentDatabaseUtilities {
 
     /**
      * @author Anthony Scheeres
-     * @return 
-     * @throws Exception
      */
     public static boolean isNumeric(String strNum) {
         try {
