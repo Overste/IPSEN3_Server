@@ -71,9 +71,13 @@ public class UserResource {
 	@POST
 	@Path("/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeUserModel(String u) {
-		System.out.println("Username " + u);
-		return accountController.handleRemoveUser(u);
+	public Response removeUserModel(@HeaderParam("token") String token, String u) {
+		if(authenticationController.getUserRole(token).equals("SUPERUSER")) {
+			System.out.println("Username " + u);
+			return accountController.handleRemoveUser(u);
+		} else {
+			return Response.fail;
+		}
 	}
 
 	/**
@@ -104,8 +108,14 @@ public class UserResource {
 	@PUT
 	@Path("/{id}/{user_role}/updateUserRole")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseModel updateUserRole(@PathParam("id") long id, @PathParam("user_role") String userRole) {
-		return userController.updateUserRole(id, userRole);
+	public ResponseModel updateUserRole(@HeaderParam("token") String token, @PathParam("id") long id,
+										@PathParam("user_role") String userRole) {
+		if(authenticationController.getUserRole(token).equals("SUPERUSER")) {
+			return userController.updateUserRole(id, userRole);
+		} else {
+			return new ResponseModel(Response.fail.toString());
+		}
+
 	}
 
 }
