@@ -1,6 +1,8 @@
+
 package nl.ipsen3server.resources;
 
 import nl.ipsen3server.controllers.ExperimentController;
+import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.BoxModel;
 
@@ -12,7 +14,8 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/experiment")
 public class ExperimentResource {
-    private ExperimentController experimentController = new ExperimentController();
+
+    private ExperimentController experimentcontroller = new ExperimentController();
 
     /**
      * Catches the URL and tries to delete an experiment. Returns the status of this attempt.
@@ -24,9 +27,9 @@ public class ExperimentResource {
      * @return a string with the status of the DELETE REQUEST
      */
     @DELETE
-    @Path("/{token}/remove/{id}")
-    public String deleteExperiment(@PathParam("token") String token, @PathParam("id") int id) {
-        return this.experimentController.deleteExperiment(id, token);
+    @Path("/remove/{id}")
+    public String deleteExperiment(@HeaderParam("token") String token, @PathParam("id") int id) {
+        return experimentcontroller.deleteExperiment(id, token);
     }
 
     /**
@@ -38,10 +41,11 @@ public class ExperimentResource {
      * @return a JSON of all experiments from the database
      */
     @GET
-    @Path("/{token}/showAllExperiments")
+    @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showExperiments(@PathParam("token") String token){
-        return this.experimentController.showExperiments(token);
+    public String showExperiments(@HeaderParam("token") String token){
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.showExperiments(token);
     }
 
     /**
@@ -49,16 +53,17 @@ public class ExperimentResource {
      *
      * @author CyrielvdRaaf
      *
-     * @param phaseChange boxModel object
+     * @param phaseChange
      * @param token the token of the user trying to acces the experiments
      * @return a JSON of experiment phase and id from the database
      */
     @POST
-    @Path("/{token}/showPhaseOfExperiments")
+    @Path("/showPhaseOfExperiments")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String showPhases(BoxModel phaseChange, @PathParam("token") String token){
-        return this.experimentController.showPhases(phaseChange, token);
+    public String showPhases(BoxModel phaseChange, @HeaderParam("token") String token){
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.showPhases(phaseChange, token);
     }
 
     /**
@@ -71,29 +76,30 @@ public class ExperimentResource {
      * @return a JSON of a single experiment from the database
      */
     @GET
-    @Path("/{token}/showSingleExperiment/{id}")
+    @Path("/showSingleExperiment/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showSingleExperiment(@PathParam("token") String token, @PathParam("id") int id){
-        return this.experimentController.showSingleExperiment(token, id);
+    public String showSingleExperiment(@HeaderParam("token") String token, @PathParam("id") int id){
+        ExperimentController experimentController = new ExperimentController();
+        return experimentController.showSingleExperiment(token, id);
     }
 
     /**
      *@author Cyriel van der Raaf, Jesse Poleij
      */
     @POST
-    @Path("/{token}/createProject")
+    @Path("/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createProject(ExperimentModel project, @PathParam("token") String token){
-        return this.experimentController.handleCreateProject(project, token);
+    public String createProject(ExperimentModel project, @HeaderParam("token") String token){
+        return experimentcontroller.handleCreateProject(project, token);
     }
 
     /**
      *@author Jesse Poleij
      */
     @POST
-    @Path("/{token}/updateProject")
+    @Path("/updateProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String deleteProject(ExperimentModel project, @PathParam("token") String token){
-        return this.experimentController.handleUpdate(project, token);
+    public String deleteProject(ExperimentModel project, @HeaderParam("token") String token){
+        return experimentcontroller.handleUpdate(project, token);
     }
 }
