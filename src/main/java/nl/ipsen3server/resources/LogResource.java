@@ -19,9 +19,9 @@ public class LogResource {
      * @param token The token of the user trying to post a log
      */
     @POST
-    @Path("/{token}/upload/")
+    @Path("/upload/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createLog(LogModel logModel, @PathParam("token") String token) {
+    public void createLog(LogModel logModel, @HeaderParam("token") String token) {
         this.loggingController.createLog(logModel, token);
     }
 
@@ -33,9 +33,9 @@ public class LogResource {
      * @return Returns the logs from the requested project
      */
     @GET
-    @Path("/{token}/download/{experimentId}")
+    @Path("/download/{experimentId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showLogs(@PathParam("experimentId") int id, @PathParam("token") String token){
+    public String showlogs(@PathParam("experimentId") int id, @HeaderParam("token") String token){
         return this.loggingController.showlogs(id, token);
     }
 }
