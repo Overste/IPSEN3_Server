@@ -128,13 +128,22 @@ public class ExperimentDAO{
         return returnQuery;
     }
 
+    public int getExperimentsCount() {
+        String query = String.format("SELECT Count(*) FROM %s;", tableName);
+        return Integer.parseInt(
+            connectToDatabase(query, "SELECT")
+                .replaceAll("[^0-9]", "")
+        );
+    }
+
     /**
      * Uses a prepared statement to upload an experiment to the database
      * @param model ExperimentModel Object
      */
     public void uploadExperiment(ExperimentModel model) {
         PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
-        long id = model.getId();
+        long id = this.getExperimentsCount() + 1;
+
         String query = String.format("INSERT INTO %s VALUES ("
                 + "?,"               // experiment_id
                 + "?,"                  // experiment_name
@@ -154,6 +163,7 @@ public class ExperimentDAO{
         try {
             dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
+            e.printStackTrace();
              LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
         }
     }

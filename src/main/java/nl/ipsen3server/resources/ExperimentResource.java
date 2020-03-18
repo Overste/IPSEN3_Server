@@ -2,7 +2,6 @@
 package nl.ipsen3server.resources;
 
 import nl.ipsen3server.controllers.ExperimentController;
-import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.BoxModel;
 
@@ -14,8 +13,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/experiment")
 public class ExperimentResource {
-
-    private ExperimentController experimentcontroller = new ExperimentController();
+    private ExperimentController experimentController = new ExperimentController();
 
     /**
      * Catches the URL and tries to delete an experiment. Returns the status of this attempt.
@@ -29,7 +27,7 @@ public class ExperimentResource {
     @DELETE
     @Path("/remove/{id}")
     public String deleteExperiment(@HeaderParam("token") String token, @PathParam("id") int id) {
-        return experimentcontroller.deleteExperiment(id, token);
+        return this.experimentController.deleteExperiment(id, token);
     }
 
     /**
@@ -44,8 +42,7 @@ public class ExperimentResource {
     @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
     public String showExperiments(@HeaderParam("token") String token){
-        ExperimentController experimentController = new ExperimentController();
-        return experimentController.showExperiments(token);
+        return this.experimentController.showExperiments(token);
     }
 
     /**
@@ -62,8 +59,7 @@ public class ExperimentResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String showPhases(BoxModel phaseChange, @HeaderParam("token") String token){
-        ExperimentController experimentController = new ExperimentController();
-        return experimentController.showPhases(phaseChange, token);
+        return this.experimentController.showPhases(phaseChange, token);
     }
 
     /**
@@ -79,8 +75,7 @@ public class ExperimentResource {
     @Path("/showSingleExperiment/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public String showSingleExperiment(@HeaderParam("token") String token, @PathParam("id") int id){
-        ExperimentController experimentController = new ExperimentController();
-        return experimentController.showSingleExperiment(token, id);
+        return this.experimentController.showSingleExperiment(token, id);
     }
 
     /**
@@ -90,7 +85,7 @@ public class ExperimentResource {
     @Path("/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
     public String createProject(ExperimentModel project, @HeaderParam("token") String token){
-        return experimentcontroller.handleCreateProject(project, token);
+        return this.experimentController.handleCreateProject(project, token);
     }
 
     /**
@@ -100,6 +95,6 @@ public class ExperimentResource {
     @Path("/updateProject")
     @Consumes(MediaType.APPLICATION_JSON)
     public String deleteProject(ExperimentModel project, @HeaderParam("token") String token){
-        return experimentcontroller.handleUpdate(project, token);
+        return this.experimentController.handleUpdate(project, token);
     }
 }

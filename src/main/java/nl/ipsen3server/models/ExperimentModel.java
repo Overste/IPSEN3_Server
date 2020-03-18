@@ -11,16 +11,16 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "id",
-        "name",
-        "description",
-        "experimentleaders",
-        "fasens",
-        "statussen",
-        "businessOwners",
-        "inovation_cost",
-        "money_source",
-        "organisations"
+    "id",
+    "name",
+    "description",
+    "experimentleaders",
+    "fasens",
+    "statussen",
+    "businessOwners",
+    "inovation_cost",
+    "money_source",
+    "organisations"
 })
 public class ExperimentModel {
     @Pattern(regexp = "^[0-9]*$")

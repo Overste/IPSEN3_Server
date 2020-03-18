@@ -25,7 +25,6 @@ public class PreparedStatementDatabaseUtilities {
      * @return returns a String(JSON) a from database
      */
     public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType, ArrayList<String> data){
-
         String result = null;
         List<String> updateQueries = new ArrayList<>(Arrays.asList("INSERT", "UPDATE", "DELETE"));
 
