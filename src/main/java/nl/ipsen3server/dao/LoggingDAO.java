@@ -53,8 +53,6 @@ public class LoggingDAO {
      */
     public int getLatestLogId(){
         String query = String.format("SELECT log_id FROM %s ORDER BY log_id", tableName);
-        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-//        String result = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
 
         String result = this.preparedStatementDatabaseUtilities.connectToDatabase(
             databaseModel,
@@ -84,7 +82,12 @@ public class LoggingDAO {
         PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
+            returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                query,
+                queryType,
+                data
+            );
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error occur", e);
         }

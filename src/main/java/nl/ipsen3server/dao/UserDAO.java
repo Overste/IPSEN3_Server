@@ -7,7 +7,6 @@ import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.UserModel;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 public class UserDAO {
     private String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-    private PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
+    private PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
     /**
@@ -26,19 +25,13 @@ public class UserDAO {
      * get tokens from database
      */
     public HashMap<String, List<String>> getTokens() {
-        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
-
-
         String query = String.format("SELECT user_id, token FROM %s;", tableName);
-        //return databaseUtilities.connectThisDatabase(databaseModel, query);
 
-        return preparedStatement.connectDatabaseHashmap(
-                databaseModel,
-                query,
-                new ArrayList<>()
+        return this.preparedStatementDatabaseUtilities.connectDatabaseHashmap(
+            databaseModel,
+            query,
+            new ArrayList<>()
         );
-
     }
 
     /**
@@ -47,9 +40,9 @@ public class UserDAO {
     public void changeToken(String token, int id) {
         String query = String.format("UPDATE %s SET token = ? WHERE user_id = ?;", tableName);
         ArrayList data = new ArrayList(Arrays.asList(token, Integer.toString(id)));
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
+
         try {
-            preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
+            this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", data);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
@@ -60,29 +53,24 @@ public class UserDAO {
      */
     public String showUsers() {
         String query = String.format("SELECT * FROM %s ORDER BY username;", tableName);
-        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
 
-        return preparedStatement.connectToDatabase(
+        return this.preparedStatementDatabaseUtilities.connectToDatabase(
             databaseModel,
             query,
             "SELECT",
             new ArrayList<>()
         );
-
-//        return databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
     }
 
     /**
      * @author Anthony Scheeres
      */
     public String showOneUserPermission(int user_id) {
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String result = null;
         String query = String.format("SELECT * FROM %s WHERE user_id = ?;", tableName);
         ArrayList data = new ArrayList(Arrays.asList(user_id));
         try {
-            result = preparedStatementDatabaseUtilities.connectToDatabase(
+            result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
                 query,
                 "SELECT",
@@ -98,7 +86,6 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public HashMap<String, List<String>> getUserInfo() {
-        DatabaseUtilities d = new DatabaseUtilities();
         String query = String.format(
             "SELECT " +
             "user_id, " +
@@ -112,23 +99,20 @@ public class UserDAO {
             "user_id;",
             tableName
         );
-        return preparedStatement.connectDatabaseHashmap(
+        return this.preparedStatementDatabaseUtilities.connectDatabaseHashmap(
             databaseModel,
             query,
             new ArrayList<>()
         );
-//        return d.connectThisDatabase(databaseModel, query);
     }
 
     /**
      * @author Anthony Scheeres
      */
     public HashMap<String, List<String>> getUsers() {
-        DatabaseUtilities d = new DatabaseUtilities();
         String query = String.format("select user_id, username from %s;", tableName);
-//        return d.connectThisDatabase(databaseModel, query);
 
-        return this.preparedStatement.connectDatabaseHashmap(
+        return this.preparedStatementDatabaseUtilities.connectDatabaseHashmap(
             databaseModel,
             query,
             new ArrayList<>()
@@ -139,7 +123,6 @@ public class UserDAO {
      * @author Anthony Scheeres
      */
     public String insertHandlerUser(HashMap<String, List<String>> e1, UserModel userModel) throws Exception {
-        PreparedStatementDatabaseUtilities pUtilites = new PreparedStatementDatabaseUtilities();
         MailController mailController = new MailController();
         UserController userController = new UserController();
         long id = userController.createUserId(e1.get("user_id"));
@@ -157,7 +140,7 @@ public class UserDAO {
         variables.add(String.format("%d", id));
         variables.add(userModel.getEmail());
         variables.add(token);
-        pUtilites.connectDatabaseJson(databaseModel, query2, variables, true);
+        this.preparedStatementDatabaseUtilities.connectDatabaseJson(databaseModel, query2, variables, true);
         return token;
     }
 
@@ -166,12 +149,11 @@ public class UserDAO {
      */
     public boolean removeUserModel(String u) {
         boolean succes = false;
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String deletequery = String.format("DELETE FROM %s WHERE username = ?;", tableName);
         ArrayList<String> usernameArray = new ArrayList<>(Arrays.asList(u));
 
         try {
-            String result = preparedStatementDatabaseUtilities.connectToDatabase(
+            String result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
                 deletequery,
                 "DELETE",
@@ -189,7 +171,6 @@ public class UserDAO {
     public boolean updateUserRole(long id, String role) {
         boolean succes = false;
 
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String updateQuery = String.format("UPDATE %s\r\n" +
                         "SET user_role=?::user_role WHERE user_id=?", tableName);
 
@@ -198,7 +179,12 @@ public class UserDAO {
         variables.add(String.valueOf(id));
 
         try {
-            preparedStatementDatabaseUtilities.connectDatabaseJson(databaseModel, updateQuery, variables, true);
+            this.preparedStatementDatabaseUtilities.connectDatabaseJson(
+                databaseModel,
+                updateQuery,
+                variables,
+                true
+            );
             succes = true;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error occur", e.getMessage());
@@ -208,14 +194,13 @@ public class UserDAO {
 
     public String getUserRole(int id) {
         String result = null;
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String getQuery = String.format("SELECT user_role FROM %s WHERE user_id=?", tableName);
 
         ArrayList<String> variables = new ArrayList<>();
         variables.add(String.valueOf(id));
 
         try {
-            result = preparedStatementDatabaseUtilities.connectToDatabase(
+            result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
                 getQuery,
                 "SELECT", variables

@@ -9,7 +9,6 @@ import java.util.List;
 import nl.ipsen3server.dao.PreparedStatementDatabaseUtilities;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 
-import nl.ipsen3server.dao.DatabaseUtilities;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.MailModel;
@@ -34,7 +33,7 @@ public class MailController {
 		return emailValidator.isValid(email, null);
 	 }
 	 
-	private String findValideToken(HashMap<String, List<String>> e1) {
+	private String findValidateToken(HashMap<String, List<String>> e1) {
 		String token = null;
 		boolean tokenConfirmed = false;
 
@@ -50,19 +49,16 @@ public class MailController {
 	  */
 	 public HashMap<String, List<String>> getTokens() {
 		String query = String.format("SELECT username, token, email FROM %s;", tableName);
-		DatabaseUtilities databaseUtilities = new DatabaseUtilities();
 		HashMap<String, List<String>> result = null;
 
 		try {
 			DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
-//			result = databaseUtilities.connectThisDatabase(databaseModel, query);
-			result = preparedStatementDatabaseUtilities.connectDatabaseHashmap(
-					databaseModel,
-					query,
-					new ArrayList<>()
+			result = this.preparedStatementDatabaseUtilities.connectDatabaseHashmap(
+				databaseModel,
+				query,
+				new ArrayList<>()
 			);
-
-
+			
 		}
 		catch (Exception e2) {
 			LOGGER.log(Level.SEVERE, "Error occur", e2.getMessage());
@@ -76,7 +72,7 @@ public class MailController {
 	  */
 	 public String generateToken() {
 		HashMap<String, List<String>> hashmap = getTokens();
-		return findValideToken(hashmap);
+		return findValidateToken(hashmap);
 	 }
 
 	 /**

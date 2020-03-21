@@ -98,10 +98,9 @@ public class ExperimentDAO{
      * @return the resultSet of the query. Returns an empty string if the query type is not SELECT
      */
     private String connectToDatabase(String query, String queryType, ArrayList<String> data) {
-        PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
+            returnQuery = this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, queryType, data);
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
@@ -119,19 +118,14 @@ public class ExperimentDAO{
      */
 
     private String connectToDatabase(String query, String queryType) {
-        DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String returnQuery = null;
         try {
-
-
             returnQuery = this.preparedStatementDatabaseUtilities.connectToDatabase(
-                    databaseModel,
-                    query,
-                    "SELECT",
-                    new ArrayList<>()
+                databaseModel,
+                query,
+                queryType,
+                new ArrayList<>()
             );
-
-
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }

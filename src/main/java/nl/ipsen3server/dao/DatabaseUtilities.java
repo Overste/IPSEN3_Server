@@ -13,96 +13,6 @@ import nl.ipsen3server.models.DatabaseModel;
 
 public class DatabaseUtilities {
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
-
-    /**
-     * Call this method to execute a query. This method accepts a query type and calls for the desired method.
-     *
-     * @author AnthonySchuijlenburg
-     *
-     * @param databaseModel DatabaseModel
-     * @param query STRING query ("SELECT * FROM tablename")
-     * @param queryType string SELECT, UPDATE, INSERT, DELETE
-     * @return returns a String(JSON) a from database
-     */
-//    public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType){
-//        String result = null;
-//        List<String> updateQueries = new ArrayList<>(Arrays.asList("INSERT", "UPDATE", "DELETE"));
-//
-//        try {
-//            if(queryType.equals("SELECT")) {
-//                result = executeQuery(databaseModel, query);
-//            } else if (updateQueries.contains(queryType)){
-//                executeUpdate(databaseModel, query);
-//            }
-//        } catch (Exception exception) {
-//             LOGGER.log(Level.SEVERE, "Error occur", exception);
-//        }
-//        return result;
-//    }
-
-    /**
-     * Executes a SELECT statement and returns the result in a String format
-     *
-     * @author AnthonySchuijlenburg
-     *
-     * @param databaseModel DatabaseModel
-     * @param query STRING query ("SELECT * FROM tablename")
-     * @return String result of entered query
-     */
-    public String executeQuery(DatabaseModel databaseModel, String query){
-        String username = databaseModel.getUsername();
-        String password = databaseModel.getPassword();
-        int portNumber = databaseModel.getPortNumber();
-        String databaseName = databaseModel.getDatabaseName();
-        String hostName = databaseModel.getHostName();
-
-        String url = createUrl(portNumber, databaseName, hostName);
-        String resultsInJson = null;
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-
-            System.out.println("DatabaseUtilities " + query);
-
-            JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
-            resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return resultsInJson;
-    }
-
-
-    /**
-     * Executes and update request (DELETE, UPDATE, INSERT), inserts it into the database
-     *
-     * @author AnthonySchuijlenburg
-     *
-     * @param databaseModel DatabaseModel
-     * @param query STRING query ("SELECT * FROM tablename")
-     */
-    public void executeUpdate(DatabaseModel databaseModel, String query){
-        String username = databaseModel.getUsername();
-        String password = databaseModel.getPassword();
-        int portNumber = databaseModel.getPortNumber();
-        String databaseName = databaseModel.getDatabaseName();
-        String hostName = databaseModel.getHostName();
-
-        String url = createUrl(portNumber, databaseName, hostName);
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-
-        } catch (SQLException e) {
-            //query);
-             LOGGER.log(Level.SEVERE, "Error occur", e);
-        }
-    }
-
     /**
      * @author Anthony Scheeres
      */
@@ -131,54 +41,8 @@ public class DatabaseUtilities {
         return hashmap;
     }
 
-    /**
-     * @author Anthony Scheeres
-     * @return DatabaseConnector
-     */
-    //use a database object to connect to database and perform a query
-//    public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) {
-//        return connectToDatabase2(
-//            databaseModel.getUsername(),
-//            databaseModel.getPassword(),
-//            databaseModel.getPortNumber(),
-//            databaseModel.getDatabaseName(),
-//            databaseModel.getHostName(),
-//            query
-//        );
-//    }
-
     public String createUrl(int portNumber, String databaseName, String hostName) {
         return String.format("jdbc:postgresql://%s:%s/%s", hostName, portNumber, databaseName);
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    private HashMap < String, List < String >> connectToDatabase2(
-        String username,
-        String password,
-        int portNumber,
-        String databaseName,
-        String hostName,
-        String query
-    ) {
-        HashMap<String, List<String>> result = null;
-        String url = createUrl(portNumber, databaseName, hostName);
-        HashMap < String, List < String >> e = new HashMap<>();
-        // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within
-        // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
-        //     Class.forName("org.postgresql.Driver");
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            //"Java JDBC PostgreSQL: " + databaseName);
-            ResultSet resultSet = this.enterQuery(connection, query);
-            HashMap < String, List < String >> hashmap = getTableContents(resultSet);
-            connection.close();
-            result =  hashmap;
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-        return result;
     }
 
     /**
@@ -200,22 +64,5 @@ public class DatabaseUtilities {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
         return columnNames;
-    }
-
-    /**
-     * @author Anthony Scheeres
-     */
-    // this methode can be used to insert an query
-    private ResultSet enterQuery(Connection connection, String query) {
-        Statement statement;
-        ResultSet result = null;
-
-        try {
-            statement = connection.createStatement();
-            result = statement.executeQuery(query);
-        } catch (SQLException e) {
-             LOGGER.log(Level.SEVERE, "Error occur", e);
-        }
-        return result;
     }
 }
