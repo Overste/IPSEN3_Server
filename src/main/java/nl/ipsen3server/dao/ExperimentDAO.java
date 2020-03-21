@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class ExperimentDAO{
     private String tableName = "experiments";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    private PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
     /**
@@ -121,7 +122,16 @@ public class ExperimentDAO{
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
         String returnQuery = null;
         try {
-            returnQuery = databaseUtilities.connectToDatabase(databaseModel, query, queryType);
+
+
+            returnQuery = this.preparedStatementDatabaseUtilities.connectToDatabase(
+                    databaseModel,
+                    query,
+                    "SELECT",
+                    new ArrayList<>()
+            );
+
+
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }

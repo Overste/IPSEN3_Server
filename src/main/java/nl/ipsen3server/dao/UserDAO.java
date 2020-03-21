@@ -7,6 +7,7 @@ import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.UserModel;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 public class UserDAO {
     private String tableName = "application_users";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    private PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
 
     /**
@@ -25,8 +27,18 @@ public class UserDAO {
      */
     public HashMap<String, List<String>> getTokens() {
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
+        PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
+
+
         String query = String.format("SELECT user_id, token FROM %s;", tableName);
-        return databaseUtilities.connectThisDatabase(databaseModel, query);
+        //return databaseUtilities.connectThisDatabase(databaseModel, query);
+
+        return preparedStatement.connectDatabaseHashmap(
+                databaseModel,
+                query,
+                new ArrayList<>()
+        );
+
     }
 
     /**
@@ -49,7 +61,16 @@ public class UserDAO {
     public String showUsers() {
         String query = String.format("SELECT * FROM %s ORDER BY username;", tableName);
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        return databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
+        PreparedStatementDatabaseUtilities preparedStatement = new PreparedStatementDatabaseUtilities();
+
+        return preparedStatement.connectToDatabase(
+            databaseModel,
+            query,
+            "SELECT",
+            new ArrayList<>()
+        );
+
+//        return databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
     }
 
     /**
@@ -91,7 +112,12 @@ public class UserDAO {
             "user_id;",
             tableName
         );
-        return d.connectThisDatabase(databaseModel, query);
+        return preparedStatement.connectDatabaseHashmap(
+            databaseModel,
+            query,
+            new ArrayList<>()
+        );
+//        return d.connectThisDatabase(databaseModel, query);
     }
 
     /**
@@ -100,7 +126,13 @@ public class UserDAO {
     public HashMap<String, List<String>> getUsers() {
         DatabaseUtilities d = new DatabaseUtilities();
         String query = String.format("select user_id, username from %s;", tableName);
-        return d.connectThisDatabase(databaseModel, query);
+//        return d.connectThisDatabase(databaseModel, query);
+
+        return this.preparedStatement.connectDatabaseHashmap(
+            databaseModel,
+            query,
+            new ArrayList<>()
+        );
     }
 
     /**

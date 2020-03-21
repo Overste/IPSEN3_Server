@@ -65,13 +65,18 @@ public class PreparedStatementDatabaseUtilities {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            for(int i = 0; i < data.size(); i++){
-                if (isNumeric(data.get(i))) {
-                    preparedStatement.setInt(i + 1, Integer.parseInt(data.get(i)));
-                } else {
-                    preparedStatement.setString(i + 1, data.get(i));
+            // if data is empty the queries has NO WHERE
+            if (!data.isEmpty()) {
+                for(int i = 0; i < data.size(); i++){
+                    if (isNumeric(data.get(i))) {
+                        preparedStatement.setInt(i + 1, Integer.parseInt(data.get(i)));
+                    } else {
+                        preparedStatement.setString(i + 1, data.get(i));
+                    }
                 }
             }
+
+            System.out.println("PreparedStatementDatabaseUtilities " + query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -162,7 +167,7 @@ public class PreparedStatementDatabaseUtilities {
     public HashMap < String, List < String >> connectDatabaseHashmap(
         DatabaseModel databaseModel,
         String query,
-        List < String > values
+        ArrayList<String> values
     ) {
         return connectToDatabaseHashmap(
             databaseModel.getUsername(),
@@ -234,7 +239,7 @@ public class PreparedStatementDatabaseUtilities {
         String databaseName,
         String hostName,
         String query,
-        List<String> values
+        ArrayList<String> values
     ) {
         HashMap<String, List<String>> result = null;
         DatabaseUtilities dUtilities = new DatabaseUtilities();
@@ -245,14 +250,18 @@ public class PreparedStatementDatabaseUtilities {
             //"Java JDBC PostgreSQL: " + databaseName);
             PreparedStatement pstmt = connection.prepareStatement(query);
             int counter = 0;
-            for (int index = 0; index < values.size(); index++) {
-                counter = index + 1;
-                if (isNumeric(values.get(index))) {
-                    pstmt.setInt(counter, Integer.parseInt(values.get(index)));
-                } else {
-                    pstmt.setString(counter, values.get(index));
+
+            if (!values.isEmpty()) {
+                for (int index = 0; index < values.size(); index++) {
+                    counter = index + 1;
+                    if (isNumeric(values.get(index))) {
+                        pstmt.setInt(counter, Integer.parseInt(values.get(index)));
+                    } else {
+                        pstmt.setString(counter, values.get(index));
+                    }
                 }
             }
+
             ResultSet r = pstmt.executeQuery();
             DatabaseUtilities g = new DatabaseUtilities();
             HashMap < String, List < String >> hashmap = g.getTableContents(r);

@@ -24,21 +24,21 @@ public class DatabaseUtilities {
      * @param queryType string SELECT, UPDATE, INSERT, DELETE
      * @return returns a String(JSON) a from database
      */
-    public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType){
-        String result = null;
-        List<String> updateQueries = new ArrayList<>(Arrays.asList("INSERT", "UPDATE", "DELETE"));
-
-        try {
-            if(queryType.equals("SELECT")) {
-                result = executeQuery(databaseModel, query);
-            } else if (updateQueries.contains(queryType)){
-                executeUpdate(databaseModel, query);
-            }
-        } catch (Exception exception) {
-             LOGGER.log(Level.SEVERE, "Error occur", exception);
-        }
-        return result;
-    }
+//    public String connectToDatabase(DatabaseModel databaseModel, String query, String queryType){
+//        String result = null;
+//        List<String> updateQueries = new ArrayList<>(Arrays.asList("INSERT", "UPDATE", "DELETE"));
+//
+//        try {
+//            if(queryType.equals("SELECT")) {
+//                result = executeQuery(databaseModel, query);
+//            } else if (updateQueries.contains(queryType)){
+//                executeUpdate(databaseModel, query);
+//            }
+//        } catch (Exception exception) {
+//             LOGGER.log(Level.SEVERE, "Error occur", exception);
+//        }
+//        return result;
+//    }
 
     /**
      * Executes a SELECT statement and returns the result in a String format
@@ -63,6 +63,8 @@ public class DatabaseUtilities {
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
+
+            System.out.println("DatabaseUtilities " + query);
 
             JsonConverterUtilities jsonConverter = new JsonConverterUtilities();
             resultsInJson = jsonConverter.convertToJSON(resultSet).toString();
@@ -134,16 +136,16 @@ public class DatabaseUtilities {
      * @return DatabaseConnector
      */
     //use a database object to connect to database and perform a query
-    public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) {
-        return connectToDatabase2(
-            databaseModel.getUsername(),
-            databaseModel.getPassword(),
-            databaseModel.getPortNumber(),
-            databaseModel.getDatabaseName(),
-            databaseModel.getHostName(),
-            query
-        );
-    }
+//    public HashMap < String, List < String >> connectThisDatabase(DatabaseModel databaseModel, String query) {
+//        return connectToDatabase2(
+//            databaseModel.getUsername(),
+//            databaseModel.getPassword(),
+//            databaseModel.getPortNumber(),
+//            databaseModel.getDatabaseName(),
+//            databaseModel.getHostName(),
+//            query
+//        );
+//    }
 
     public String createUrl(int portNumber, String databaseName, String hostName) {
         return String.format("jdbc:postgresql://%s:%s/%s", hostName, portNumber, databaseName);
@@ -163,7 +165,7 @@ public class DatabaseUtilities {
         HashMap<String, List<String>> result = null;
         String url = createUrl(portNumber, databaseName, hostName);
         HashMap < String, List < String >> e = new HashMap<>();
-        // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within 
+        // When this class first attempts to establish a connection, it automatically loads any JDBC 4.0 drivers found within
         // the class path. Note that your application must manually load any JDBC drivers prior to version 4.0.
         //     Class.forName("org.postgresql.Driver");
 

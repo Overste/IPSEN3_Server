@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 public class LoggingDAO {
     private String tableName = "experiment_log";
     private DatabaseModel databaseModel = DataModel.getApplicationModel().getServers().get(0).getDatabase().get(0);
+    private PreparedStatementDatabaseUtilities preparedStatementDatabaseUtilities = new PreparedStatementDatabaseUtilities();
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
-
 
     /**
      * @author Anthony Schuijlenburg
@@ -54,7 +54,16 @@ public class LoggingDAO {
     public int getLatestLogId(){
         String query = String.format("SELECT log_id FROM %s ORDER BY log_id", tableName);
         DatabaseUtilities databaseUtilities = new DatabaseUtilities();
-        String result = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
+//        String result = databaseUtilities.connectToDatabase(databaseModel, query, "SELECT");
+
+        String result = this.preparedStatementDatabaseUtilities.connectToDatabase(
+            databaseModel,
+            query,
+            "SELECT",
+            new ArrayList<>()
+        );
+
+
         String[] results = result.split("");
         int logId = 0;
 
