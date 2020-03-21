@@ -129,7 +129,7 @@ public class ExperimentDAO{
     }
 
     public int getExperimentsCount() {
-        String query = String.format("SELECT Count(*) FROM %s;", tableName);
+        String query = String.format("SELECT MAX(experiment_id) FROM %s;", tableName);
         return Integer.parseInt(
             connectToDatabase(query, "SELECT")
                 .replaceAll("[^0-9]", "")

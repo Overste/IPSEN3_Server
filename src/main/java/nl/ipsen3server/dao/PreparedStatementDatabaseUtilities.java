@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public class PreparedStatementDatabaseUtilities {
 	 private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
+
     /**
      * Call this method to execute a query. This method accepts a query type and calls for the desired method.
      *
