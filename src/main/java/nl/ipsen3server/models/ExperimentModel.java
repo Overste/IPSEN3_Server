@@ -50,15 +50,7 @@ public class ExperimentModel {
     private BufferedImage img;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-//    public Enum getFases() {
-//        return fasen;
-//    }
-//
-//    public void setFases(Enum fasen) {
-//        this.fasen = fasen;
-//    }
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public BufferedImage getImg() {
         return img;
@@ -67,14 +59,6 @@ public class ExperimentModel {
     public void setImg(BufferedImage img) {
         this.img = img;
     }
-
-//    public Enum getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(Enum status) {
-//        this.status = status;
-//    }
 
     @JsonProperty("id")
     public Long getId() {

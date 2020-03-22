@@ -145,26 +145,30 @@ public class ExperimentDAO{
      * @param model ExperimentModel Object
      */
     public void uploadExperiment(ExperimentModel model) {
-        long id = this.getExperimentsCount() + 1;
-
-        String query = String.format("INSERT INTO %s VALUES ("
-                + "?,"               // experiment_id
-                + "?,"                  // experiment_name
-                + "?,"                  // experiment_leader
-                + "?,"                  // experiment_description
-                + "?,"                  // organisation
-                + "?,"                  // business_owner
-                + "?" + "::experiment_status,"                 // experiment_status
-                + "?" + "::experiment_phase,"                 // experiment_phase
-                + "?,"                   // inovation_cost
-                + "?"                   // money_source
-                + ");", tableName);
-
-        //TODO Make the values above align with model
-        ArrayList<String> createProject = createExperimentList(id, model);
+        String query = String.format("" +
+            "INSERT INTO %s VALUES ("
+                + "?,"                          // experiment_id
+                + "?,"                          // experiment_name
+                + "?,"                          // experiment_leader
+                + "?,"                          // experiment_description
+                + "?,"                          // organisation
+                + "?,"                          // business_owner
+                + "?" + "::experiment_status,"  // experiment_status
+                + "?" + "::experiment_phase,"   // experiment_phase
+                + "?,"                          // inovation_cost
+                + "?"                           // money_source
+            + ");",
+            tableName
+        );
+        ArrayList<String> createProject = createExperimentList(model);
 
         try {
-            this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
+            this.preparedStatementDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                query,
+                "INSERT",
+                createProject
+            );
         } catch (Exception e) {
             e.printStackTrace();
              LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
@@ -194,16 +198,21 @@ public class ExperimentDAO{
             tableName
         );
 
-        ArrayList<String> updateProject = createExperimentList(id, model);
+        ArrayList<String> updateProject = updateExperimentList(id, model);
 
         try {
-            this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
+            this.preparedStatementDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                query,
+                "UPDATE",
+                updateProject
+            );
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Update project error occur", e);
         }
     }
 
-    private ArrayList<String> createExperimentList(long id, ExperimentModel experimentModel) {
+    private ArrayList<String> updateExperimentList(long id, ExperimentModel experimentModel) {
         ArrayList<String> experiment = new ArrayList<>();
         experiment.add(experimentModel.getName());
         experiment.add(experimentModel.getExperimentleaders());
@@ -215,6 +224,22 @@ public class ExperimentDAO{
         experiment.add(experimentModel.getInovationCost());
         experiment.add(experimentModel.getMoneySource());
         experiment.add(String.format("%d", id));
+
+        return experiment;
+    }
+
+    private ArrayList<String> createExperimentList(ExperimentModel experimentModel) {
+        ArrayList<String> experiment = new ArrayList<>();
+        experiment.add(String.format("%d", this.getExperimentsCount() + 1));
+        experiment.add(experimentModel.getName());
+        experiment.add(experimentModel.getExperimentleaders());
+        experiment.add(experimentModel.getDescription());
+        experiment.add(experimentModel.getOrganisations());
+        experiment.add(experimentModel.getBusinessOwners());
+        experiment.add(String.format("%s", experimentModel.getStatussen()));
+        experiment.add(experimentModel.getFasens());
+        experiment.add(experimentModel.getInovationCost());
+        experiment.add(experimentModel.getMoneySource());
 
         return experiment;
     }
