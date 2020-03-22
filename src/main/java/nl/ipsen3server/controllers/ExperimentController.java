@@ -86,8 +86,7 @@ public class ExperimentController {
     /**
      * @author Cyriel van der Raaf, Jesse Poleij
      */
-    public String handleCreateProject(ExperimentModel project, String token){
-        System.out.println("ExperimentController handleCreateProject");
+    public String handleCreateProject(ExperimentModel project){
         this.experimentDAO.uploadExperiment(project);
         return Response.fail.toString();
     }
@@ -95,7 +94,7 @@ public class ExperimentController {
     /**
      * @author Jesse Poleij
      */
-    public String handleUpdate(ExperimentModel project, String token){
+    public String handleUpdate(ExperimentModel project) {
         this.experimentDAO.updateExperiment(project);
         return Response.fail.toString();
     }

@@ -85,7 +85,7 @@ public class ExperimentResource {
     @Path("/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
     public String createProject(ExperimentModel project, @HeaderParam("token") String token){
-        return this.experimentController.handleCreateProject(project, token);
+        return this.experimentController.handleCreateProject(project);
     }
 
     /**
@@ -95,6 +95,6 @@ public class ExperimentResource {
     @Path("/updateProject")
     @Consumes(MediaType.APPLICATION_JSON)
     public String deleteProject(ExperimentModel project, @HeaderParam("token") String token){
-        return this.experimentController.handleUpdate(project, token);
+        return this.experimentController.handleUpdate(project);
     }
 }

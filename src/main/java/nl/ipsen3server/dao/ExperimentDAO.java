@@ -84,7 +84,7 @@ public class ExperimentDAO{
             phaseChange.getId()
         );
 
-        return  connectToDatabase(query, "UPDATE");
+        return connectToDatabase(query, "UPDATE");
     }
 
     /**
@@ -145,7 +145,6 @@ public class ExperimentDAO{
      * @param model ExperimentModel Object
      */
     public void uploadExperiment(ExperimentModel model) {
-        PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
         long id = this.getExperimentsCount() + 1;
 
         String query = String.format("INSERT INTO %s VALUES ("
@@ -165,7 +164,7 @@ public class ExperimentDAO{
         ArrayList<String> createProject = createExperimentList(id, model);
 
         try {
-            dbUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
+            this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "INSERT", createProject);
         } catch (Exception e) {
             e.printStackTrace();
              LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
@@ -177,10 +176,10 @@ public class ExperimentDAO{
      * @param model ExperimentModel Object
      */
     public void updateExperiment(ExperimentModel model) {
-        PreparedStatementDatabaseUtilities dbUtilities = new PreparedStatementDatabaseUtilities();
         long id = model.getId();
 
-        String query = String.format("UPDATE %s set " +
+        String query = String.format(
+            "UPDATE %s set " +
             "experiment_name =" + "?," +
             "experiment_leader =" + "?," +
             "experiment_description =" + "?," +
@@ -191,16 +190,14 @@ public class ExperimentDAO{
             "inovation_cost =" + "?," +
             "money_source =" + "?" +
             "WHERE experiment_id =" + "?" +
-            // money_source
             ";",
             tableName
         );
 
-        //TODO Make the values above align with model
         ArrayList<String> updateProject = createExperimentList(id, model);
 
         try {
-            dbUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
+            this.preparedStatementDatabaseUtilities.connectToDatabase(databaseModel, query, "UPDATE", updateProject);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Update project error occur", e);
         }
@@ -208,7 +205,6 @@ public class ExperimentDAO{
 
     private ArrayList<String> createExperimentList(long id, ExperimentModel experimentModel) {
         ArrayList<String> experiment = new ArrayList<>();
-        experiment.add(String.format("%d", id));
         experiment.add(experimentModel.getName());
         experiment.add(experimentModel.getExperimentleaders());
         experiment.add(experimentModel.getDescription());
@@ -218,6 +214,7 @@ public class ExperimentDAO{
         experiment.add(experimentModel.getFasens());
         experiment.add(experimentModel.getInovationCost());
         experiment.add(experimentModel.getMoneySource());
+        experiment.add(String.format("%d", id));
 
         return experiment;
     }

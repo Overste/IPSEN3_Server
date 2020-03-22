@@ -75,9 +75,6 @@ public class PreparedStatementDatabaseUtilities {
                     }
                 }
             }
-
-            System.out.println("PreparedStatementDatabaseUtilities " + query);
-
             ResultSet resultSet = preparedStatement.executeQuery();
 
             JsonConverterUtilities jsonConverter = new JsonConverterUtilities();

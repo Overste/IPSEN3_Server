@@ -45,20 +45,20 @@ public class ExperimentModel {
     private String moneySource;
     @JsonProperty("organisations")
     private String organisations;
-    private Enum status;
-    private Enum fasen;
+    private String status;
+    private String fasen;
     private BufferedImage img;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Enum getFases() {
-        return fasen;
-    }
-
-    public void setFases(Enum fasen) {
-        this.fasen = fasen;
-    }
+//    public Enum getFases() {
+//        return fasen;
+//    }
+//
+//    public void setFases(Enum fasen) {
+//        this.fasen = fasen;
+//    }
 
     public BufferedImage getImg() {
         return img;
@@ -68,13 +68,13 @@ public class ExperimentModel {
         this.img = img;
     }
 
-    public Enum getStatus() {
-        return status;
-    }
-
-    public void setStatus(Enum status) {
-        this.status = status;
-    }
+//    public Enum getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Enum status) {
+//        this.status = status;
+//    }
 
     @JsonProperty("id")
     public Long getId() {
