@@ -90,7 +90,8 @@ public class UserController {
     private String cleanInfo(String info) {
         info = info.replaceAll("\"", "");
         String[] infoArray = info.split(":");
-        return infoArray[0];
+
+        return infoArray[infoArray.length -1];
     }
 
 }
