@@ -5,6 +5,8 @@ import java.util.List;
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Response;
 import nl.ipsen3server.models.ResponseModel;
+import nl.ipsen3server.models.User;
+import nl.ipsen3server.models.UserModel;
 
 /**
  * @author Anthony Scheeres
@@ -62,4 +64,30 @@ public class UserController {
     public String showOneUserPermission(int id) {
         return this.userDAO.showOneUserPermission(id);
     }
+
+    public javax.ws.rs.core.Response getUserInfo(String token) {
+        int userId = Integer.parseInt(tokenController.tokenToUserId(token));
+        String data = this.showOneUserPermission(userId);
+        data = data.replaceAll("\\{", "")
+                .replaceAll("}", "")
+                .replaceAll("\\[", "")
+                .replaceAll("]", "");
+        String[] datasets = data.split(",");
+        UserModel userdata = new UserModel();
+        for(String info: datasets) {
+            if(info.contains("email")) {
+                userdata.setEmail(cleanInfo(info));
+            } else if(info.contains("username")) {
+                userdata.setUsername(cleanInfo(info));
+            }
+        }
+        return javax.ws.rs.core.Response.ok(userdata).build();
+    }
+
+    private String cleanInfo(String info) {
+        info = info.replaceAll("\"", "");
+        String[] infoArray = info.split(":");
+        return infoArray[1];
+    }
+
 }

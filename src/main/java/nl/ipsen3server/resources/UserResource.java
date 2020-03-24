@@ -114,4 +114,11 @@ public class UserResource {
 
 	}
 
+	@GET
+	@Path("/getUserInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public javax.ws.rs.core.Response getUserInfo(@HeaderParam("token") String token) {
+		return userController.getUserInfo(token);
+	}
+
 }

@@ -68,7 +68,7 @@ public class UserDAO {
     public String showOneUserPermission(int user_id) {
         String result = null;
         String query = String.format("SELECT * FROM %s WHERE user_id = ?;", tableName);
-        ArrayList data = new ArrayList(Arrays.asList(user_id));
+        ArrayList data = new ArrayList(Arrays.asList(String.valueOf(user_id)));
         try {
             result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
