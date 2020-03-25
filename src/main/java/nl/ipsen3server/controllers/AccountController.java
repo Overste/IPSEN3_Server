@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nl.ipsen3server.models.ResponseR;
-import nl.ipsen3server.models.User;
-import nl.ipsen3server.models.UserModel;
-import nl.ipsen3server.models.ValidateEmailModel;
+import nl.ipsen3server.models.*;
 import nl.ipsen3server.dao.PermissionDAO;
 import nl.ipsen3server.dao.PreparedStatementDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
@@ -22,6 +19,8 @@ public class AccountController {
     private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
     private UserDAO userDatabase = new UserDAO();
     private PermissionDAO permissionDatabase = new PermissionDAO();
+    private TokenController tokenController = new TokenController();
+    private AuthenticationController authenticationController = new AuthenticationController();
     String domain = "OM.NL";
 
     /**
@@ -295,11 +294,16 @@ public class AccountController {
     /**
      * @author Jesse Poleij, Anthony Scheeres
      */
-    public Response handleRemoveUser(String u) {
-        if(userDatabase.removeUserModel(u)) {
-            return Response.ok().build();
+    public Response handleRemoveUser(String u, String token) {
+        String userID = this.tokenController.tokenToUserId(token);
+        if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
+            if(userDatabase.removeUserModel(u)) {
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
     

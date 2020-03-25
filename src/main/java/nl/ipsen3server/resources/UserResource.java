@@ -57,11 +57,7 @@ public class UserResource {
 	@Path("/removeUser")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeUserModel(@HeaderParam("token") String token, String u) {
-		if(this.authenticationController.getUserRole(token).equals("SUPERUSER")) {
-			return this.accountController.handleRemoveUser(u);
-		} else {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
+		return this.accountController.handleRemoveUser(u, token);
 	}
 
 	/**
