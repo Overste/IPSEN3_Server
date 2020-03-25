@@ -48,11 +48,16 @@ public class UserController {
      * @return ResponseModel
      * @author Valerie Timmerman
      */
-    public Response updateUserRole(long id, String userRole) {
-        if (userDAO.updateUserRole(id, userRole)) {
-            return Response.ok().build();
+    public Response updateUserRole(long id, String userRole, String token) {
+        String userID = this.tokenController.tokenToUserId(token);
+        if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
+            if (userDAO.updateUserRole(id, userRole)) {
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 

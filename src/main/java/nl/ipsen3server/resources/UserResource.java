@@ -96,11 +96,7 @@ public class UserResource {
 	public Response updateUserRole(@HeaderParam("token") String token,
 										@PathParam("id") long id,
 										@PathParam("user_role") String userRole) {
-		if(this.authenticationController.getUserRole(token).equals("SUPERUSER")) {
-			return this.userController.updateUserRole(id, userRole);
-		} else {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
+		return this.userController.updateUserRole(id, userRole, token);
 
 	}
 
