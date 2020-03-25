@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import nl.ipsen3server.dao.UserDAO;
-import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseR;
 public class TokenController {
 
 	private static final Logger LOGGER = Logger.getLogger(LoggerController.class.getName());
@@ -58,6 +58,6 @@ public class TokenController {
 		catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Error occur", e);
 		}
-		return Response.fail.toString();
+		return ResponseR.fail.toString();
 	}
 }

@@ -4,7 +4,9 @@ import nl.ipsen3server.dao.AuthenticationDAO;
 
 import nl.ipsen3server.dao.UserDAO;
 import nl.ipsen3server.models.Permission;
-import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseR;
+
+import javax.ws.rs.core.Response;
 
 /**
 
@@ -12,20 +14,20 @@ import nl.ipsen3server.models.Response;
 */
 public class AuthenticationController {
 
-	public String getUserRole(String token) {
+	public Response getUserRole(String token) {
 		TokenController tokenController = new TokenController();
 		int user_id = Integer.parseInt(tokenController.tokenToUserId(token));
 		UserDAO userDAO = new UserDAO();
 		String data = userDAO.getUserRole(user_id);
 
 		if (data.contains("SUPERUSER")) {
-			return "SUPERUSER";
+			return Response.ok("SUPERUSER").build();
 		} else if (data.contains("EMPLOYEE")) {
-			return "EMPLOYEE";
+			return Response.ok("EMPLOYEE").build();
 		} else if (data.contains("USER")) {
-			return "USER";
+			return Response.ok("USER").build();
 		} else {
-			return "UNCLASSIFIED";
+			return Response.ok("UNCLASSIFIED").build();
 		}
 
 	}
@@ -38,11 +40,11 @@ public class AuthenticationController {
 		TokenController tokkenController = new TokenController();
 		int employeeId = Integer.parseInt(tokkenController.tokenToUserId(token));
 		if (!hasSuperPermission(employeeId)) {
-			return Response.fail.toString();
+			return ResponseR.fail.toString();
 		}
 
 		accountController.giveRead2(u);
-		return Response.success.toString();
+		return ResponseR.success.toString();
 	}
 
 	/**

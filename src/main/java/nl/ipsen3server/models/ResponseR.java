@@ -1,7 +1,7 @@
 
 package nl.ipsen3server.models;
 
-public enum Response {
+public enum ResponseR {
 	success,
 	fail
 }

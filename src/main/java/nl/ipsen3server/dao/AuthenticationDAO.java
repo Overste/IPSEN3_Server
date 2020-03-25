@@ -5,7 +5,7 @@ import nl.ipsen3server.controllers.LoggerController;
 import nl.ipsen3server.models.AccountModel;
 import nl.ipsen3server.models.DataModel;
 import nl.ipsen3server.models.DatabaseModel;
-import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseR;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,7 @@ public class AuthenticationDAO {
         } catch (Exception e) {
              LOGGER.log(Level.SEVERE, "Error occur", e);
         }
-        return Response.fail.toString();
+        return ResponseR.fail.toString();
     }
 }
   

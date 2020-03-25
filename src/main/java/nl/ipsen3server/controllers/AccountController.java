@@ -5,13 +5,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseR;
 import nl.ipsen3server.models.User;
 import nl.ipsen3server.models.UserModel;
 import nl.ipsen3server.models.ValidateEmailModel;
 import nl.ipsen3server.dao.PermissionDAO;
 import nl.ipsen3server.dao.PreparedStatementDatabaseUtilities;
 import nl.ipsen3server.dao.UserDAO;
+
+import javax.ws.rs.core.Response;
 
 /**
  * @author Anthony Scheeres
@@ -36,7 +38,7 @@ public class AccountController {
     	} catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error occur", e);
     	}
-    	return Response.fail.toString();
+    	return ResponseR.fail.toString();
     }
 
     /**
@@ -79,7 +81,6 @@ public class AccountController {
      * @author Anthony Scheeres
      */
     private String createUserModel(UserModel userModel) throws Exception {
-        UserController r = new UserController();
         HashMap<String, List<String>> hashmap;
         String result = null;
         hashmap = userDatabase.getUsers();
@@ -104,7 +105,7 @@ public class AccountController {
      * @author Anthony Scheeres
      */
     public String handleCreateUserModel(UserModel u) {
-    	String fail = Response.fail.toString();
+    	String fail = ResponseR.fail.toString();
     	AccountController credentialController = new AccountController();
         if (!credentialController.checkInputValide(u)) {
             return fail;
@@ -114,7 +115,7 @@ public class AccountController {
     }
 
     public String handleFindValideTokenForAccount(UserModel u) {
-    	String response = Response.fail.toString();
+    	String response = ResponseR.fail.toString();
         try {
         	response = findValideTokenForAccount(u);
         } catch (Exception e2) {
@@ -125,7 +126,7 @@ public class AccountController {
     
     
     public String findValideTokenForAccount(UserModel u) throws Exception {
-        String response = Response.fail.toString();
+        String response = ResponseR.fail.toString();
         String token = createUserModel(u);
 
         if (token != null) {
@@ -140,7 +141,7 @@ public class AccountController {
     */
     public String checkLogin(UserModel u) throws Exception {
         HashMap < String, List < String >> hashmap;
-        String response = Response.fail.toString();
+        String response = ResponseR.fail.toString();
         hashmap = userDatabase.getUserInfo();
         List<String> users = hashmap.get(User.username.toString());
         String usernameFromClient = u.getUsername();
@@ -180,7 +181,7 @@ public class AccountController {
         String UserId,
         String token
     ){
-        String failtResponse = Response.fail.toString();
+        String failtResponse = ResponseR.fail.toString();
         //"token : "+token + "permission :"+permission );
         if (checkCredentials(username, username2, passwordFromDatabase,  passwordFromClient)) {
             boolean hasPermission = permission.length() ==0;
@@ -222,7 +223,7 @@ public class AccountController {
     public String validateToken(String token) throws Exception {
         MailController mailController = new MailController();
         HashMap<String, List<String>> data = mailController.getTokens();
-        String response = Response.fail.toString();
+        String response = ResponseR.fail.toString();
 
         //loop over database records
         for (int i = 0; i < data.get(User.token.toString()).size(); i++) {
@@ -252,7 +253,7 @@ public class AccountController {
     	String username = validateEmailModel.getUsername(); 
     	String yourDomain = validateEmailModel.getYourDomain(); 
     	String token = validateEmailModel.getToken();
-    	String response = Response.fail.toString();
+    	String response = ResponseR.fail.toString();
     	String role = "UNCLASSIFIED";
     	boolean isNullInput = email != null && tokenFromDatabase != null;
     	 
@@ -262,7 +263,7 @@ public class AccountController {
                 	//give read permissions
                 	giveRead2(username);
                     role = "USER";
-                    response = Response.success.toString();
+                    response = ResponseR.success.toString();
                 } else {
                     response ="domein invalid, should be: " + domain.toLowerCase();
                 }
@@ -296,21 +297,21 @@ public class AccountController {
      */
     public Response handleRemoveUser(String u) {
         if(userDatabase.removeUserModel(u)) {
-            return Response.success;
+            return Response.ok().build();
         } else {
-            return Response.fail;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
     
     
     public String handleValidateToken(String token) {
-        String response = Response.fail.toString();
         try {
             return validateToken(token);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error occur", e);
+            return ResponseR.fail.toString();
         }
-        return response;
     }
+
 }

@@ -2,6 +2,7 @@ package nl.ipsen3server.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 
 import nl.ipsen3server.controllers.AccountController;
@@ -25,19 +26,8 @@ public class UserResource {
 	@GET
 	@Path("/showAllUsers")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String showUsers(@HeaderParam("token") String token) {
+	public Response showUsers(@HeaderParam("token") String token) {
 		return this.userController.handleShowUsers(token);
-	}
-
-
-	/**
-	 * @author Anthony Scheeres
-	 */
-	@GET
-	@Path("/{id}/showSingleUser")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String showUser(@HeaderParam("token") String token, @PathParam("id") int id) {
-		return this.userController.showOneUserPermission(id);
 	}
 
 	/**
@@ -71,7 +61,7 @@ public class UserResource {
 		if(this.authenticationController.getUserRole(token).equals("SUPERUSER")) {
 			return this.accountController.handleRemoveUser(u);
 		} else {
-			return Response.fail;
+			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
 
@@ -93,7 +83,7 @@ public class UserResource {
 	@GET
 	@Path("/getRole")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getUserRole(@HeaderParam("token") String token) {
+	public Response getUserRole(@HeaderParam("token") String token) {
 		return this.authenticationController.getUserRole(token);
 	}
 
@@ -103,13 +93,13 @@ public class UserResource {
 	@PUT
 	@Path("/{id}/{user_role}/updateUserRole")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseModel updateUserRole(@HeaderParam("token") String token,
+	public Response updateUserRole(@HeaderParam("token") String token,
 										@PathParam("id") long id,
 										@PathParam("user_role") String userRole) {
 		if(this.authenticationController.getUserRole(token).equals("SUPERUSER")) {
 			return this.userController.updateUserRole(id, userRole);
 		} else {
-			return new ResponseModel(Response.fail.toString());
+			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 
 	}
@@ -117,7 +107,7 @@ public class UserResource {
 	@GET
 	@Path("/getUserInfo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public javax.ws.rs.core.Response getUserInfo(@HeaderParam("token") String token) {
+	public Response getUserInfo(@HeaderParam("token") String token) {
 		return userController.getUserInfo(token);
 	}
 

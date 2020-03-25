@@ -4,7 +4,7 @@ import nl.ipsen3server.dao.ExperimentDAO;
 import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
-import nl.ipsen3server.models.Response;
+import nl.ipsen3server.models.ResponseR;
 
 /**
  * @author Anthony Schuijlenburg, Jesse Poleij
@@ -88,7 +88,7 @@ public class ExperimentController {
      */
     public String handleCreateProject(ExperimentModel project){
         this.experimentDAO.uploadExperiment(project);
-        return Response.fail.toString();
+        return ResponseR.fail.toString();
     }
 
     /**
@@ -96,6 +96,6 @@ public class ExperimentController {
      */
     public String handleUpdate(ExperimentModel project) {
         this.experimentDAO.updateExperiment(project);
-        return Response.fail.toString();
+        return ResponseR.fail.toString();
     }
 }

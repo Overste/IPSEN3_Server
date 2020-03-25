@@ -3,10 +3,9 @@ package nl.ipsen3server.controllers;
 import java.util.List;
 
 import nl.ipsen3server.dao.UserDAO;
-import nl.ipsen3server.models.Response;
-import nl.ipsen3server.models.ResponseModel;
-import nl.ipsen3server.models.User;
-import nl.ipsen3server.models.UserModel;
+import nl.ipsen3server.models.*;
+
+import javax.ws.rs.core.Response;
 
 /**
  * @author Anthony Scheeres
@@ -19,12 +18,12 @@ public class UserController {
     /**
      * @author Anthony Scheeres
      */
-    public String handleShowUsers(String token) {
+    public Response handleShowUsers(String token) {
         int employeeId = Integer.parseInt(tokenController.tokenToUserId(token));
         if (!this.authenticationController.hasReadPermission(employeeId)) {
-            return Response.fail.toString();
+            return Response.status(Response.Status.valueOf("fail")).build();
         }
-        return this.userDAO.showUsers();
+        return Response.ok(this.userDAO.showUsers()).build();
     }
 
     /**
@@ -49,11 +48,11 @@ public class UserController {
      * @return ResponseModel
      * @author Valerie Timmerman
      */
-    public ResponseModel updateUserRole(long id, String userRole) {
+    public Response updateUserRole(long id, String userRole) {
         if (userDAO.updateUserRole(id, userRole)) {
-            return new ResponseModel(Response.success.toString());
+            return Response.ok().build();
         } else {
-            return new ResponseModel(Response.fail.toString());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
