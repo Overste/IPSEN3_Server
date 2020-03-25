@@ -2,6 +2,7 @@ package nl.ipsen3server.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import nl.ipsen3server.controllers.LoggingController;
 import nl.ipsen3server.models.LogModel;
@@ -22,10 +23,9 @@ public class LogResource {
     @POST
     @Path("/upload/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createLog(LogModel logModel, @HeaderParam("token") String token) {
-        loggingController.createLog(logModel, token);
+    public Response createLog(LogModel logModel, @HeaderParam("token") String token) {
+        return loggingController.createLog(logModel, token);
     }
-
 
     /**
      * @author Anthony Schuijlenburg
@@ -35,8 +35,7 @@ public class LogResource {
      */
     @GET
     @Path("/download/{experimentId}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String showlogs(@PathParam("experimentId") int id, @HeaderParam("token") String token){
+    public Response showlogs(@PathParam("experimentId") int id, @HeaderParam("token") String token){
         return loggingController.showlogs(id, token);
     }
 }

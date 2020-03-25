@@ -31,7 +31,8 @@ public class LoggingDAO {
      * @author Anthony Schuijlenburg
      * @param logModel The model of the log that needs to be uploaded
      */
-    public void CreateLog(LogModel logModel){
+    public String CreateLog(LogModel logModel){
+        String result = null;
         int latestLogId = getLogsCount();
         logModel.setLogId(latestLogId + 1);
         String query = String.format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?)", tableName);
@@ -44,7 +45,8 @@ public class LoggingDAO {
             String.valueOf(logModel.getExperimentId())
         ));
 
-        connectToDatabase(query, "INSERT", data);
+        result = connectToDatabase(query, "INSERT", data);
+        return result;
     }
 
     /**

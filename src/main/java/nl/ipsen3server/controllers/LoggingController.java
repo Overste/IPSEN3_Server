@@ -3,6 +3,8 @@ package nl.ipsen3server.controllers;
 import nl.ipsen3server.dao.LoggingDAO;
 import nl.ipsen3server.models.LogModel;
 
+import javax.ws.rs.core.Response;
+
 public class LoggingController {
 
     private LoggingDAO loggingDAO = new LoggingDAO();
@@ -14,12 +16,12 @@ public class LoggingController {
      * @param token The token from the user requesting the log
      * @return Returns the logs
      */
-    public String showlogs(int experimentId, String token){
+    public Response showlogs(int experimentId, String token){
         int userId= 0;
         if(this.authenticationController.hasPermission(userId, "READ")){
-            return this.loggingDAO.showLogs(experimentId);
+            return Response.ok(this.loggingDAO.showLogs(experimentId)).build();
         }
-        return "Not sufficient rights";
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     /**
@@ -27,13 +29,19 @@ public class LoggingController {
      * @param logModel A model of the log file that needs to be uploaded
      * @param token The token from the user trying to access
      */
-    public void createLog(LogModel logModel, String token) {
+    public Response createLog(LogModel logModel, String token) {
         TokenController tokenController = new TokenController();
 		int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         logModel.setByUserId(userId);
         logModel.setTimestamp();
         if(this.authenticationController.hasPermission(userId, "WRITE")){
-            this.loggingDAO.CreateLog(logModel);
+            if(this.loggingDAO.CreateLog(logModel) != null) {
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 }
