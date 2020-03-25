@@ -32,7 +32,7 @@ public class LoggingDAO {
      * @param logModel The model of the log that needs to be uploaded
      */
     public void CreateLog(LogModel logModel){
-        int latestLogId = getLatestLogId();
+        int latestLogId = getLogsCount();
         logModel.setLogId(latestLogId + 1);
         String query = String.format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?)", tableName);
         ArrayList<String> data = new ArrayList<>(Arrays.asList(
@@ -51,6 +51,7 @@ public class LoggingDAO {
      * @author Anthony Schuijlenburg
      * @return the id of the latest log available
      */
+
     public int getLatestLogId(){
         String query = String.format("SELECT log_id FROM %s ORDER BY log_id", tableName);
 
@@ -76,6 +77,19 @@ public class LoggingDAO {
             }
         }
         return logId;
+    }
+
+    public int getLogsCount() {
+        String query = String.format("SELECT MAX(log_id) FROM %s;", tableName);
+
+        return Integer.parseInt(
+            this.preparedStatementDatabaseUtilities.connectToDatabase(
+                databaseModel,
+                query,
+                "SELECT",
+                new ArrayList<>()
+            ).replaceAll("[^0-9]", "")
+        );
     }
 
     private String connectToDatabase(String query, String queryType, ArrayList<String> data) {
