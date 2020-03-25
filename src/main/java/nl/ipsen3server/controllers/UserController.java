@@ -69,9 +69,9 @@ public class UserController {
         String data = this.showOneUserPermission(userId);
 
         data = data.replaceAll("\\{", "")
-                .replaceAll("}", "")
-                .replaceAll("\\[", "")
-                .replaceAll("]", "");
+                   .replaceAll("}", "")
+                   .replaceAll("\\[", "")
+                   .replaceAll("]", "");
 
         String[] datasets = data.split(",");
         UserModel userdata = new UserModel();
