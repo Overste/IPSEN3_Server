@@ -6,6 +6,8 @@ import nl.ipsen3server.models.ExperimentModel;
 import nl.ipsen3server.models.Permission;
 import nl.ipsen3server.models.ResponseR;
 
+import javax.ws.rs.core.Response;
+
 /**
  * @author Anthony Schuijlenburg, Jesse Poleij
  */
@@ -23,15 +25,15 @@ public class ExperimentController {
      * @return The status of the deleting attempt
      * @author Jesse Poleij, Anthony Schuijlenburg
      */
-    public String deleteExperiment(int projectId, String token) {
+    public Response deleteExperiment(int projectId, String token) {
         String userID = this.tokenController.tokenToUserId(token);
         if (userID == null) {
-            return "Token is invalid";
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
         if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
             return this.experimentDAO.deleteExperiment(projectId);
         } else {
-            return "Not sufficient rights to delete this experiment";
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
@@ -43,12 +45,12 @@ public class ExperimentController {
      *
      * @param token the token of the user trying to update an experiment.
      */
-    public String showPhases(BoxModel phaseChange, String token){
+    public Response showPhases(BoxModel phaseChange, String token){
         String userID = this.tokenController.tokenToUserId(token);
         if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())){
-            return this.experimentDAO.showExperimentPhase(phaseChange);
+            return Response.ok(this.experimentDAO.showExperimentPhase(phaseChange)).build();
         }
-        return "Not sufficient rights to change this experiment";
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     /**
@@ -58,12 +60,12 @@ public class ExperimentController {
      * @return all experiments in JSON format
      * @author Anthony Schuijlenburg
      */
-    public String showExperiments(String token) {
+    public Response showExperiments(String token) {
         String userID = this.tokenController.tokenToUserId(token);
         if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
-            return this.experimentDAO.showExperiments();
+            return Response.ok(this.experimentDAO.showExperiments()).build();
         } else {
-            return "Not sufficient rights to delete this experiment";
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
@@ -74,21 +76,28 @@ public class ExperimentController {
      * @return all experiments in JSON format
      * @author AnthonySchuijlenburg
      */
-    public String showSingleExperiment(String token, int id) {
+    public Response showSingleExperiment(String token, int id) {
         String userID = this.tokenController.tokenToUserId(token);
         if (this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.READ.toString())) {
-            return this.experimentDAO.showExperiment(id);
+            return Response.ok(this.experimentDAO.showExperiment(id)).build();
         } else {
-            return "Not sufficient rights to delete this experiment";
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
     /**
      * @author Cyriel van der Raaf, Jesse Poleij
      */
-    public String handleCreateProject(ExperimentModel project){
-        this.experimentDAO.uploadExperiment(project);
-        return ResponseR.fail.toString();
+    public Response handleCreateProject(ExperimentModel project, String token){ String userID = this.tokenController.tokenToUserId(token);
+       if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.WRITE.toString())) {
+           if(this.experimentDAO.uploadExperiment(project) != null) {
+               return Response.ok().build();
+           } else {
+               return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+           }
+       } else {
+           return Response.status(Response.Status.UNAUTHORIZED).build();
+       }
     }
 
     /**

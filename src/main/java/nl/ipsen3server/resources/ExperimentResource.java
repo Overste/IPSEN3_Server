@@ -7,6 +7,7 @@ import nl.ipsen3server.models.BoxModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author AnthonySchuijlenburg, AnthonyScheeres
@@ -26,7 +27,7 @@ public class ExperimentResource {
      */
     @DELETE
     @Path("/remove/{id}")
-    public String deleteExperiment(@HeaderParam("token") String token, @PathParam("id") int id) {
+    public Response deleteExperiment(@HeaderParam("token") String token, @PathParam("id") int id) {
         return this.experimentController.deleteExperiment(id, token);
     }
 
@@ -41,7 +42,7 @@ public class ExperimentResource {
     @GET
     @Path("/showAllExperiments")
     @Produces(MediaType.TEXT_PLAIN)
-    public String showExperiments(@HeaderParam("token") String token){
+    public Response showExperiments(@HeaderParam("token") String token){
         return this.experimentController.showExperiments(token);
     }
 
@@ -58,7 +59,7 @@ public class ExperimentResource {
     @Path("/showPhaseOfExperiments")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String showPhases(BoxModel phaseChange, @HeaderParam("token") String token){
+    public Response showPhases(BoxModel phaseChange, @HeaderParam("token") String token){
         return this.experimentController.showPhases(phaseChange, token);
     }
 
@@ -73,8 +74,7 @@ public class ExperimentResource {
      */
     @GET
     @Path("/showSingleExperiment/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String showSingleExperiment(@HeaderParam("token") String token, @PathParam("id") int id){
+    public Response showSingleExperiment(@HeaderParam("token") String token, @PathParam("id") int id){
         return this.experimentController.showSingleExperiment(token, id);
     }
 
@@ -84,8 +84,8 @@ public class ExperimentResource {
     @POST
     @Path("/createProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createProject(ExperimentModel project, @HeaderParam("token") String token){
-        return this.experimentController.handleCreateProject(project);
+    public Response createProject(ExperimentModel project, @HeaderParam("token") String token){
+        return this.experimentController.handleCreateProject(project, token);
     }
 
     /**

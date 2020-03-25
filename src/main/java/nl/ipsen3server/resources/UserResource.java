@@ -10,9 +10,8 @@ import nl.ipsen3server.controllers.AuthenticationController;
 import nl.ipsen3server.controllers.UserController;
 import nl.ipsen3server.models.*;
 
-
 /**
-* @author Anthony Scheeres
+* @author Anthony Scheeres, Valerie Timmerman
 */
 @Path("/user")
 public class UserResource {
@@ -89,6 +88,7 @@ public class UserResource {
 
 	/**
 	 * @author Valerie Timmerman
+	 * Updates the rol of a specific user if this user has superuser rights
 	 */
 	@PUT
 	@Path("/{id}/{user_role}/updateUserRole")
@@ -104,6 +104,10 @@ public class UserResource {
 
 	}
 
+	/**
+	 * @author Valerie Timmerman
+	 * Gets the users info for the profile page and returns it as a usermodel.
+	 */
 	@GET
 	@Path("/getUserInfo")
 	@Produces(MediaType.APPLICATION_JSON)

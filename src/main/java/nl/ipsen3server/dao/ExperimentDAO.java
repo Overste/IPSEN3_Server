@@ -7,6 +7,7 @@ import nl.ipsen3server.models.DatabaseModel;
 import nl.ipsen3server.models.BoxModel;
 import nl.ipsen3server.models.ExperimentModel;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -28,16 +29,16 @@ public class ExperimentDAO{
      * @param experimentId The experimentId of the experiment that needs to be deleted
      * @return The status of the deleting attempt
      */
-    public String deleteExperiment(int experimentId) {
+    public Response deleteExperiment(int experimentId) {
         String query = String.format("DELETE FROM %s WHERE experiment_id = ?;", tableName, experimentId);
         ArrayList<String> data = new ArrayList<>(Arrays.asList(Integer.toString(experimentId)));
 
         try {
             connectToDatabase(query, "DELETE", data);
-            return "succes";
+            return Response.ok().build();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error occur", e);
-            return "Was not able to connect to database";
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -144,7 +145,8 @@ public class ExperimentDAO{
      * Uses a prepared statement to upload an experiment to the database
      * @param model ExperimentModel Object
      */
-    public void uploadExperiment(ExperimentModel model) {
+    public String uploadExperiment(ExperimentModel model) {
+        String result = null;
         String query = String.format("" +
             "INSERT INTO %s VALUES ("
                 + "?,"                          // experiment_id
@@ -163,7 +165,7 @@ public class ExperimentDAO{
         ArrayList<String> createProject = createExperimentList(model);
 
         try {
-            this.preparedStatementDatabaseUtilities.connectToDatabase(
+            result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
                 query,
                 "INSERT",
@@ -173,6 +175,7 @@ public class ExperimentDAO{
             e.printStackTrace();
              LOGGER.log(Level.SEVERE, "Create Project Error occur", e);
         }
+        return result;
     }
 
     /**
