@@ -94,7 +94,7 @@ public class ExperimentResource {
     @POST
     @Path("/updateProject")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String deleteProject(ExperimentModel project, @HeaderParam("token") String token){
-        return this.experimentController.handleUpdate(project);
+    public Response deleteProject(ExperimentModel project, @HeaderParam("token") String token){
+        return this.experimentController.handleUpdate(project, token);
     }
 }

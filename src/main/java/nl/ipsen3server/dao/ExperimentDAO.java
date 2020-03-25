@@ -182,8 +182,9 @@ public class ExperimentDAO{
      * @author Jesse poleij
      * @param model ExperimentModel Object
      */
-    public void updateExperiment(ExperimentModel model) {
+    public String updateExperiment(ExperimentModel model) {
         long id = model.getId();
+        String result = null;
 
         String query = String.format(
             "UPDATE %s set " +
@@ -204,7 +205,7 @@ public class ExperimentDAO{
         ArrayList<String> updateProject = updateExperimentList(id, model);
 
         try {
-            this.preparedStatementDatabaseUtilities.connectToDatabase(
+            result = this.preparedStatementDatabaseUtilities.connectToDatabase(
                 databaseModel,
                 query,
                 "UPDATE",
@@ -213,6 +214,7 @@ public class ExperimentDAO{
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Update project error occur", e);
         }
+        return result;
     }
 
     private ArrayList<String> updateExperimentList(long id, ExperimentModel experimentModel) {

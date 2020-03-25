@@ -103,8 +103,16 @@ public class ExperimentController {
     /**
      * @author Jesse Poleij
      */
-    public String handleUpdate(ExperimentModel project) {
-        this.experimentDAO.updateExperiment(project);
-        return ResponseR.fail.toString();
+    public Response handleUpdate(ExperimentModel project, String token) {
+        String userID = this.tokenController.tokenToUserId(token);
+        if(this.authenticationController.hasPermission(Integer.parseInt(userID), Permission.DELETE.toString())) {
+            if(this.experimentDAO.updateExperiment(project) == null) {
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 }
