@@ -67,12 +67,15 @@ public class UserController {
     public javax.ws.rs.core.Response getUserInfo(String token) {
         int userId = Integer.parseInt(tokenController.tokenToUserId(token));
         String data = this.showOneUserPermission(userId);
+
         data = data.replaceAll("\\{", "")
                 .replaceAll("}", "")
                 .replaceAll("\\[", "")
                 .replaceAll("]", "");
+
         String[] datasets = data.split(",");
         UserModel userdata = new UserModel();
+
         for(String info: datasets) {
             if(info.contains("email")) {
                 userdata.setEmail(cleanInfo(info));
@@ -86,7 +89,8 @@ public class UserController {
     private String cleanInfo(String info) {
         info = info.replaceAll("\"", "");
         String[] infoArray = info.split(":");
-        return infoArray[1];
+
+        return infoArray[infoArray.length -1];
     }
 
 }
